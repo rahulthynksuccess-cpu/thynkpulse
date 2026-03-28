@@ -1,6 +1,3 @@
-Here's the complete code — copy everything below and replace your `app/profile/setup/page.tsx`:
-
-```tsx
 'use client'
 export const dynamic = 'force-dynamic'
 import { useState, useEffect } from 'react'
