@@ -65,12 +65,3 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     </html>
   )
 }
-```
-
----
-
-**File 2 — `app/globals.css`** — delete only line 1 (the `@import url(...)` line).
-
-Your current line 1 is:
-```
-@import url('https://fonts.googleapis.com/...');
