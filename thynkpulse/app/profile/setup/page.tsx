@@ -119,14 +119,17 @@ export default function ProfileSetupPage() {
         borderRight: '1px solid rgba(255,255,255,0.06)',
         display: 'flex', flexDirection: 'column', padding: '48px 40px', overflow: 'hidden',
       }}>
+        {/* Glow effects */}
         <div style={{ position:'absolute', top:'-80px', left:'-80px', width:'300px', height:'300px', background:'radial-gradient(circle, rgba(10,95,85,0.25) 0%, transparent 70%)', pointerEvents:'none' }} />
         <div style={{ position:'absolute', bottom:'-100px', right:'-60px', width:'280px', height:'280px', background:'radial-gradient(circle, rgba(201,146,42,0.12) 0%, transparent 70%)', pointerEvents:'none' }} />
 
+        {/* Logo */}
         <div style={{ display:'flex', alignItems:'center', gap:'10px', marginBottom:'56px' }}>
           <div style={{ width:36, height:36, borderRadius:'10px', background:'linear-gradient(135deg,#0A5F55,#12A090)', display:'flex', alignItems:'center', justifyContent:'center', fontSize:'16px', boxShadow:'0 8px 24px rgba(10,95,85,0.4)' }}>⚡</div>
           <span style={{ fontFamily:"'Fraunces', serif", fontWeight:900, fontSize:'18px', color:'#fff', letterSpacing:'-0.5px' }}>Thynk Pulse</span>
         </div>
 
+        {/* Greeting */}
         <div style={{ marginBottom:'40px' }}>
           <div style={{ fontSize:'12px', fontWeight:600, letterSpacing:'2px', textTransform:'uppercase', color:'rgba(100,220,190,0.7)', marginBottom:'10px', fontFamily:"'DM Mono', monospace" }}>
             Step {step} of {STEPS.length}
@@ -139,8 +142,9 @@ export default function ProfileSetupPage() {
           </p>
         </div>
 
+        {/* Step indicators */}
         <div style={{ display:'flex', flexDirection:'column', gap:'6px', marginBottom:'40px' }}>
-          {STEPS.map((s) => (
+          {STEPS.map((s, i) => (
             <motion.div key={s.id}
               onClick={() => s.id < step && setStep(s.id)}
               style={{ display:'flex', alignItems:'center', gap:'12px', padding:'10px 12px', borderRadius:'10px', cursor: s.id < step ? 'pointer' : 'default', transition:'all .2s',
@@ -164,6 +168,7 @@ export default function ProfileSetupPage() {
           ))}
         </div>
 
+        {/* Progress bar */}
         <div style={{ marginBottom:'32px' }}>
           <div style={{ display:'flex', justifyContent:'space-between', marginBottom:'6px' }}>
             <span style={{ fontSize:'11px', color:'rgba(255,255,255,0.3)', fontFamily:"'DM Mono', monospace" }}>Profile complete</span>
@@ -175,6 +180,7 @@ export default function ProfileSetupPage() {
           </div>
         </div>
 
+        {/* Perks */}
         <div style={{ marginTop:'auto' }}>
           <div style={{ fontSize:'10px', fontWeight:700, letterSpacing:'1.5px', textTransform:'uppercase', color:'rgba(255,255,255,0.2)', marginBottom:'12px', fontFamily:"'DM Mono', monospace" }}>What you unlock</div>
           {PERKS.map(p => (
@@ -188,11 +194,13 @@ export default function ProfileSetupPage() {
 
       {/* ── Right panel ── */}
       <div className="right-panel" style={{ flex:1, maxWidth:'640px', display:'flex', flexDirection:'column', justifyContent:'center', padding:'60px 56px', overflowY:'auto' }}>
+
         <AnimatePresence mode="wait">
           <motion.div key={step}
             initial={{ opacity:0, x:24 }} animate={{ opacity:1, x:0 }} exit={{ opacity:0, x:-24 }}
             transition={{ duration:.3, ease:'easeOut' }}>
 
+            {/* Step heading */}
             <div style={{ marginBottom:'36px' }}>
               <div style={{ fontSize:'32px', marginBottom:'10px' }}>{STEPS[step-1].icon}</div>
               <h2 style={{ fontFamily:"'Fraunces', serif", fontWeight:900, fontSize:'30px', color:'#fff', letterSpacing:'-0.5px', marginBottom:'6px' }}>
@@ -209,6 +217,7 @@ export default function ProfileSetupPage() {
               </p>
             </div>
 
+            {/* ── STEP 1: Identity ── */}
             {step===1 && (
               <div style={{ display:'flex', flexDirection:'column', gap:'18px' }}>
                 <div>
@@ -224,6 +233,13 @@ export default function ProfileSetupPage() {
                     {ROLES.map(r=><option key={r} value={r}>{r}</option>)}
                   </select>
                 </div>
+                {form.designation === 'Other' && (
+                  <motion.div initial={{opacity:0,height:0}} animate={{opacity:1,height:'auto'}}>
+                    <input style={inp} type="text" placeholder="Describe your role..."
+                      value={form.designation==='Other' ? '' : form.designation}
+                      onChange={e=>set('designation',e.target.value)} />
+                  </motion.div>
+                )}
                 <div>
                   <label style={lbl}>Experience</label>
                   <div style={{ display:'grid', gridTemplateColumns:'repeat(4,1fr)', gap:'8px' }}>
@@ -241,6 +257,7 @@ export default function ProfileSetupPage() {
               </div>
             )}
 
+            {/* ── STEP 2: Organisation ── */}
             {step===2 && (
               <div style={{ display:'flex', flexDirection:'column', gap:'18px' }}>
                 <div>
@@ -267,6 +284,7 @@ export default function ProfileSetupPage() {
                       value={form.contactNumber} onChange={e=>set('contactNumber',e.target.value)} />
                   </div>
                 </div>
+                {/* Quick select: type of org */}
                 <div>
                   <label style={lbl}>Type of Organisation</label>
                   <div style={{ display:'flex', gap:'8px', flexWrap:'wrap' }}>
@@ -285,6 +303,7 @@ export default function ProfileSetupPage() {
               </div>
             )}
 
+            {/* ── STEP 3: Story ── */}
             {step===3 && (
               <div style={{ display:'flex', flexDirection:'column', gap:'18px' }}>
                 <div>
@@ -325,6 +344,7 @@ export default function ProfileSetupPage() {
               </div>
             )}
 
+            {/* ── STEP 4: Connect ── */}
             {step===4 && (
               <div style={{ display:'flex', flexDirection:'column', gap:'18px' }}>
                 <div>
@@ -343,6 +363,7 @@ export default function ProfileSetupPage() {
                       value={form.location} onChange={e=>set('location',e.target.value)} />
                   </div>
                 </div>
+                {/* Preview card */}
                 {(form.fullName || form.designation) && (
                   <motion.div initial={{opacity:0,y:10}} animate={{opacity:1,y:0}}
                     style={{ padding:'20px', borderRadius:'14px', background:'rgba(255,255,255,0.04)', border:'1px solid rgba(255,255,255,0.08)', marginTop:'8px' }}>
@@ -365,6 +386,7 @@ export default function ProfileSetupPage() {
               </div>
             )}
 
+            {/* Navigation buttons */}
             <div style={{ display:'flex', gap:'10px', marginTop:'36px' }}>
               {step > 1 && (
                 <button onClick={back} type="button"
@@ -372,6 +394,7 @@ export default function ProfileSetupPage() {
                   <ArrowLeft style={{ width:15, height:15 }} /> Back
                 </button>
               )}
+
               <button onClick={next} disabled={!canNext || loading} type="button"
                 style={{ flex:1, display:'flex', alignItems:'center', justifyContent:'center', gap:'8px', padding:'14px 28px', borderRadius:'12px', border:'none', cursor:(!canNext||loading)?'not-allowed':'pointer', fontSize:'15px', fontWeight:700, fontFamily:"'DM Sans',sans-serif", transition:'all .2s',
                   background: canNext ? 'linear-gradient(135deg,#64DCBE,#0A5F55)' : 'rgba(255,255,255,0.06)',
@@ -387,6 +410,7 @@ export default function ProfileSetupPage() {
               </button>
             </div>
 
+            {/* Skip */}
             <div style={{ textAlign:'center', marginTop:'16px' }}>
               <button onClick={handleSkip} type="button"
                 style={{ background:'none', border:'none', color:'rgba(255,255,255,0.2)', cursor:'pointer', fontSize:'13px', fontFamily:"'DM Sans',sans-serif", padding:'4px 8px' }}>
@@ -399,4 +423,3 @@ export default function ProfileSetupPage() {
     </div>
   )
 }
-```
