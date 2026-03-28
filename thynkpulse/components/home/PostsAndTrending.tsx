@@ -201,7 +201,7 @@ export function TrendingSection() {
               <div key={w.username||w.fullName||w.name} style={{ display:'flex', alignItems:'center', gap:'10px', padding:'9px 0', borderBottom:'1px solid var(--border2)' }}>
                 {w.avatarUrl
                   ? <img src={w.avatarUrl} alt={w.fullName} style={{ width:36,height:36,borderRadius:'9px',objectFit:'cover',flexShrink:0 }} />
-                  : <div style={{ width:36,height:36,borderRadius:'9px',background:AV_BG[i%AV_BG.length],display:'flex',alignItems:'center',justifyContent:'center',fontFamily:'var(--font-serif)',fontWeight:900,fontSize:'13px',color:'#fff',flexShrink:0 }}>
+                  : <div style={{ width:36,height:36,borderRadius:'9px',background:AVATAR_BG[i%AVATAR_BG.length],display:'flex',alignItems:'center',justifyContent:'center',fontFamily:'var(--font-serif)',fontWeight:900,fontSize:'13px',color:'#fff',flexShrink:0 }}>
                       {(w.fullName||w.name||'U')[0].toUpperCase()}
                     </div>
                 }
