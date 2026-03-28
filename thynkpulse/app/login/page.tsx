@@ -24,7 +24,7 @@ export default function LoginPage() {
       toast.success(`Welcome back, ${data.user.profile?.fullName || 'there'}!`)
       router.push(data.user.role === 'admin' ? '/admin' : '/')
     },
-    onError: (err: any) => toast.error(err.response?.data?.error || 'Invalid credentials'),
+    onError: (err: any) => toast.error(err.message || 'Invalid credentials'),
   })
 
   return (
