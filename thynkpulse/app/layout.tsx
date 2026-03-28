@@ -17,18 +17,12 @@ export const viewport: Viewport = {
   initialScale: 1,
 }
 
-/* Load active theme from DB — runs on every server render */
 async function getThemeCSSVars(): Promise<string> {
   try {
-    const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'
-    const res = await fetch(`${baseUrl}/api/admin/theme`, {
-      next: { revalidate: 60 }, // cache for 60s, revalidates automatically
-    })
-    if (!res.ok) return ''
-    const data = await res.json()
-    if (!data.theme) return ''
-
-    const t = data.theme
+    const { default: db } = await import('@/lib/db')
+    const res = await db.query("SELECT value FROM site_settings WHERE key = 'theme'")
+    if (!res.rows.length) return ''
+    const t = JSON.parse(res.rows[0].value)
     return `:root {
   --cream:      ${t.cream      || '#FDF6EC'};
   --cream2:     ${t.cream2     || '#F5ECD8'};
@@ -51,22 +45,19 @@ async function getThemeCSSVars(): Promise<string> {
   --radius-xl:  ${(t.radiusLg  || 20) + 4}px;
 }`
   } catch {
-    return '' // silently fall back to globals.css defaults
+    return ''
   }
 }
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const themeVars = await getThemeCSSVars()
-
   return (
     <html lang="en">
       <head>
-        {themeVars && (
-          <style
-            id="tp-live-theme"
-            dangerouslySetInnerHTML={{ __html: themeVars }}
-          />
-        )}
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,600;0,900;1,600&family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet" />
+        {themeVars && <style id="tp-live-theme" dangerouslySetInnerHTML={{ __html: themeVars }} />}
       </head>
       <body>
         <Providers>{children}</Providers>
@@ -74,3 +65,12 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     </html>
   )
 }
+```
+
+---
+
+**File 2 — `app/globals.css`** — delete only line 1 (the `@import url(...)` line).
+
+Your current line 1 is:
+```
+@import url('https://fonts.googleapis.com/...');
