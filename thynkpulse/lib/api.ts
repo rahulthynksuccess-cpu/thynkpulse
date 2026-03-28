@@ -43,4 +43,3 @@ export const apiPatch  = (url: string, data?: unknown)                   => requ
 export const apiDelete = (url: string)                                   => request('DELETE', url)
 
 export default { get: apiGet, post: apiPost, put: apiPut, patch: apiPatch, delete: apiDelete }
-```
