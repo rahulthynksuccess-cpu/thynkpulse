@@ -3,8 +3,6 @@ import { NextRequest } from 'next/server'
 import db from '@/lib/db'
 import { getTokenFromHeader, verifyToken } from '@/lib/auth'
 
-export const config = { api: { bodyParser: { sizeLimit: '5mb' } } }
-
 export async function POST(req: NextRequest) {
   const token = getTokenFromHeader(req.headers.get('authorization') || '')
   if (!token) return Response.json({ error: 'Unauthorised' }, { status: 401 })
@@ -21,7 +19,6 @@ export async function POST(req: NextRequest) {
     if (!allowed.includes(mimeType))
       return Response.json({ error: 'Only JPEG, PNG and WebP allowed' }, { status: 400 })
 
-    // Rough size check — base64 is ~1.37x original
     const approxBytes = (base64.length * 3) / 4
     if (approxBytes > 5 * 1024 * 1024)
       return Response.json({ error: 'Image must be under 5 MB' }, { status: 400 })
