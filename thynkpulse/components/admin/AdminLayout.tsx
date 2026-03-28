@@ -2,7 +2,7 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useState } from 'react'
-import { LayoutDashboard, FileText, Users, FileCheck, Palette, LogOut, Menu, X, GraduationCap, Settings , FileText, Pencil } from 'lucide-react'
+import { LayoutDashboard, FileText, Pencil, Users, FileCheck, Palette, LogOut, Menu, X, GraduationCap, Settings } from 'lucide-react'
 import { useAuthStore } from '@/store/authStore'
 
 const NAV = [
