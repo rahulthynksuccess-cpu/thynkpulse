@@ -52,7 +52,8 @@ export function StatsBar() {
           <div style={{ fontSize:'12px', color:'var(--muted)', fontWeight:500, letterSpacing:'.3px', marginTop:'6px' }}>{s.l}</div>
         </div>
       ))}
-    </div>
+      </div>
+    </>
   )
 }
 
