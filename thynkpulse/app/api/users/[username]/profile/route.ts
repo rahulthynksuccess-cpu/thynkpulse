@@ -12,8 +12,10 @@ export async function GET(_req: NextRequest, { params }: { params: { username: s
               p.contact_number, p.email_id, p.total_exp, p.introduction,
               p.avatar_url, p.linkedin_url, p.website_url,
               p.location, p.interests,
-              p.post_count, p.follower_count, p.following_count, p.total_reads,
-              p.profile_completed
+              p.follower_count, p.following_count,
+              p.profile_completed,
+              (SELECT COUNT(*) FROM posts WHERE author_id = u.id AND status = 'approved') AS post_count,
+              (SELECT COALESCE(SUM(view_count),0) FROM posts WHERE author_id = u.id AND status = 'approved') AS total_reads
        FROM users u
        LEFT JOIN user_profiles p ON p.user_id = u.id
        WHERE u.email=$1 OR u.phone=$1 OR u.id::text=$1`,
