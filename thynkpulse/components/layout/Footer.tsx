@@ -1,7 +1,6 @@
 'use client'
 import { useContent } from '@/hooks/useContent'
 import Link from 'next/link'
-import { useContent } from '@/hooks/useContent'
 import { config } from '@/lib/config'
 
 const LINKS = {
