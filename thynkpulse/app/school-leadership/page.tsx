@@ -1,7 +1,9 @@
 'use client'
 export const dynamic = 'force-dynamic'
+import { useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import Link from 'next/link'
+import { Search } from 'lucide-react'
 import { motion } from 'framer-motion'
 import { Navbar } from '@/components/layout/Navbar'
 import { Footer } from '@/components/layout/Footer'
@@ -36,6 +38,7 @@ const LEADERSHIP_PILLARS = [
 ]
 
 export default function SchoolLeadershipPage() {
+  const [search, setSearch] = useState('')
   const pageContent = useContent('content.school-leadership')
   const { data, isLoading } = useQuery<{ data: Post[] }>({
     queryKey: ['leadership-posts'],
@@ -43,6 +46,13 @@ export default function SchoolLeadershipPage() {
     staleTime: 3 * 60 * 1000,
   })
   const posts = data?.data?.length ? data.data : STATIC_LEADERSHIP
+  const filteredPosts = search.trim()
+    ? posts.filter(p =>
+        p.title.toLowerCase().includes(search.toLowerCase()) ||
+        (p.author?.fullName || '').toLowerCase().includes(search.toLowerCase()) ||
+        (p.excerpt || '').toLowerCase().includes(search.toLowerCase())
+      )
+    : posts
   const featured = posts[0]
   const rest = posts.slice(1)
 
@@ -62,6 +72,25 @@ export default function SchoolLeadershipPage() {
             <p style={{ fontSize: '17px', color: 'rgba(255,255,255,.85)', lineHeight: 1.7, maxWidth: 560 }}>
               {pageContent?.heroSubtitle || "Insights from principals, directors, and administrators who are navigating the complex realities of leading educational institutions in modern India."}
             </p>
+          </div>
+        </div>
+
+        {/* Search */}
+        <div style={{ background: '#fff', borderBottom: '1px solid var(--border)', padding: '0 5%' }}>
+          {/* Search */}
+          <div style={{ padding: '14px 0 0' }}>
+            <div style={{ display:'flex', alignItems:'center', gap:'10px', background:'var(--cream)', border:'1.5px solid var(--border)', borderRadius:'10px', padding:'10px 16px', maxWidth:'480px' }}>
+              <Search style={{ width:15, height:15, color:'var(--muted)', flexShrink:0 }} />
+              <input
+                value={search}
+                onChange={e => setSearch(e.target.value)}
+                placeholder="Search by post title or author name..."
+                style={{ flex:1, border:'none', outline:'none', background:'transparent', fontSize:'14px', fontFamily:'var(--font-sans)', color:'var(--ink)' }}
+              />
+              {search && (
+                <button onClick={() => setSearch('')} style={{ border:'none', background:'none', cursor:'pointer', color:'var(--muted)', fontSize:'16px', lineHeight:1 }}>×</button>
+              )}
+            </div>
           </div>
         </div>
 

@@ -222,7 +222,14 @@ export function CTASection() {
   const placeholder = c?.placeholder || 'Enter your work email'
   const btnLabel    = c?.btnLabel    || 'Join Free →'
   const footnote    = c?.footnote    || '🔒 No spam. No paywall. Free forever.'
-  const ctaFeatures = Array.isArray(c?.features) && c.features.length ? c.features : CTA_FEATURES_DEFAULT
+  const rawCtaFeats = Array.isArray(c?.features) ? c.features : []
+  const ctaFeatures = CTA_FEATURES_DEFAULT.map((def:any, i:number) => ({
+    ...def,
+    ...(rawCtaFeats[i] || {}),
+    icon:  rawCtaFeats[i]?.icon  || def.icon,
+    title: rawCtaFeats[i]?.title || def.title,
+    desc:  rawCtaFeats[i]?.desc  || def.desc,
+  }))
   const [line1, line2] = headline.includes('\n') ? headline.split('\n') : [headline, '']
 
   return (

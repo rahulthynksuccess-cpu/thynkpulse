@@ -1,7 +1,9 @@
 'use client'
 export const dynamic = 'force-dynamic'
+import { useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import Link from 'next/link'
+import { Search } from 'lucide-react'
 import { motion } from 'framer-motion'
 import { Navbar } from '@/components/layout/Navbar'
 import { Footer } from '@/components/layout/Footer'
@@ -36,6 +38,7 @@ const STORY_THEMES = [
 ]
 
 export default function EdTechStoriesPage() {
+  const [search, setSearch] = useState('')
   const pageContent = useContent('content.edtech-stories')
   const { data, isLoading } = useQuery<{ data: Post[] }>({
     queryKey: ['edtech-stories'],
@@ -43,6 +46,13 @@ export default function EdTechStoriesPage() {
     staleTime: 3 * 60 * 1000,
   })
   const posts = data?.data?.length ? data.data : STATIC_STORIES
+  const filteredPosts = search.trim()
+    ? posts.filter(p =>
+        p.title.toLowerCase().includes(search.toLowerCase()) ||
+        (p.author?.fullName || '').toLowerCase().includes(search.toLowerCase()) ||
+        (p.excerpt || '').toLowerCase().includes(search.toLowerCase())
+      )
+    : posts
   const featured = posts[0]
   const rest = posts.slice(1)
 

@@ -3,6 +3,7 @@ export const dynamic = 'force-dynamic'
 import { useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import Link from 'next/link'
+import { Search } from 'lucide-react'
 import { motion } from 'framer-motion'
 import { Navbar } from '@/components/layout/Navbar'
 import { Footer } from '@/components/layout/Footer'
@@ -38,6 +39,7 @@ const FEATURED_TOPICS = [
 ]
 
 export default function EdTechArticlesPage() {
+  const [search, setSearch] = useState('')
   const pageContent = useContent('content.edtech-articles')
   const [activeFilter, setActiveFilter] = useState('All EdTech')
 
@@ -47,6 +49,13 @@ export default function EdTechArticlesPage() {
     staleTime: 3 * 60 * 1000,
   })
   const posts = data?.data?.length ? data.data : STATIC_EDTECH
+  const filteredPosts = search.trim()
+    ? posts.filter(p =>
+        p.title.toLowerCase().includes(search.toLowerCase()) ||
+        (p.author?.fullName || '').toLowerCase().includes(search.toLowerCase()) ||
+        (p.excerpt || '').toLowerCase().includes(search.toLowerCase())
+      )
+    : posts
 
   return (
     <>
@@ -85,6 +94,25 @@ export default function EdTechArticlesPage() {
           </div>
         </div>
 
+        {/* Search */}
+        <div style={{ background: '#fff', borderBottom: '1px solid var(--border)', padding: '0 5%' }}>
+          {/* Search */}
+          <div style={{ padding: '14px 0 0' }}>
+            <div style={{ display:'flex', alignItems:'center', gap:'10px', background:'var(--cream)', border:'1.5px solid var(--border)', borderRadius:'10px', padding:'10px 16px', maxWidth:'480px' }}>
+              <Search style={{ width:15, height:15, color:'var(--muted)', flexShrink:0 }} />
+              <input
+                value={search}
+                onChange={e => setSearch(e.target.value)}
+                placeholder="Search by post title or author name..."
+                style={{ flex:1, border:'none', outline:'none', background:'transparent', fontSize:'14px', fontFamily:'var(--font-sans)', color:'var(--ink)' }}
+              />
+              {search && (
+                <button onClick={() => setSearch('')} style={{ border:'none', background:'none', cursor:'pointer', color:'var(--muted)', fontSize:'16px', lineHeight:1 }}>×</button>
+              )}
+            </div>
+          </div>
+        </div>
+
         {/* Sub-filter */}
         <div style={{ background: 'var(--cream)', padding: '0 5%', borderBottom: '1px solid var(--border)' }}>
           <div style={{ display: 'flex', gap: 4, padding: '14px 0', overflowX: 'auto', scrollbarWidth: 'none' }}>
@@ -114,7 +142,7 @@ export default function EdTechArticlesPage() {
             </div>
           ) : (
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(300px,1fr))', gap: 24 }}>
-              {posts.map((post, i) => (
+              {(filteredPosts || posts).map((post, i) => (
                 <motion.div key={post.id} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.06 }}>
                   <Link href={`/post/${post.slug}`} className="pcard" style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
                     <div style={{ position: 'relative' }}>

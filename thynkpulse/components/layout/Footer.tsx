@@ -1,6 +1,7 @@
 'use client'
 import { useContent } from '@/hooks/useContent'
 import Link from 'next/link'
+import { useContent } from '@/hooks/useContent'
 import { config } from '@/lib/config'
 
 const LINKS = {
@@ -43,11 +44,11 @@ export function Footer() {
             <div style={{ width: '36px', height: '36px', background: 'rgba(255,255,255,0.15)', border: '1px solid rgba(255,255,255,0.25)', borderRadius: '9px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
               <span style={{ fontFamily: 'var(--font-serif)', fontWeight: 900, fontSize: '16px', color: '#fff' }}>TP</span>
             </div>
-            <span style={{ fontFamily: 'var(--font-serif)', fontSize: '20px', fontWeight: 900, color: '#fff' }}>
+            <span style={{ fontFamily: 'var(--font-serif)', fontSize: '22px', fontWeight: 900, color: '#fff' }}>
               Thynk <em style={{ fontStyle: 'normal', color: 'var(--gold2)' }}>Pulse</em>
             </span>
           </div>
-          <p style={{ fontSize: '13px', lineHeight: 1.8, maxWidth: '260px', color: 'rgba(255,255,255,0.6)' }}>
+          <p style={{ fontSize: '15px', lineHeight: 1.9, maxWidth: '280px', color: 'rgba(255,255,255,0.6)' }}>
             {tagline}
           </p>
         </div>
@@ -55,14 +56,14 @@ export function Footer() {
         {/* Link columns */}
         {Object.entries(LINKS).map(([heading, links]) => (
           <div key={heading}>
-            <h4 style={{ fontSize: '11px', fontWeight: 700, letterSpacing: '2px', textTransform: 'uppercase', color: 'rgba(255,255,255,0.4)', marginBottom: '20px', fontFamily: 'var(--font-mono)' }}>{heading}</h4>
+            <h4 style={{ fontSize: '12px', fontWeight: 700, letterSpacing: '2px', textTransform: 'uppercase', color: 'rgba(255,255,255,0.4)', marginBottom: '20px', fontFamily: 'var(--font-mono)' }}>{heading}</h4>
             <ul style={{ listStyle: 'none' }}>
               {links.map(([label, href]) => (
                 <li key={href} style={{ marginBottom: '11px' }}>
                   <Link href={href}
                     target={href.startsWith('http') ? '_blank' : undefined}
                     rel={href.startsWith('http') ? 'noopener noreferrer' : undefined}
-                    style={{ fontSize: '13px', color: 'rgba(255,255,255,0.6)', textDecoration: 'none', transition: 'color .2s' }}
+                    style={{ fontSize: '15px', color: 'rgba(255,255,255,0.65)', textDecoration: 'none', transition: 'color .2s' }}
                     onMouseEnter={e => (e.currentTarget as HTMLAnchorElement).style.color = '#fff'}
                     onMouseLeave={e => (e.currentTarget as HTMLAnchorElement).style.color = 'rgba(255,255,255,0.6)'}>
                     {label}
@@ -74,7 +75,7 @@ export function Footer() {
         ))}
       </div>
 
-      <div style={{ borderTop: '1px solid rgba(255,255,255,0.15)', paddingTop: '28px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', fontSize: '12px', color: 'rgba(255,255,255,0.5)' }}>
+      <div style={{ borderTop: '1px solid rgba(255,255,255,0.15)', paddingTop: '28px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', fontSize: '14px', color: 'rgba(255,255,255,0.5)' }}>
         <span>
           {copyright ? copyright : <>© {new Date().getFullYear()} Thynk Pulse · A{' '}</>}
           <a href={config.app.parentSite} style={{ color: 'var(--gold2)', textDecoration: 'none' }}>Thynk Success</a>{' '}

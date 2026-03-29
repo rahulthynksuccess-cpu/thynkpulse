@@ -87,6 +87,7 @@ const STATIC_POSTS: Post[] = [
 
 export default function LatestPostsPage() {
   const pageContent = useContent('content.latest-posts')
+  const [search, setSearch] = useState('')
   const [activeFilter, setActiveFilter] = useState('All')
   const [page, setPage] = useState(1)
   const LIMIT = 9
@@ -97,7 +98,15 @@ export default function LatestPostsPage() {
     staleTime: 3 * 60 * 1000,
   })
 
-  const posts = data?.data?.length ? data.data : STATIC_POSTS
+  const allPosts = data?.data?.length ? data.data : STATIC_POSTS
+  const filteredPosts = search.trim()
+    ? allPosts.filter(p =>
+        p.title.toLowerCase().includes(search.toLowerCase()) ||
+        (p.author?.fullName || '').toLowerCase().includes(search.toLowerCase()) ||
+        (p.excerpt || '').toLowerCase().includes(search.toLowerCase())
+      )
+    : allPosts
+  const posts = filteredPosts
   const total = data?.total || STATIC_POSTS.length
   const totalPages = Math.ceil(total / LIMIT)
 
@@ -120,8 +129,23 @@ export default function LatestPostsPage() {
           </div>
         </div>
 
-        {/* Filters */}
+        {/* Search + Filters */}
         <div style={{ background: '#fff', borderBottom: '1px solid var(--border)', padding: '0 5%', position: 'sticky', top: 0, zIndex: 10 }}>
+          {/* Search bar */}
+          <div style={{ padding: '14px 0 0' }}>
+            <div style={{ display:'flex', alignItems:'center', gap:'10px', background:'var(--cream)', border:'1.5px solid var(--border)', borderRadius:'10px', padding:'10px 16px', maxWidth:'480px' }}>
+              <Search style={{ width:15, height:15, color:'var(--muted)', flexShrink:0 }} />
+              <input
+                value={search}
+                onChange={e => setSearch(e.target.value)}
+                placeholder="Search by post title or author name..."
+                style={{ flex:1, border:'none', outline:'none', background:'transparent', fontSize:'14px', fontFamily:'var(--font-sans)', color:'var(--ink)' }}
+              />
+              {search && (
+                <button onClick={() => setSearch('')} style={{ border:'none', background:'none', cursor:'pointer', color:'var(--muted)', fontSize:'16px', lineHeight:1 }}>×</button>
+              )}
+            </div>
+          </div>
           <div style={{ display: 'flex', gap: 4, overflowX: 'auto', padding: '14px 0', scrollbarWidth: 'none' }}>
             {CATS.map(cat => (
               <button key={cat} onClick={() => { setActiveFilter(cat); setPage(1) }}
@@ -150,9 +174,17 @@ export default function LatestPostsPage() {
             </div>
           ) : (
             <>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(300px,1fr))', gap: 24 }}>
-                {posts.map((post, i) => <PostCard key={post.id} post={post} index={i} />)}
-              </div>
+              {posts.length === 0 ? (
+                <div style={{ textAlign:'center', padding:'60px 20px', color:'var(--muted)', fontFamily:'var(--font-sans)' }}>
+                  <div style={{ fontSize:'40px', marginBottom:'12px' }}>🔍</div>
+                  <div style={{ fontSize:'16px', fontWeight:600, marginBottom:'6px' }}>No results found</div>
+                  <div style={{ fontSize:'13px' }}>Try a different search term or clear the filter</div>
+                </div>
+              ) : (
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(300px,1fr))', gap: 24 }}>
+                  {posts.map((post, i) => <PostCard key={post.id} post={post} index={i} />)}
+                </div>
+              )}
 
               {/* Pagination */}
               {totalPages > 1 && (

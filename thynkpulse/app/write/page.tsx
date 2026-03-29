@@ -69,11 +69,11 @@ export default function WritePage() {
       {/* Top bar */}
       <div style={{ position:'sticky', top:0, zIndex:50, background:'rgba(253,246,236,.96)', backdropFilter:'blur(20px)', borderBottom:'1px solid var(--border)', padding:'0 40px', height:'64px', display:'flex', alignItems:'center', justifyContent:'space-between' }}>
         <div style={{ display:'flex', alignItems:'center', gap:'16px' }}>
-          <Link href="/" style={{ display:'flex', alignItems:'center', gap:'6px', fontSize:'13px', color:'var(--muted)', textDecoration:'none', fontFamily:'var(--font-sans)', fontWeight:500 }}>
+          <Link href="/" style={{ display:'flex', alignItems:'center', gap:'6px', fontSize:'13px', color:'var(--muted)', textDecoration:'none', fontFamily:'"Plus Jakarta Sans",system-ui,sans-serif', fontWeight:500 }}>
             <ArrowLeft style={{ width:15, height:15 }} /> Back
           </Link>
           <div style={{ width:1, height:20, background:'var(--border)' }} />
-          <span style={{ fontFamily:'var(--font-serif)', fontSize:'17px', fontWeight:700, color:'var(--ink)' }}>Write a Post</span>
+          <span style={{ fontFamily:'"Cormorant Garamond",Georgia,serif', fontSize:'17px', fontWeight:700, color:'#1A1208' }}>Write a Post</span>
           <span style={{ fontFamily:'var(--font-mono)', fontSize:'11px', color:'var(--muted)', background:'var(--parchment)', padding:'3px 10px', borderRadius:'100px' }}>
             {wordCount} words · {readTime} min read
           </span>
@@ -118,13 +118,13 @@ export default function WritePage() {
             {/* Title */}
             <textarea placeholder="Your post title..." value={form.title}
               onChange={e => set('title', e.target.value.slice(0,160))} rows={2}
-              style={{ width:'100%', fontFamily:'var(--font-serif)', fontSize:'clamp(28px,4vw,48px)', fontWeight:900, color:'var(--ink)', letterSpacing:'-1.5px', lineHeight:1.15, border:'none', outline:'none', background:'transparent', resize:'none', marginBottom:'4px', boxSizing:'border-box' as const }} />
+              style={{ width:'100%', fontFamily:'"Cormorant Garamond",Georgia,serif', fontSize:'clamp(28px,4vw,48px)', fontWeight:900, color:'#1A1208', letterSpacing:'-1.5px', lineHeight:1.15, border:'none', outline:'none', background:'transparent', resize:'none', marginBottom:'4px', boxSizing:'border-box' as const }} />
             <div style={{ fontFamily:'var(--font-mono)', fontSize:'11px', color:'var(--muted)', marginBottom:'20px', textAlign:'right' as const }}>{form.title.length}/160</div>
 
             {/* Excerpt */}
             <input placeholder="Add a short subtitle or teaser (optional)..."
               value={form.excerpt} onChange={e => set('excerpt', e.target.value.slice(0,280))}
-              style={{ width:'100%', fontFamily:'var(--font-sans)', fontSize:'19px', color:'var(--muted)', border:'none', outline:'none', background:'transparent', marginBottom:'28px', fontWeight:300 }} />
+              style={{ width:'100%', fontFamily:'"Plus Jakarta Sans",system-ui,sans-serif', fontSize:'19px', color:'#7A6A52', border:'none', outline:'none', background:'transparent', marginBottom:'28px', fontWeight:300 }} />
 
             {/* Category + Tags */}
             <div style={{ display:'flex', gap:'14px', marginBottom:'28px', flexWrap:'wrap', padding:'16px 20px', background:'#fff', borderRadius:'14px', border:'1px solid var(--border)' }}>
@@ -152,7 +152,7 @@ export default function WritePage() {
             <textarea
               placeholder={`Start writing your post...\n\nShare your experiences, insights, and ideas with India's education community.\n\nTip: Use blank lines to create paragraphs. Your writing will be formatted beautifully on the live page.`}
               value={form.content} onChange={e => set('content', e.target.value)}
-              style={{ width:'100%', minHeight:'520px', fontFamily:'var(--font-sans)', fontSize:'18px', color:'var(--ink)', lineHeight:1.9, border:'none', outline:'none', background:'transparent', resize:'none', fontWeight:300, boxSizing:'border-box' as const }} />
+              style={{ width:'100%', minHeight:'520px', fontFamily:'"Plus Jakarta Sans",system-ui,sans-serif', fontSize:'18px', color:'#1A1208', lineHeight:1.9, border:'none', outline:'none', background:'transparent', resize:'none', fontWeight:300, boxSizing:'border-box' as const }} />
 
           </motion.div>
         ) : (
@@ -168,7 +168,7 @@ export default function WritePage() {
                     <span style={{ fontSize:'12px', color:'var(--muted)', fontFamily:'var(--font-mono)' }}>{readTime} min read · {wordCount} words</span>
                   </div>
                 </div>
-                <h1 style={{ fontFamily:'var(--font-serif)', fontSize:'clamp(28px,4vw,44px)', fontWeight:900, color:'var(--ink)', lineHeight:1.1, letterSpacing:'-1.5px', marginBottom:'14px' }}>
+                <h1 style={{ fontFamily:'"Cormorant Garamond",Georgia,serif', fontSize:'clamp(28px,4vw,44px)', fontWeight:900, color:'#1A1208', lineHeight:1.1, letterSpacing:'-1.5px', marginBottom:'14px' }}>
                   {form.title || <span style={{ color:'var(--muted)' }}>Your title will appear here...</span>}
                 </h1>
                 {form.excerpt && (
@@ -179,7 +179,7 @@ export default function WritePage() {
               </div>
               {/* Preview body */}
               <div style={{ padding:'36px 40px' }}>
-                <div style={{ fontSize:'17px', color:'var(--ink)', lineHeight:1.9, whiteSpace:'pre-wrap', fontWeight:300, fontFamily:'var(--font-sans)' }}>
+                <div style={{ fontSize:'17px', color:'#1A1208', lineHeight:1.9, whiteSpace:'pre-wrap', fontWeight:300, fontFamily:'"Plus Jakarta Sans",system-ui,sans-serif' }}>
                   {form.content || <span style={{ color:'var(--muted)' }}>Your content will appear here...</span>}
                 </div>
                 {form.tags && (
