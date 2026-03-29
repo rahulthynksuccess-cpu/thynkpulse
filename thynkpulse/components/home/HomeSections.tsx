@@ -120,7 +120,6 @@ export function ProfileSection() {
     { icon:'🔗', bg:'rgba(201,146,42,.1)', title:'Shareable Public Profile', desc:'Your Thynk Pulse profile is a living portfolio — share it on LinkedIn, resumes, or with school networks.' },
     { icon:'📣', bg:'rgba(61,31,94,.08)', title:'Community Amplification', desc:'Top articles get featured in our weekly newsletter, social channels, and homepage — reaching 10K+ education professionals.' },
   ]
-  const features = features
   const writerName   = c?.writerName   || 'Ananya Krishnan'
   const writerRole   = c?.writerRole   || 'EdTech Product Lead · Mumbai'
   const writerQuote  = c?.writerQuote  || 'Building products for the next 200 million learners. Writing about EdTech, product strategy, and what failure in education tech actually looks like from the inside.'
