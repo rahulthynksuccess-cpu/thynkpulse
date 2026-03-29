@@ -96,7 +96,7 @@ export default function SchoolLeadershipPage() {
 
         {/* Pillars */}
         <div style={{ background: 'var(--cream)', padding: '36px 5%', borderBottom: '1px solid var(--border)' }}>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(160px,1fr))', gap: 12 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(6,1fr)', gap: 12 }}>
             {LEADERSHIP_PILLARS.map(p => (
               <div key={p.title}
                 style={{ padding: '16px', borderRadius: 12, background: '#fff', border: '1px solid var(--border)', cursor: 'pointer' }}>

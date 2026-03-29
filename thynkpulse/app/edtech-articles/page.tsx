@@ -78,7 +78,7 @@ export default function EdTechArticlesPage() {
 
         {/* Topic pills */}
         <div style={{ background: '#fff', borderBottom: '1px solid var(--border)', padding: '28px 5%' }}>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(180px,1fr))', gap: 12 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(6,1fr)', gap: 12 }}>
             {FEATURED_TOPICS.map(topic => (
               <button key={topic.title}
                 style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '12px 16px', borderRadius: 12, background: 'var(--cream)', border: '1px solid var(--border)', cursor: 'pointer', textAlign: 'left', transition: 'all .2s' }}

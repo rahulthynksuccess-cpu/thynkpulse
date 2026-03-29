@@ -9,6 +9,7 @@ import { Footer } from '@/components/layout/Footer'
 import { apiGet } from '@/lib/api'
 import { Post } from '@/types'
 import { useContent } from '@/hooks/useContent'
+import { Search } from 'lucide-react'
 
 const CATS = ['All', 'EdTech', 'Educator', 'Sales Pro', 'Leadership', 'Innovation', 'Career', 'Research']
 const GRADIENTS = [
