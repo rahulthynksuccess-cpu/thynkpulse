@@ -76,7 +76,22 @@ export function CommunitySection() {
     { emoji:'🔬', gradient:'linear-gradient(135deg,#EAF4F1,#C4E4DC)', title:'Researchers & Innovators', desc:'Bridge the gap between academic research and classroom practice. Make findings accessible and actionable.', count:'290+ researchers', countColor:'var(--teal)', dotColor:'var(--teal)' },
     { emoji:'🌍', gradient:'linear-gradient(135deg,#FDF0F0,#F5CBCB)', title:'International Educators', desc:'Education challenges are global. Connect with practitioners from 40+ countries and diverse education systems.', count:'40+ countries', countColor:'var(--coral)', dotColor:'var(--coral)' },
   ]
-  const c = (Array.isArray(cRaw) && cRaw.length > 0) ? cRaw : COMM_DEFAULTS
+  const rawComms = Array.isArray(cRaw) && cRaw.length > 0 ? cRaw : []
+  const c = rawComms.map((comm: any, i: number) => ({
+    ...COMM_DEFAULTS[i],
+    ...comm,
+    title: comm.title || COMM_DEFAULTS[i]?.title,
+    desc:  comm.desc  || COMM_DEFAULTS[i]?.desc,
+    count: comm.count || COMM_DEFAULTS[i]?.count,
+  })).filter(Boolean).length > 0 
+    ? rawComms.map((comm: any, i: number) => ({
+        ...COMM_DEFAULTS[i],
+        ...comm,
+        title: comm.title || COMM_DEFAULTS[i]?.title,
+        desc:  comm.desc  || COMM_DEFAULTS[i]?.desc,
+        count: comm.count || COMM_DEFAULTS[i]?.count,
+      }))
+    : COMM_DEFAULTS
   const communities = Array.isArray(c) && c.length ? c : COMM_DEFAULT
   return (
     <section id="community" style={{ padding:'96px 5%', background:'var(--community-bg, #fff)' }}>
@@ -114,12 +129,20 @@ const FEATURES_DEFAULT = [
 export function ProfileSection() {
   const cRaw = useContent('content.writers-spotlight')
   const c = cRaw ?? {}
-  const features = Array.isArray(c?.features) && c.features.length ? c.features : [
+  const FEAT_DEFAULTS = [
     { icon:'🏅', bg:'rgba(10,95,85,.08)', title:'Verified Expert Badges', desc:'Get recognized as an Educator, EdTech Professional, Researcher, or School Leader with community-verified credentials.' },
     { icon:'📊', bg:'rgba(232,81,42,.08)', title:'Rich Analytics Dashboard', desc:'Track reads, followers, engagement, and article performance with a detailed writer dashboard built for growth.' },
     { icon:'🔗', bg:'rgba(201,146,42,.1)', title:'Shareable Public Profile', desc:'Your Thynk Pulse profile is a living portfolio — share it on LinkedIn, resumes, or with school networks.' },
     { icon:'📣', bg:'rgba(61,31,94,.08)', title:'Community Amplification', desc:'Top articles get featured in our weekly newsletter, social channels, and homepage — reaching 10K+ education professionals.' },
   ]
+  const rawFeats = Array.isArray(c?.features) ? c.features : []
+  const features = FEAT_DEFAULTS.map((def: any, i: number) => ({
+    ...def,
+    ...(rawFeats[i] || {}),
+    title: rawFeats[i]?.title || def.title,
+    desc:  rawFeats[i]?.desc  || def.desc,
+    icon:  rawFeats[i]?.icon  || def.icon,
+  }))
   const writerName   = c?.writerName   || 'Ananya Krishnan'
   const writerRole   = c?.writerRole   || 'EdTech Product Lead · Mumbai'
   const writerQuote  = c?.writerQuote  || 'Building products for the next 200 million learners. Writing about EdTech, product strategy, and what failure in education tech actually looks like from the inside.'

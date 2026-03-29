@@ -153,7 +153,15 @@ const AVATAR_BG = ['var(--teal)','var(--coral)','var(--gold)','var(--plum)','var
 export function TrendingSection() {
   const tcRaw = useContent('content.trending-section')
   const tc = tcRaw ?? {}
-  const TRENDING = (Array.isArray(tc?.items) && tc.items.some((t:any) => t.title)) ? tc.items : TRENDING_DEFAULT
+  const rawTrending = Array.isArray(tc?.items) ? tc.items : []
+  const TRENDING = rawTrending.some((t:any) => t.title)
+    ? rawTrending.map((t:any, i:number) => ({
+        ...TRENDING_DEFAULT[i],
+        ...t,
+        tag:   t.tag   || TRENDING_DEFAULT[i]?.tag,
+        title: t.title || TRENDING_DEFAULT[i]?.title,
+      }))
+    : TRENDING_DEFAULT
   const TOPICS = (Array.isArray(tc?.topics) && tc.topics.length) ? tc.topics : TOPICS_DEFAULT
   const ref = useRef(null)
   const inView = useInView(ref, { once:true, amount:.1 })
