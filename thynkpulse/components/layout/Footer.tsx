@@ -29,6 +29,9 @@ const LINKS = {
 }
 
 export function Footer() {
+  const fc = useContent('content.footer')
+  const tagline   = fc?.tagline   || 'The free community platform for educators, EdTech professionals, innovators and school leaders.'
+  const copyright = fc?.copyright || ''
   return (
     <footer style={{ background: 'var(--teal)', padding: '72px 5% 36px', color: 'rgba(255,255,255,0.6)' }}>
       <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr 1fr 1fr', gap: '48px', marginBottom: '56px' }}>
@@ -44,9 +47,7 @@ export function Footer() {
             </span>
           </div>
           <p style={{ fontSize: '13px', lineHeight: 1.8, maxWidth: '260px', color: 'rgba(255,255,255,0.6)' }}>
-            {tagline || 'The free community platform by'}{' '}
-            <a href={config.app.parentSite} style={{ color: 'var(--gold2)', textDecoration: 'none' }}>Thynk Success</a>{' '}
-            — bridging the gap in education by connecting educators, innovators, and EdTech companies worldwide.
+            {tagline}
           </p>
         </div>
 
