@@ -136,15 +136,15 @@ export function HeroSection() {
               <div style={{ background:'linear-gradient(135deg,var(--teal),var(--teal3))', padding:'32px 28px', position:'relative' }}>
                 <div style={{ position:'absolute', top:0, right:0, width:'180px', height:'180px', background:'radial-gradient(ellipse,rgba(255,255,255,.1),transparent 70%)' }} />
                 <div style={{ fontSize:'44px', marginBottom:'14px' }}>🤖</div>
-                <div style={{ fontFamily:'var(--font-serif)', fontSize:'20px', fontWeight:700, color:'#fff', lineHeight:1.3, marginBottom:'8px' }}>How AI is Quietly Rewriting Classroom Engagement</div>
-                <div style={{ fontSize:'12px', color:'rgba(255,255,255,.65)' }}>EdTech · 8 min read</div>
+                <div style={{ fontFamily:'var(--font-serif)', fontSize:'20px', fontWeight:700, color:'#fff', lineHeight:1.3, marginBottom:'8px' }}>{c.cardTitle || 'How AI is Quietly Rewriting Classroom Engagement'}</div>
+                <div style={{ fontSize:'12px', color:'rgba(255,255,255,.65)' }}>{c.cardCategory || 'EdTech'} · {c.cardReadTime || '8 min read'}</div>
               </div>
               <div style={{ padding:'20px 24px' }}>
                 <p style={{ fontSize:'13px', color:'var(--muted)', lineHeight:1.7, fontWeight:300, marginBottom:'16px' }}>From adaptive learning paths to AI-powered feedback loops — what's actually working in Indian classrooms.</p>
                 <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between' }}>
                   <div style={{ display:'flex', alignItems:'center', gap:'8px' }}>
                     <div style={{ width:32, height:32, borderRadius:'8px', background:'linear-gradient(135deg,#EAF4F0,#C0E6DC)', display:'flex', alignItems:'center', justifyContent:'center', fontFamily:'var(--font-serif)', fontWeight:900, fontSize:'13px', color:'var(--teal)' }}>R</div>
-                    <div><div style={{ fontSize:'12px', fontWeight:600, color:'var(--ink)' }}>Rajesh Kumar</div><div style={{ fontSize:'10px', color:'var(--muted)' }}>EdTech Founder</div></div>
+                    <div><div style={{ fontSize:'12px', fontWeight:600, color:'var(--ink)' }}>{c.cardAuthor || 'Rajesh Kumar'}</div><div style={{ fontSize:'10px', color:'var(--muted)' }}>{c.cardAuthorRole || 'EdTech Founder'}</div></div>
                   </div>
                   <div style={{ display:'flex', gap:'10px', fontSize:'11px', color:'var(--muted)' }}><span>👁 12K</span><span>❤️ 284</span></div>
                 </div>

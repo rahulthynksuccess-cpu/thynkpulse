@@ -68,7 +68,15 @@ const COMM_DEFAULT = [
 ]
 export function CommunitySection() {
   const cRaw = useContent('content.communities')
-  const c = cRaw ?? []
+  const COMM_DEFAULTS = [
+    { emoji:'🏫', gradient:'linear-gradient(135deg,#EAF4F1,#D5EDE8)', title:'Educators & Teachers', desc:'Share classroom innovations, teaching methods, and real challenges. Connect with peers across schools worldwide.', count:'3,200+ educators', countColor:'var(--teal)', dotColor:'var(--teal)' },
+    { emoji:'💡', gradient:'linear-gradient(135deg,#FEF0EA,#FAD8CB)', title:'EdTech Companies', desc:'Publish thought leadership, product insights, and case studies. Build authentic trust with educators.', count:'180+ companies', countColor:'var(--coral)', dotColor:'var(--coral)' },
+    { emoji:'📊', gradient:'linear-gradient(135deg,#F5F0FD,#E4D7F7)', title:'Sales Professionals', desc:'Real conversations about selling in education — strategies, objections, and what actually closes deals.', count:'840+ professionals', countColor:'var(--plum)', dotColor:'var(--plum)' },
+    { emoji:'🏆', gradient:'linear-gradient(135deg,#FEF9EC,#F7E8BE)', title:'School Leaders', desc:'Principals and administrators sharing governance insights, procurement decisions, and transformation stories.', count:'620+ leaders', countColor:'var(--gold)', dotColor:'var(--gold)' },
+    { emoji:'🔬', gradient:'linear-gradient(135deg,#EAF4F1,#C4E4DC)', title:'Researchers & Innovators', desc:'Bridge the gap between academic research and classroom practice. Make findings accessible and actionable.', count:'290+ researchers', countColor:'var(--teal)', dotColor:'var(--teal)' },
+    { emoji:'🌍', gradient:'linear-gradient(135deg,#FDF0F0,#F5CBCB)', title:'International Educators', desc:'Education challenges are global. Connect with practitioners from 40+ countries and diverse education systems.', count:'40+ countries', countColor:'var(--coral)', dotColor:'var(--coral)' },
+  ]
+  const c = (Array.isArray(cRaw) && cRaw.length > 0) ? cRaw : COMM_DEFAULTS
   const communities = Array.isArray(c) && c.length ? c : COMM_DEFAULT
   return (
     <section id="community" style={{ padding:'96px 5%', background:'var(--community-bg, #fff)' }}>
@@ -106,7 +114,13 @@ const FEATURES_DEFAULT = [
 export function ProfileSection() {
   const cRaw = useContent('content.writers-spotlight')
   const c = cRaw ?? {}
-  const features = Array.isArray(c?.features) && c.features.length ? c.features : FEATURES_DEFAULT
+  const features = Array.isArray(c?.features) && c.features.length ? c.features : [
+    { icon:'🏅', bg:'rgba(10,95,85,.08)', title:'Verified Expert Badges', desc:'Get recognized as an Educator, EdTech Professional, Researcher, or School Leader with community-verified credentials.' },
+    { icon:'📊', bg:'rgba(232,81,42,.08)', title:'Rich Analytics Dashboard', desc:'Track reads, followers, engagement, and article performance with a detailed writer dashboard built for growth.' },
+    { icon:'🔗', bg:'rgba(201,146,42,.1)', title:'Shareable Public Profile', desc:'Your Thynk Pulse profile is a living portfolio — share it on LinkedIn, resumes, or with school networks.' },
+    { icon:'📣', bg:'rgba(61,31,94,.08)', title:'Community Amplification', desc:'Top articles get featured in our weekly newsletter, social channels, and homepage — reaching 10K+ education professionals.' },
+  ]
+  const features = features
   const writerName   = c?.writerName   || 'Ananya Krishnan'
   const writerRole   = c?.writerRole   || 'EdTech Product Lead · Mumbai'
   const writerQuote  = c?.writerQuote  || 'Building products for the next 200 million learners. Writing about EdTech, product strategy, and what failure in education tech actually looks like from the inside.'

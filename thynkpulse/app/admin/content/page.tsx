@@ -31,6 +31,11 @@ const PAGES: { label: string; icon: string; sections: { id: string; label: strin
           { id:'hero.btn2Bg',        label:'Secondary button background', type:'color', cssVar:'--hero-btn2-bg',   default:'transparent' },
           { id:'hero.btn2Color',     label:'Secondary button text colour', type:'color', cssVar:'--hero-btn2-color',default:'#1A1208' },
           { id:'hero.btn2Border',    label:'Secondary button border', type:'color', cssVar:'--hero-btn2-border',    default:'#EDE0C8' },
+          { id:'hero.cardTitle',     label:'Featured card — Article title',  type:'text', cssVar:'--hero-card-title',   default:'How AI is Quietly Rewriting Classroom Engagement' },
+          { id:'hero.cardCategory',  label:'Featured card — Category',       type:'text', cssVar:'--hero-card-category',default:'EdTech' },
+          { id:'hero.cardReadTime',  label:'Featured card — Read time',      type:'text', cssVar:'--hero-card-readtime',default:'8 min read' },
+          { id:'hero.cardAuthor',    label:'Featured card — Author name',    type:'text', cssVar:'--hero-card-author',  default:'Rajesh Kumar' },
+          { id:'hero.cardAuthorRole',label:'Featured card — Author role',    type:'text', cssVar:'--hero-card-role',    default:'EdTech Founder' },
         ],
       },
       {
@@ -830,7 +835,12 @@ export default function AdminContentPage() {
       if (hero.subtitle)     styles['hero.subtitle']    = hero.subtitle
       if (hero.ctaPrimary)   styles['hero.btn1Text']    = hero.ctaPrimary
       if (hero.ctaSecondary) styles['hero.btn2Text']    = hero.ctaSecondary
-      if (hero.socialProof)  styles['hero.socialProof'] = hero.socialProof
+      if (hero.socialProof)    styles['hero.socialProof']    = hero.socialProof
+      if (hero.cardTitle)      styles['hero.cardTitle']      = hero.cardTitle
+      if (hero.cardCategory)   styles['hero.cardCategory']   = hero.cardCategory
+      if (hero.cardReadTime)   styles['hero.cardReadTime']   = hero.cardReadTime
+      if (hero.cardAuthor)     styles['hero.cardAuthor']     = hero.cardAuthor
+      if (hero.cardAuthorRole) styles['hero.cardAuthorRole'] = hero.cardAuthorRole
 
       // Pre-populate text fields from saved component data
       const comms = all['content.communities'] ?? []
@@ -922,7 +932,12 @@ export default function AdminContentPage() {
         subtitle:    values['hero.subtitle'] || 'Thynk Pulse is the free, open community for educators, EdTech professionals, innovators and school leaders.',
         ctaPrimary:  values['hero.btn1Text'] || 'Start Writing Free',
         ctaSecondary:values['hero.btn2Text'] || 'Explore Posts',
-        socialProof: values['hero.socialProof'] || 'Join 10,000+ professionals already on Thynk Pulse',
+        socialProof:    values['hero.socialProof']    || 'Join 10,000+ professionals already on Thynk Pulse',
+        cardTitle:      values['hero.cardTitle']      || 'How AI is Quietly Rewriting Classroom Engagement',
+        cardCategory:   values['hero.cardCategory']   || 'EdTech',
+        cardReadTime:   values['hero.cardReadTime']   || '8 min read',
+        cardAuthor:     values['hero.cardAuthor']     || 'Rajesh Kumar',
+        cardAuthorRole: values['hero.cardAuthorRole'] || 'EdTech Founder',
       }})
 
       const comms = [1,2,3,4,5,6].map(n => ({
