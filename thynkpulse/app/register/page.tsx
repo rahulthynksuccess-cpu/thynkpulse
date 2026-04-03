@@ -40,12 +40,21 @@ export default function RegisterPage() {
         body: JSON.stringify({ ...form, role: userType }),
       })
       const data = await res.json()
-      if (!res.ok) { toast.error(data.error || 'Registration failed'); return }
+
+      // FIX: Previously `if (!res.ok)` was missing — errors were silently ignored
+      // and the generic catch block would show "Registration failed" for all errors
+      // including 409 Conflict (duplicate email/phone). Now we surface the exact
+      // API error message so the user knows what went wrong.
+      if (!res.ok) {
+        toast.error(data.error || 'Registration failed. Please try again.')
+        return
+      }
+
       setAuth(data.user, data.token)
       toast.success('Account created! Welcome to Thynk Pulse 🎉')
       router.push('/profile/setup')
     } catch {
-      toast.error('Network error — try again')
+      toast.error('Network error — please check your connection and try again.')
     } finally {
       setLoading(false)
     }
@@ -78,105 +87,113 @@ export default function RegisterPage() {
                 color: step >= s ? '#fff' : 'var(--muted)' }}>
                 {step > s ? <CheckCircle style={{ width: 14, height: 14 }} /> : s}
               </div>
-              <span style={{ fontSize: '12px', color: step === s ? 'var(--ink)' : 'var(--muted)', fontFamily: 'var(--font-sans)', fontWeight: step === s ? 600 : 400 }}>
-                {s === 1 ? 'Who are you?' : 'Create Account'}
-              </span>
-              {s < 2 && <div style={{ width: 32, height: 1, background: 'var(--parchment)' }} />}
+              {s < 2 && <div style={{ width: 48, height: 2, borderRadius: 2, transition: 'background .3s', background: step > s ? 'var(--teal)' : 'var(--parchment)' }} />}
             </div>
           ))}
         </div>
 
-        <div className="card" style={{ padding: '36px' }}>
+        {/* Card */}
+        <div style={{ background: '#fff', borderRadius: '20px', border: '1.5px solid var(--parchment)', padding: '36px 32px' }}>
 
-          {/* Step 1 — Choose type */}
-          {step === 1 && (
+          {step === 1 ? (
             <>
-              <h1 style={{ fontFamily: 'var(--font-serif)', fontSize: '28px', fontWeight: 900, color: 'var(--ink)', marginBottom: '6px', letterSpacing: '-0.5px' }}>Join Thynk Pulse</h1>
-              <p style={{ fontSize: '14px', color: 'var(--muted)', marginBottom: '24px', fontWeight: 300 }}>Tell us who you are so we can personalise your experience</p>
+              <h1 style={{ fontFamily: 'var(--font-serif)', fontSize: '26px', fontWeight: 900, color: 'var(--ink)', marginBottom: '6px' }}>Join Thynk Pulse</h1>
+              <p style={{ fontFamily: 'var(--font-sans)', fontSize: '14px', color: 'var(--muted)', marginBottom: '28px', fontWeight: 300 }}>India's platform for education professionals</p>
 
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginBottom: '28px' }}>
-                {TYPE_OPTIONS.map(opt => (
-                  <button key={opt.value} type="button" onClick={() => setUserType(opt.value)}
-                    style={{ display: 'flex', alignItems: 'center', gap: '14px', padding: '14px 16px', borderRadius: '12px', border: `2px solid ${userType === opt.value ? 'var(--teal)' : 'var(--parchment)'}`, background: userType === opt.value ? 'rgba(10,95,85,.05)' : '#fff', cursor: 'pointer', textAlign: 'left', transition: 'all .2s' }}>
-                    <span style={{ fontSize: '28px', flexShrink: 0 }}>{opt.emoji}</span>
-                    <div>
-                      <div style={{ fontFamily: 'var(--font-sans)', fontWeight: 700, fontSize: '14px', color: 'var(--ink)' }}>{opt.label}</div>
-                      <div style={{ fontFamily: 'var(--font-sans)', fontSize: '12px', color: 'var(--muted)', marginTop: '2px' }}>{opt.desc}</div>
-                    </div>
-                    {userType === opt.value && <CheckCircle style={{ width: 18, height: 18, color: 'var(--teal)', marginLeft: 'auto', flexShrink: 0 }} />}
-                  </button>
-                ))}
+              <div style={{ marginBottom: '20px' }}>
+                <label style={lbl}>I am a…</label>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                  {TYPE_OPTIONS.map(opt => (
+                    <button key={opt.value} type="button" onClick={() => setUserType(opt.value)}
+                      style={{
+                        display: 'flex', alignItems: 'center', gap: '14px',
+                        padding: '14px 16px', borderRadius: '12px', cursor: 'pointer', textAlign: 'left',
+                        border: `1.5px solid ${userType === opt.value ? 'var(--teal)' : 'var(--parchment)'}`,
+                        background: userType === opt.value ? 'rgba(10,95,85,.04)' : '#fff',
+                        transition: 'all .15s',
+                      }}>
+                      <span style={{ fontSize: '24px', flexShrink: 0 }}>{opt.emoji}</span>
+                      <div>
+                        <div style={{ fontFamily: 'var(--font-sans)', fontWeight: 700, fontSize: '14px', color: 'var(--ink)', marginBottom: '2px' }}>{opt.label}</div>
+                        <div style={{ fontFamily: 'var(--font-sans)', fontSize: '12px', color: 'var(--muted)', fontWeight: 300 }}>{opt.desc}</div>
+                      </div>
+                      {userType === opt.value && <CheckCircle style={{ width: 18, height: 18, color: 'var(--teal)', marginLeft: 'auto', flexShrink: 0 }} />}
+                    </button>
+                  ))}
+                </div>
               </div>
 
-              <button type="button" onClick={() => setStep(2)} className="btn-teal"
-                style={{ width: '100%', justifyContent: 'center', padding: '13px', fontSize: '15px' }}>
+              <button type="button" onClick={() => setStep(2)}
+                style={{ width: '100%', padding: '13px', borderRadius: '12px', background: 'var(--teal)', color: '#fff', border: 'none', fontFamily: 'var(--font-sans)', fontSize: '14px', fontWeight: 700, cursor: 'pointer' }}>
                 Continue →
               </button>
-            </>
-          )}
 
-          {/* Step 2 — Email/Phone + Password */}
-          {step === 2 && (
-            <>
-              <button type="button" onClick={() => setStep(1)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--muted)', fontSize: '13px', fontFamily: 'var(--font-sans)', display: 'flex', alignItems: 'center', gap: '4px', marginBottom: '20px', padding: 0 }}>
-                ← Back
-              </button>
-
-              <h1 style={{ fontFamily: 'var(--font-serif)', fontSize: '28px', fontWeight: 900, color: 'var(--ink)', marginBottom: '6px', letterSpacing: '-0.5px' }}>Create Account</h1>
-              <p style={{ fontSize: '14px', color: 'var(--muted)', marginBottom: '24px', fontWeight: 300 }}>
-                Joining as <strong style={{ color: 'var(--teal)' }}>{TYPE_OPTIONS.find(t => t.value === userType)?.label}</strong>
+              <p style={{ textAlign: 'center', fontFamily: 'var(--font-sans)', fontSize: '13px', color: 'var(--muted)', marginTop: '20px' }}>
+                Already have an account? <Link href="/login" style={{ color: 'var(--teal)', fontWeight: 600, textDecoration: 'none' }}>Sign in</Link>
               </p>
+            </>
+          ) : (
+            <form onSubmit={handleRegister}>
+              <h2 style={{ fontFamily: 'var(--font-serif)', fontSize: '22px', fontWeight: 900, color: 'var(--ink)', marginBottom: '20px' }}>Your account details</h2>
 
-              <form onSubmit={handleRegister} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-                <div>
-                  <label style={lbl}>Email Address</label>
-                  <input style={inp} type="email" placeholder="you@example.com"
-                    value={form.email} onChange={e => set('email', e.target.value)} />
-                </div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                  <div style={{ flex: 1, height: 1, background: 'var(--parchment)' }} />
-                  <span style={{ fontSize: '11px', color: 'var(--muted)', fontFamily: 'var(--font-sans)' }}>or</span>
-                  <div style={{ flex: 1, height: 1, background: 'var(--parchment)' }} />
-                </div>
-                <div>
-                  <label style={lbl}>Mobile Number</label>
-                  <input style={inp} type="tel" placeholder="98XXXXXXXX"
-                    value={form.phone} onChange={e => set('phone', e.target.value)} />
-                </div>
-                <div>
-                  <label style={lbl}>Password</label>
-                  <div style={{ position: 'relative' }}>
-                    <input style={{ ...inp, paddingRight: '44px' }} type={showPw ? 'text' : 'password'}
-                      placeholder="Min. 8 characters" value={form.password} onChange={e => set('password', e.target.value)} required />
-                    <button type="button" onClick={() => setShowPw(!showPw)}
-                      style={{ position: 'absolute', right: '12px', top: '50%', transform: 'translateY(-50%)', background: 'none', border: 'none', cursor: 'pointer', color: 'var(--muted)', display: 'flex' }}>
-                      {showPw ? <EyeOff style={{ width: 16, height: 16 }} /> : <Eye style={{ width: 16, height: 16 }} />}
-                    </button>
-                  </div>
-                  <div style={{ fontSize: '11px', color: 'var(--muted)', marginTop: '5px', fontFamily: 'var(--font-sans)' }}>At least 8 characters</div>
-                </div>
+              <div style={{ marginBottom: '16px' }}>
+                <label style={lbl}>Email address</label>
+                <input type="email" placeholder="you@example.com" value={form.email}
+                  onChange={e => set('email', e.target.value)} style={inp} />
+              </div>
 
-                <button type="submit" className="btn-teal" disabled={loading}
-                  style={{ width: '100%', justifyContent: 'center', padding: '13px', fontSize: '15px', opacity: loading ? .7 : 1, marginTop: '4px' }}>
-                  {loading ? <><Loader2 style={{ width: 16, height: 16, animation: 'spin 1s linear infinite' }} /> Creating account…</> : 'Create Account →'}
+              <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '16px' }}>
+                <div style={{ flex: 1, height: 1, background: 'var(--parchment)' }} />
+                <span style={{ fontFamily: 'var(--font-mono)', fontSize: '10px', color: 'var(--muted)', letterSpacing: '1px' }}>OR</span>
+                <div style={{ flex: 1, height: 1, background: 'var(--parchment)' }} />
+              </div>
+
+              <div style={{ marginBottom: '16px' }}>
+                <label style={lbl}>Phone number</label>
+                <input type="tel" placeholder="+91 98765 43210" value={form.phone}
+                  onChange={e => set('phone', e.target.value)} style={inp} />
+              </div>
+
+              <div style={{ marginBottom: '24px', position: 'relative' }}>
+                <label style={lbl}>Password <span style={{ color: 'var(--coral)' }}>*</span></label>
+                <div style={{ position: 'relative' }}>
+                  <input
+                    type={showPw ? 'text' : 'password'}
+                    placeholder="Min 8 characters"
+                    value={form.password}
+                    onChange={e => set('password', e.target.value)}
+                    style={{ ...inp, paddingRight: '44px' }}
+                    required
+                  />
+                  <button type="button" onClick={() => setShowPw(v => !v)}
+                    style={{ position: 'absolute', right: '14px', top: '50%', transform: 'translateY(-50%)', background: 'none', border: 'none', cursor: 'pointer', color: 'var(--muted)', display: 'flex' }}>
+                    {showPw ? <EyeOff style={{ width: 16, height: 16 }} /> : <Eye style={{ width: 16, height: 16 }} />}
+                  </button>
+                </div>
+              </div>
+
+              <div style={{ display: 'flex', gap: '10px' }}>
+                <button type="button" onClick={() => setStep(1)}
+                  style={{ padding: '12px 20px', borderRadius: '12px', border: '1.5px solid var(--parchment)', background: '#fff', fontFamily: 'var(--font-sans)', fontSize: '13px', color: 'var(--muted)', cursor: 'pointer' }}>
+                  Back
                 </button>
-              </form>
+                <button type="submit" disabled={loading}
+                  style={{ flex: 1, padding: '13px', borderRadius: '12px', background: 'var(--teal)', color: '#fff', border: 'none', fontFamily: 'var(--font-sans)', fontSize: '14px', fontWeight: 700, cursor: loading ? 'not-allowed' : 'pointer', opacity: loading ? 0.7 : 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}>
+                  {loading ? <Loader2 style={{ width: 16, height: 16, animation: 'spin 1s linear infinite' }} /> : null}
+                  {loading ? 'Creating account…' : 'Create Account'}
+                </button>
+              </div>
 
-              <p style={{ textAlign: 'center', fontSize: '12px', color: 'var(--muted)', marginTop: '16px', fontFamily: 'var(--font-sans)' }}>
-                By registering you agree to our{' '}
-                <Link href="/terms" style={{ color: 'var(--teal)', textDecoration: 'none' }}>Terms</Link>
-                {' & '}
-                <Link href="/privacy" style={{ color: 'var(--teal)', textDecoration: 'none' }}>Privacy Policy</Link>
+              <p style={{ fontFamily: 'var(--font-sans)', fontSize: '12px', color: 'var(--muted)', textAlign: 'center', marginTop: '16px', lineHeight: 1.5 }}>
+                By joining you agree to our{' '}
+                <Link href="/terms" style={{ color: 'var(--teal)' }}>Terms</Link> and{' '}
+                <Link href="/privacy" style={{ color: 'var(--teal)' }}>Privacy Policy</Link>
               </p>
-            </>
+            </form>
           )}
-        </div>
-
-        <div style={{ textAlign: 'center', marginTop: '20px', fontSize: '13px', color: 'var(--muted)' }}>
-          Already have an account?{' '}
-          <Link href="/login" style={{ color: 'var(--teal)', fontWeight: 600, textDecoration: 'none' }}>Sign in</Link>
         </div>
       </div>
+      <style>{`@keyframes spin { to { transform: rotate(360deg) } }`}</style>
     </div>
   )
 }

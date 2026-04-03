@@ -69,7 +69,7 @@ function PostPreviewModal({ post, onClose, onApprove, onReject, loading }: {
             <button onClick={() => setShowReject(true)} disabled={loading} style={{ flex:1, display:'flex', alignItems:'center', justifyContent:'center', gap:'6px', padding:'12px', borderRadius:'var(--radius)', background:'rgba(232,81,42,.08)', border:'1px solid rgba(232,81,42,.2)', color:'var(--coral)', cursor:'pointer', fontSize:'13px', fontWeight:600, fontFamily:'var(--font-sans)' }}>
               <XCircle style={{ width:15, height:15 }} /> Reject
             </button>
-            <button onClick={onApprove} disabled={loading} style={{ flex:2, display:'flex', alignItems:'center', justifyContent:'center', gap:'6px', padding:'12px', borderRadius:'var(--radius)', background:'var(--teal)', border:'none', color:'#fff', cursor:'pointer', fontSize:'13px', fontWeight:600, fontFamily:'var(--font-sans)', opacity:loading?.7:1 }}>
+            <button onClick={onApprove} disabled={loading} style={{ flex:2, display:'flex', alignItems:'center', justifyContent:'center', gap:'6px', padding:'12px', borderRadius:'var(--radius)', background:'var(--teal)', border:'none', color:'#fff', cursor:'pointer', fontSize:'13px', fontWeight:600, fontFamily:'var(--font-sans)', opacity:loading ? 0.7 : 1 }}>
               {loading ? <Loader2 style={{ width:14, height:14, animation:'spin 1s linear infinite' }} /> : <CheckCircle style={{ width:15, height:15 }} />} Approve & Publish
             </button>
           </div>
@@ -97,10 +97,17 @@ export default function AdminApprovalsPage() {
       apiPut(`/admin/posts/${id}`, { status, rejectionReason }),
     onSuccess: (_, { status }) => {
       toast.success(status==='approved' ? '✅ Post approved and published!' : '❌ Post rejected.')
+
+      // FIX: Invalidate both the posts list AND the admin overview query.
+      // Previously only ['admin-posts'] was invalidated, so the pending count
+      // badge in the sidebar (sourced from ['admin-overview']) remained stale
+      // until a hard refresh. Now both update immediately after any approve/reject.
       qc.invalidateQueries({ queryKey: ['admin-posts'] })
+      qc.invalidateQueries({ queryKey: ['admin-overview'] })
+
       setPreview(null)
     },
-    onError: () => toast.error('Action failed'),
+    onError: () => toast.error('Action failed. Please try again.'),
     onSettled: () => setActionLoading(false),
   })
 
@@ -111,7 +118,7 @@ export default function AdminApprovalsPage() {
     <AdminLayout title="Post Approvals" subtitle="Review and approve or reject submitted posts">
 
       {/* Status tabs */}
-      <div style={{ display:'flex', gap:'8px', marginBottom:'20px' }}>
+      <div style={{ display:'flex', gap:'8px', marginBottom:'20px', flexWrap:'wrap' }}>
         {(['pending','approved','rejected'] as const).map(s => (
           <button key={s} onClick={() => setStatusFilter(s)}
             style={{ padding:'9px 20px', borderRadius:'9px', border:'none', cursor:'pointer', fontSize:'13px', fontWeight:600, fontFamily:'var(--font-sans)', textTransform:'capitalize', transition:'all .18s',
@@ -137,11 +144,11 @@ export default function AdminApprovalsPage() {
         <div style={{ display:'flex', flexDirection:'column', gap:'10px' }}>
           {posts.map((post, i) => (
             <motion.div key={post.id} initial={{ opacity:0, y:12 }} animate={{ opacity:1, y:0 }} transition={{ delay:i*.05 }}
-              style={{ background:'#fff', border:'1px solid var(--border)', borderRadius:'14px', padding:'16px 20px', display:'flex', alignItems:'center', gap:'16px' }}>
+              style={{ background:'#fff', border:'1px solid var(--border)', borderRadius:'14px', padding:'16px 20px', display:'flex', alignItems:'center', gap:'16px', flexWrap:'wrap' }}>
               <div style={{ width:52, height:52, borderRadius:'10px', display:'flex', alignItems:'center', justifyContent:'center', fontSize:'24px', background:GRADIENTS[i%GRADIENTS.length], flexShrink:0 }}>
                 {post.coverEmoji||'📝'}
               </div>
-              <div style={{ flex:1, minWidth:0 }}>
+              <div style={{ flex:1, minWidth:'160px' }}>
                 <div style={{ display:'flex', alignItems:'center', gap:'8px', marginBottom:'4px' }}>
                   <span className="badge badge-teal" style={{ fontSize:'10px' }}>{post.category}</span>
                   <span style={{ fontFamily:'var(--font-mono)', fontSize:'10px', color:'var(--muted)' }}>{post.readTime} min read</span>
@@ -149,7 +156,7 @@ export default function AdminApprovalsPage() {
                 <div style={{ fontFamily:'var(--font-serif)', fontSize:'16px', fontWeight:700, color:'var(--ink)', lineHeight:1.25, overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap' }}>{post.title}</div>
                 <div style={{ fontSize:'11px', color:'var(--muted)', marginTop:'3px' }}>by {post.author?.fullName} · {post.author?.designation}</div>
               </div>
-              <div style={{ display:'flex', gap:'6px', flexShrink:0 }}>
+              <div style={{ display:'flex', gap:'6px', flexShrink:0, flexWrap:'wrap' }}>
                 <button onClick={() => setPreview(post)} style={{ padding:'8px 14px', borderRadius:'8px', background:'var(--cream)', border:'1px solid var(--border)', color:'var(--muted)', cursor:'pointer', fontSize:'12px', fontFamily:'var(--font-sans)', fontWeight:500, display:'flex', alignItems:'center', gap:'4px' }}>
                   <Eye style={{ width:13, height:13 }} /> Review
                 </button>

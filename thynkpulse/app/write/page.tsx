@@ -44,13 +44,14 @@ export default function WritePage() {
       toast.success(status==='pending' ? 'Submitted for review!' : 'Draft saved!')
       if (status==='pending') router.push('/')
     },
-    onError: (err: any) => toast.error(err.response?.data?.error || 'Failed to save'),
+    // FIX: apiPost uses fetch and throws `new Error(message)` — not Axios.
+    // err.response is always undefined here. Read err.message directly.
+    onError: (err: any) => toast.error(err?.message || 'Failed to save'),
   })
 
   const wordCount = form.content.trim().split(/\s+/).filter(Boolean).length
   const readTime  = Math.max(1, Math.ceil(wordCount/200))
 
-  // Insert formatting at cursor
   const insertFormat = (prefix: string, suffix = '', placeholder = 'text') => {
     const ta = contentRef.current
     if (!ta) return
@@ -64,8 +65,6 @@ export default function WritePage() {
       ta.setSelectionRange(start + prefix.length, start + prefix.length + selected.length)
     }, 10)
   }
-
-  const fontDisplayName = fontFamily.split(',')[0].replace(/"/g,'')
 
   if (!isAuthenticated) return (
     <div style={{ minHeight:'100vh', background:'#FDF6EC', display:'flex', alignItems:'center', justifyContent:'center' }}>
@@ -88,44 +87,58 @@ export default function WritePage() {
     </div>
   )
 
-  const bodyFont = FONTS.includes(fontFamily) ? `"${fontFamily}",${fontFamily==='Plus Jakarta Sans'?'system-ui':'serif'}` : S.sans
-
   return (
     <div style={{ minHeight:'100vh', background:'#FDF6EC' }}>
+      <style>{`
+        @keyframes spin { to { transform: rotate(360deg) } }
+        @media (max-width: 600px) {
+          .toolbar-scroll { overflow-x: auto; flex-wrap: nowrap !important; padding-bottom: 4px; }
+          .toolbar-scroll::-webkit-scrollbar { height: 3px; }
+          .toolbar-scroll::-webkit-scrollbar-thumb { background: #EDE0C8; border-radius: 2px; }
+          .topbar-actions { gap: 6px !important; }
+          .topbar-actions .submit-btn { padding: 8px 14px !important; font-size: 12px !important; }
+          .topbar-actions .draft-btn { display: none; }
+        }
+      `}</style>
 
       {/* ── Top bar ── */}
-      <div style={{ position:'sticky', top:0, zIndex:50, background:'rgba(253,246,236,.97)', backdropFilter:'blur(20px)', borderBottom:'1.5px solid #EDE0C8', padding:'0 40px', height:'64px', display:'flex', alignItems:'center', justifyContent:'space-between' }}>
-        <div style={{ display:'flex', alignItems:'center', gap:'16px' }}>
-          <Link href="/" style={{ display:'flex', alignItems:'center', gap:'6px', fontSize:'13px', color:'#7A6A52', textDecoration:'none', fontFamily:S.sans, fontWeight:500 }}>
+      <div style={{ position:'sticky', top:0, zIndex:50, background:'rgba(253,246,236,.97)', backdropFilter:'blur(20px)', borderBottom:'1.5px solid #EDE0C8', padding:'0 16px', height:'64px', display:'flex', alignItems:'center', justifyContent:'space-between' }}>
+        <div style={{ display:'flex', alignItems:'center', gap:'12px', minWidth:0 }}>
+          <Link href="/" style={{ display:'flex', alignItems:'center', gap:'6px', fontSize:'13px', color:'#7A6A52', textDecoration:'none', fontFamily:S.sans, fontWeight:500, flexShrink:0 }}>
             <ArrowLeft style={{ width:15, height:15 }} /> Back
           </Link>
-          <div style={{ width:1, height:20, background:'#EDE0C8' }} />
-          <span style={{ fontFamily:S.serif, fontSize:'18px', fontWeight:900, color:'#1A1208', letterSpacing:'-.3px' }}>Write a Post</span>
-          <span style={{ fontFamily:'monospace', fontSize:'11px', color:'#7A6A52', background:'#EDE0C8', padding:'3px 10px', borderRadius:'100px' }}>
+          <div style={{ width:1, height:20, background:'#EDE0C8', flexShrink:0 }} />
+          <span style={{ fontFamily:S.serif, fontSize:'18px', fontWeight:900, color:'#1A1208', letterSpacing:'-.3px', whiteSpace:'nowrap' }}>Write a Post</span>
+          <span style={{ fontFamily:'monospace', fontSize:'11px', color:'#7A6A52', background:'#EDE0C8', padding:'3px 10px', borderRadius:'100px', whiteSpace:'nowrap', display:'none' }} className="word-count-badge">
             {wordCount} words · {readTime} min read
           </span>
         </div>
-        <div style={{ display:'flex', gap:'8px', alignItems:'center' }}>
+        <div className="topbar-actions" style={{ display:'flex', gap:'8px', alignItems:'center', flexShrink:0 }}>
           <button onClick={() => setPreview(!preview)}
-            style={{ display:'flex', alignItems:'center', gap:'6px', padding:'8px 16px', borderRadius:'8px', border:'1.5px solid #EDE0C8', background:'transparent', color:'#1A1208', fontFamily:S.sans, fontSize:'13px', fontWeight:600, cursor:'pointer' }}>
+            style={{ display:'flex', alignItems:'center', gap:'6px', padding:'8px 16px', borderRadius:'8px', border:'1.5px solid #EDE0C8', background:'transparent', color:'#1A1208', fontFamily:S.sans, fontSize:'13px', fontWeight:600, cursor:'pointer', flexShrink:0 }}>
             {preview ? <AlignLeft style={{ width:14, height:14 }} /> : <Eye style={{ width:14, height:14 }} />}
             {preview ? 'Edit' : 'Preview'}
           </button>
-          <button onClick={() => mutation.mutate('draft')} disabled={mutation.isPending}
-            style={{ display:'flex', alignItems:'center', gap:'6px', padding:'8px 16px', borderRadius:'8px', border:'1.5px solid #EDE0C8', background:'transparent', color:'#7A6A52', fontFamily:S.sans, fontSize:'13px', fontWeight:500, cursor:'pointer' }}>
+          <button className="draft-btn" onClick={() => mutation.mutate('draft')} disabled={mutation.isPending}
+            style={{ display:'flex', alignItems:'center', gap:'6px', padding:'8px 16px', borderRadius:'8px', border:'1.5px solid #EDE0C8', background:'transparent', color:'#7A6A52', fontFamily:S.sans, fontSize:'13px', fontWeight:500, cursor:'pointer', flexShrink:0 }}>
             <Save style={{ width:14, height:14 }} /> Save Draft
           </button>
-          <button
+          <button className="submit-btn"
             onClick={() => { if (!form.title || !form.content) { toast.error('Title and content are required'); return } mutation.mutate('pending') }}
             disabled={mutation.isPending}
-            style={{ display:'flex', alignItems:'center', gap:'7px', padding:'9px 22px', borderRadius:'9px', background:'#0A5F55', color:'#fff', border:'none', fontFamily:S.sans, fontSize:'13px', fontWeight:700, cursor:'pointer', opacity:mutation.isPending?0.7:1 }}>
+            style={{ display:'flex', alignItems:'center', gap:'7px', padding:'9px 22px', borderRadius:'9px', background:'#0A5F55', color:'#fff', border:'none', fontFamily:S.sans, fontSize:'13px', fontWeight:700, cursor:'pointer', opacity:mutation.isPending?0.7:1, flexShrink:0 }}>
             {mutation.isPending ? <Loader2 style={{ width:14, height:14, animation:'spin 1s linear infinite' }} /> : <Send style={{ width:14, height:14 }} />}
             Submit for Review
           </button>
         </div>
       </div>
 
-      <div style={{ maxWidth:'860px', margin:'0 auto', padding:'40px 24px 80px' }}>
+      <div style={{ maxWidth:'860px', margin:'0 auto', padding:'40px 16px 80px' }}>
+        {/* Word count — visible on mobile below topbar */}
+        <div style={{ fontFamily:'monospace', fontSize:'11px', color:'#7A6A52', background:'#EDE0C8', padding:'3px 10px', borderRadius:'100px', display:'inline-block', marginBottom:'20px' }}>
+          {wordCount} words · {readTime} min read
+        </div>
+
         {!preview ? (
           <div>
             {/* Cover emoji */}
@@ -144,7 +157,7 @@ export default function WritePage() {
             {/* Title */}
             <textarea placeholder="Your post title..." value={form.title}
               onChange={e => set('title', e.target.value.slice(0,160))} rows={2}
-              style={{ width:'100%', fontFamily:S.serif, fontSize:'clamp(32px,5vw,52px)', fontWeight:900, color:'#1A1208', letterSpacing:'-1.5px', lineHeight:1.12, border:'none', outline:'none', background:'transparent', resize:'none', marginBottom:'4px', boxSizing:'border-box' as const, display:'block' }} />
+              style={{ width:'100%', fontFamily:S.serif, fontSize:'clamp(28px,5vw,52px)', fontWeight:900, color:'#1A1208', letterSpacing:'-1.5px', lineHeight:1.12, border:'none', outline:'none', background:'transparent', resize:'none', marginBottom:'4px', boxSizing:'border-box' as const, display:'block' }} />
             <div style={{ fontFamily:'monospace', fontSize:'11px', color:'#A0907A', marginBottom:'16px', textAlign:'right' as const }}>{form.title.length}/160</div>
 
             {/* Excerpt */}
@@ -169,9 +182,16 @@ export default function WritePage() {
               </div>
             </div>
 
-            {/* ── Formatting toolbar ── */}
-            <div style={{ background:'#fff', border:'1.5px solid #EDE0C8', borderRadius:'12px 12px 0 0', padding:'10px 16px', display:'flex', gap:'4px', flexWrap:'wrap', alignItems:'center', borderBottom:'1px solid #EDE0C8' }}>
-              {/* Format buttons */}
+            {/* ── Formatting toolbar — FIX: horizontally scrollable on mobile ── */}
+            <div
+              className="toolbar-scroll"
+              style={{
+                background:'#fff', border:'1.5px solid #EDE0C8',
+                borderRadius:'12px 12px 0 0', padding:'10px 16px',
+                display:'flex', gap:'4px', flexWrap:'wrap', alignItems:'center',
+                borderBottom:'1px solid #EDE0C8',
+              }}
+            >
               {[
                 { icon:<Bold style={{ width:14, height:14 }} />, label:'Bold', prefix:'**', suffix:'**', ph:'bold text' },
                 { icon:<Italic style={{ width:14, height:14 }} />, label:'Italic', prefix:'_', suffix:'_', ph:'italic text' },
@@ -180,17 +200,17 @@ export default function WritePage() {
                 { icon:<Hash style={{ width:14, height:14 }} />, label:'Heading', prefix:'\n## ', suffix:'', ph:'heading' },
               ].map(btn => (
                 <button key={btn.label} onClick={() => insertFormat(btn.prefix, btn.suffix, btn.ph)} title={btn.label}
-                  style={{ display:'flex', alignItems:'center', gap:'4px', padding:'6px 10px', borderRadius:'7px', border:'1px solid #EDE0C8', background:'transparent', color:'#1A1208', cursor:'pointer', fontSize:'12px', fontFamily:S.sans, fontWeight:500, transition:'all .15s' }}
+                  style={{ display:'flex', alignItems:'center', gap:'4px', padding:'6px 10px', borderRadius:'7px', border:'1px solid #EDE0C8', background:'transparent', color:'#1A1208', cursor:'pointer', fontSize:'12px', fontFamily:S.sans, fontWeight:500, transition:'all .15s', flexShrink:0 }}
                   onMouseEnter={e => (e.currentTarget as HTMLElement).style.background='#FDF6EC'}
                   onMouseLeave={e => (e.currentTarget as HTMLElement).style.background='transparent'}>
                   {btn.icon} {btn.label}
                 </button>
               ))}
 
-              <div style={{ width:1, height:20, background:'#EDE0C8', margin:'0 4px' }} />
+              <div style={{ width:1, height:20, background:'#EDE0C8', margin:'0 4px', flexShrink:0 }} />
 
               {/* Font family */}
-              <div style={{ display:'flex', alignItems:'center', gap:'6px' }}>
+              <div style={{ display:'flex', alignItems:'center', gap:'6px', flexShrink:0 }}>
                 <Type style={{ width:13, height:13, color:'#7A6A52' }} />
                 <select value={fontFamily} onChange={e => setFontFamily(e.target.value)}
                   style={{ border:'1px solid #EDE0C8', borderRadius:'7px', padding:'5px 8px', fontSize:'12px', fontFamily:S.sans, color:'#1A1208', background:'#FDF6EC', outline:'none', cursor:'pointer' }}>
@@ -200,13 +220,13 @@ export default function WritePage() {
 
               {/* Font size */}
               <select value={fontSize} onChange={e => setFontSize(e.target.value)}
-                style={{ border:'1px solid #EDE0C8', borderRadius:'7px', padding:'5px 8px', fontSize:'12px', fontFamily:S.sans, color:'#1A1208', background:'#FDF6EC', outline:'none', cursor:'pointer' }}>
+                style={{ border:'1px solid #EDE0C8', borderRadius:'7px', padding:'5px 8px', fontSize:'12px', fontFamily:S.sans, color:'#1A1208', background:'#FDF6EC', outline:'none', cursor:'pointer', flexShrink:0 }}>
                 {FONT_SIZES.map(s => <option key={s} value={s}>{s}</option>)}
               </select>
 
               {/* Line height */}
               <select value={lineHeight} onChange={e => setLineHeight(e.target.value)}
-                style={{ border:'1px solid #EDE0C8', borderRadius:'7px', padding:'5px 8px', fontSize:'12px', fontFamily:S.sans, color:'#1A1208', background:'#FDF6EC', outline:'none', cursor:'pointer' }}>
+                style={{ border:'1px solid #EDE0C8', borderRadius:'7px', padding:'5px 8px', fontSize:'12px', fontFamily:S.sans, color:'#1A1208', background:'#FDF6EC', outline:'none', cursor:'pointer', flexShrink:0 }}>
                 {LINE_HEIGHTS.map(l => <option key={l} value={l}>LH {l}</option>)}
               </select>
             </div>
@@ -217,11 +237,21 @@ export default function WritePage() {
               placeholder={`Start writing your post...\n\nShare your experiences, insights, and ideas with India's education community.\n\nTips:\n• Use **bold** for emphasis\n• Use _italic_ for terms\n• Use > for quotes\n• Use ## for headings\n• Use • for bullet points`}
               value={form.content} onChange={e => set('content', e.target.value)}
               style={{ width:'100%', minHeight:'520px', fontFamily:`"${fontFamily}",${fontFamily.includes('Garamond')||fontFamily==='Georgia'?'serif':'system-ui,sans-serif'}`, fontSize, color:'#1A1208', lineHeight, border:'1.5px solid #EDE0C8', borderTop:'none', borderRadius:'0 0 12px 12px', outline:'none', background:'#fff', resize:'vertical', fontWeight:300, boxSizing:'border-box' as const, padding:'20px 24px' }} />
+
+            {/* Mobile-only Save Draft button (hidden in topbar on mobile) */}
+            <div style={{ display:'flex', gap:'8px', marginTop:'16px' }}>
+              <button
+                onClick={() => mutation.mutate('draft')}
+                disabled={mutation.isPending}
+                style={{ display:'flex', alignItems:'center', gap:'6px', padding:'10px 20px', borderRadius:'8px', border:'1.5px solid #EDE0C8', background:'#fff', color:'#7A6A52', fontFamily:S.sans, fontSize:'13px', fontWeight:500, cursor:'pointer' }}>
+                <Save style={{ width:14, height:14 }} /> Save Draft
+              </button>
+            </div>
           </div>
         ) : (
           /* Preview */
           <div style={{ background:'#fff', borderRadius:'20px', border:'1px solid #EDE0C8', overflow:'hidden' }}>
-            <div style={{ padding:'32px 40px', borderBottom:'1px solid #EDE0C8' }}>
+            <div style={{ padding:'32px 24px', borderBottom:'1px solid #EDE0C8' }}>
               <div style={{ display:'flex', alignItems:'center', gap:'14px', marginBottom:'20px' }}>
                 <span style={{ fontSize:'52px' }}>{form.coverEmoji}</span>
                 <div>
@@ -229,7 +259,7 @@ export default function WritePage() {
                   <span style={{ fontSize:'12px', color:'#7A6A52', fontFamily:'monospace' }}>{readTime} min read · {wordCount} words</span>
                 </div>
               </div>
-              <h1 style={{ fontFamily:S.serif, fontSize:'clamp(28px,4vw,44px)', fontWeight:900, color:'#1A1208', lineHeight:1.1, letterSpacing:'-1.5px', marginBottom:'14px' }}>
+              <h1 style={{ fontFamily:S.serif, fontSize:'clamp(24px,4vw,44px)', fontWeight:900, color:'#1A1208', lineHeight:1.1, letterSpacing:'-1.5px', marginBottom:'14px' }}>
                 {form.title || <span style={{ color:'#A0907A' }}>Your title here...</span>}
               </h1>
               {form.excerpt && (
@@ -238,7 +268,7 @@ export default function WritePage() {
                 </p>
               )}
             </div>
-            <div style={{ padding:'32px 40px' }}>
+            <div style={{ padding:'32px 24px' }}>
               <div style={{ fontFamily:`"${fontFamily}",${fontFamily.includes('Garamond')||fontFamily==='Georgia'?'serif':'system-ui,sans-serif'}`, fontSize, color:'#1A1208', lineHeight, whiteSpace:'pre-wrap', fontWeight:300 }}>
                 {form.content || <span style={{ color:'#A0907A' }}>Your content will appear here...</span>}
               </div>

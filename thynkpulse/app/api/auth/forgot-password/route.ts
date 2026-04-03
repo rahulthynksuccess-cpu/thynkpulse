@@ -13,7 +13,9 @@ export async function POST(req: NextRequest) {
       [identifier]
     )
 
-    // Always return success to prevent user enumeration
+    // Intentionally return the same response whether or not the account exists.
+    // This prevents user enumeration attacks (an attacker probing which emails
+    // are registered). This is correct, secure behaviour — do not change.
     if (userRes.rows.length === 0) {
       return Response.json({ message: 'If this account exists, a reset code has been sent.' })
     }
@@ -22,7 +24,19 @@ export async function POST(req: NextRequest) {
     const token = crypto.randomBytes(32).toString('hex')
     const expiresAt = new Date(Date.now() + 60 * 60 * 1000) // 1 hour
 
-    // Invalidate any existing tokens
+    // Ensure the password_reset_tokens table exists
+    await db.query(`
+      CREATE TABLE IF NOT EXISTS password_reset_tokens (
+        id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+        user_id UUID NOT NULL,
+        token VARCHAR(128) NOT NULL UNIQUE,
+        expires_at TIMESTAMPTZ NOT NULL,
+        used BOOLEAN DEFAULT false,
+        created_at TIMESTAMPTZ DEFAULT NOW()
+      )
+    `).catch(() => {})
+
+    // Invalidate any existing unused tokens for this user
     await db.query(
       "UPDATE password_reset_tokens SET used=true WHERE user_id=$1 AND used=false",
       [user.id]
@@ -35,13 +49,15 @@ export async function POST(req: NextRequest) {
       [user.id, token, expiresAt]
     )
 
-    // In production you'd send an email/SMS here
-    // For now we return the token in dev mode so admin can test
     const isDev = process.env.NEXT_PUBLIC_APP_ENV !== 'production'
+
+    // In production: send email/SMS with the reset link here.
+    // Example (SendGrid / MSG91):
+    //   await sendResetEmail(user.email, token)
+    // For now, the token is returned only in development for testing.
 
     return Response.json({
       message: 'If this account exists, a reset link has been sent.',
-      // Only expose token in development
       ...(isDev && { token, resetUrl: `/reset-password?token=${token}` }),
     })
 
