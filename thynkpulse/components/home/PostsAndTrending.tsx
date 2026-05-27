@@ -12,6 +12,61 @@ const CATS = ['All Posts','Educators','EdTech','Sales & Marketing','Innovation',
 const GRADIENTS = ['linear-gradient(135deg,#EAF4F0,#C0E6DC)','linear-gradient(135deg,#FEF0EA,#F7CBB8)','linear-gradient(135deg,#EFF0FE,#C9CDF7)','linear-gradient(135deg,#FEF8E8,#F5DFA0)','linear-gradient(135deg,#F5EEF8,#DEC8F0)']
 const CAT_STYLES: Record<string, string> = { 'EdTech':'cat-t','Educator':'cat-c','Sales Pro':'cat-g','Research':'cat-p','Leadership':'cat-t','Career':'cat-p' }
 
+/* ── Responsive grid styles injected once ── */
+const GRID_STYLES = `
+  .posts-main-grid {
+    display: grid;
+    grid-template-columns: 1.6fr 1fr;
+    grid-template-rows: auto auto;
+    gap: 20px;
+    margin-top: 40px;
+  }
+  .posts-main-grid .big-card { grid-row: 1/3; }
+  .posts-secondary-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    margin-top: 20px;
+  }
+  /* Filter bar — scrollable on mobile */
+  .filter-bar-scroll {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin: 36px 0 0;
+  }
+  @media (max-width: 768px) {
+    .filter-bar-scroll { flex-wrap: nowrap; overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; padding-bottom: 6px; }
+    .filter-bar-scroll::-webkit-scrollbar { display: none; }
+    .filter-bar-scroll .filter-btn { white-space: nowrap; flex-shrink: 0; }
+  }
+  /* Main posts grid */
+  @media (max-width: 1024px) {
+    .posts-secondary-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 768px) {
+    .posts-main-grid { grid-template-columns: 1fr; }
+    .posts-main-grid .big-card { grid-row: auto; }
+    .posts-secondary-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 520px) {
+    .posts-secondary-grid { grid-template-columns: 1fr; }
+  }
+  /* Trending grid */
+  .trending-outer-grid {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap: 40px;
+    margin-top: 56px;
+    align-items: start;
+  }
+  @media (max-width: 900px) {
+    .trending-outer-grid { grid-template-columns: 1fr; gap: 28px; }
+    .trending-sidebar-col { display: none; }
+  }
+`
+
 function PostCardSkeleton({ big = false }: { big?: boolean }) {
   return (
     <div className="pcard" style={{ pointerEvents:'none' }}>
@@ -28,9 +83,8 @@ function PostCardSkeleton({ big = false }: { big?: boolean }) {
 
 function PostCard({ post, big=false, index=0 }: { post: Post; big?: boolean; index?: number }) {
   const gradIdx = index % GRADIENTS.length
-  const catClass = CAT_STYLES[post.category] || 'cat-t'
   return (
-    <motion.div initial={{ opacity:0, y:22 }} whileInView={{ opacity:1, y:0 }} viewport={{ once:true }} transition={{ delay:(index%4)*.08 }}>
+    <motion.div initial={{ opacity:0, y:22 }} whileInView={{ opacity:1, y:0 }} viewport={{ once:true }} transition={{ delay:(index%4)*.08 }} style={{ height:'100%' }}>
       <Link href={`/post/${post.slug}`} className="pcard" style={{ height:'100%' }}>
         <div style={{ position:'relative', overflow:'hidden' }}>
           <div style={{ height: big ? 300 : 160, display:'flex', alignItems:'center', justifyContent:'center', fontSize: big ? 72 : 48, background: GRADIENTS[gradIdx] }}>
@@ -49,17 +103,16 @@ function PostCard({ post, big=false, index=0 }: { post: Post; big?: boolean; ind
               {post.excerpt}
             </div>
           )}
-          <div style={{ display:'flex', alignItems:'center', gap:'10px', paddingTop:'14px', borderTop:'1px solid var(--border2)', marginTop:'auto' }}>
-            <div className="avatar av-teal" style={{ width:34, height:34, fontSize:'14px', borderRadius:'10px' }}>
+          <div style={{ display:'flex', alignItems:'center', gap:'10px', paddingTop:'14px', borderTop:'1px solid var(--border2)', marginTop:'auto', flexWrap:'wrap' }}>
+            <div className="avatar av-teal" style={{ width:34, height:34, fontSize:'14px', borderRadius:'10px', flexShrink:0 }}>
               {post.author?.fullName?.split(' ').map(n=>n[0]).join('').slice(0,2) || 'U'}
             </div>
-            <div>
-              <div style={{ fontSize:'13px', fontWeight:600, color:'var(--ink)' }}>{post.author?.fullName || 'Author'}</div>
+            <div style={{ flex:1, minWidth:0 }}>
+              <div style={{ fontSize:'13px', fontWeight:600, color:'var(--ink)', overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap' }}>{post.author?.fullName || 'Author'}</div>
               <div style={{ fontSize:'11px', color:'var(--muted)' }}>{post.author?.designation} · {post.readTime} min read</div>
             </div>
-            <div style={{ marginLeft:'auto', display:'flex', gap:'10px', fontSize:'12px', color:'var(--muted)', flexShrink:0 }}>
+            <div style={{ display:'flex', gap:'8px', fontSize:'12px', color:'var(--muted)', flexShrink:0 }}>
               <span>❤️ {post.likeCount}</span>
-              <span>💬 {post.commentCount}</span>
               <span>👁 {post.viewCount >= 1000 ? `${(post.viewCount/1000).toFixed(1)}K` : post.viewCount}</span>
             </div>
           </div>
@@ -69,7 +122,7 @@ function PostCard({ post, big=false, index=0 }: { post: Post; big?: boolean; ind
   )
 }
 
-/* Fallback static posts when API not connected */
+/* Fallback static posts */
 const STATIC_POSTS: Post[] = [
   { id:'1', slug:'ai-classroom-engagement', title:'How AI is Quietly Rewriting the Rules of Classroom Engagement', excerpt:'From adaptive learning paths to AI-powered feedback loops — what\'s actually working in schools across India.', content:'', category:'EdTech', tags:['AI','EdTech'], status:'approved', isFeatured:true, readTime:8, viewCount:12000, likeCount:284, commentCount:47, authorId:'1', coverEmoji:'🤖', coverGradient:GRADIENTS[0], createdAt:'', updatedAt:'', author:{ id:'1', userId:'1', fullName:'Rajesh Kumar', designation:'EdTech Founder', instituteName:'', companyName:'', contactNumber:'', emailId:'', totalExp:'10', introduction:'', postCount:24, followerCount:5200, followingCount:120, totalReads:340000 } },
   { id:'2', slug:'experiential-learning', title:'Experiential Learning: Why It Works and How to Scale It', excerpt:'A government school teacher on transforming assessment through real-world projects.', content:'', category:'Educator', tags:['Teaching'], status:'approved', isFeatured:false, readTime:5, viewCount:4200, likeCount:102, commentCount:18, authorId:'2', coverEmoji:'🌱', coverGradient:GRADIENTS[1], createdAt:'', updatedAt:'', author:{ id:'2', userId:'2', fullName:'Priya Sharma', designation:'Teacher', instituteName:'Delhi Govt School', companyName:'', contactNumber:'', emailId:'', totalExp:'8', introduction:'', postCount:12, followerCount:1800, followingCount:80, totalReads:45000 } },
@@ -90,11 +143,14 @@ export function PostsSection() {
 
   return (
     <section id="posts" style={{ padding:'96px 5%', background:'var(--posts-bg, var(--cream))' }}>
+      <style>{GRID_STYLES}</style>
+
       <div className="eyebrow"><div className="eyebrow-line" style={{ background:'var(--posts-eyebrow-color,var(--coral))' }} /><span className="eyebrow-text" style={{ color:'var(--posts-eyebrow-color,var(--coral))', fontSize:'var(--posts-eyebrow-size,11px)' }}>Latest from the community</span></div>
-      <h2 style={{ fontFamily:'var(--font-serif)', fontSize:'var(--posts-section-title-size, 42px)', fontWeight:900, color:'var(--posts-section-title-color, var(--ink))', lineHeight:1.05, letterSpacing:'-1.5px', marginBottom:'14px' }}>Fresh Ideas,<br /><em style={{ fontStyle:'italic', color:'var(--posts-section-accent, var(--teal))' }}>Real Voices</em></h2>
+      <h2 style={{ fontFamily:'var(--font-serif)', fontSize:'clamp(28px,4vw,var(--posts-section-title-size,42px))', fontWeight:900, color:'var(--posts-section-title-color, var(--ink))', lineHeight:1.05, letterSpacing:'-1.5px', marginBottom:'14px' }}>Fresh Ideas,<br /><em style={{ fontStyle:'italic', color:'var(--posts-section-accent, var(--teal))' }}>Real Voices</em></h2>
       <p style={{ fontSize:'var(--posts-desc-size, 16px)', color:'var(--posts-desc-color, var(--muted))', lineHeight:1.8, maxWidth:'520px', marginTop:'14px', fontWeight:300 }}>Articles from educators, EdTech founders, sales pros, and innovators shaping education worldwide.</p>
 
-      <div style={{ display:'flex', alignItems:'center', gap:'8px', flexWrap:'wrap', margin:'36px 0 0' }}>
+      {/* Filter bar — scrollable on mobile */}
+      <div className="filter-bar-scroll">
         {CATS.map(cat => (
           <button key={cat} onClick={() => setActiveFilter(cat)}
             className={`filter-btn ${activeFilter === cat ? 'active' : ''}`}>
@@ -104,22 +160,21 @@ export function PostsSection() {
       </div>
 
       {isLoading ? (
-        <div style={{ display:'grid', gridTemplateColumns:'1.6fr 1fr', gap:'20px', marginTop:'40px' }}>
-          <PostCardSkeleton big />
-          <div style={{ display:'flex', flexDirection:'column', gap:'20px' }}>
-            <PostCardSkeleton /><PostCardSkeleton />
-          </div>
+        <div className="posts-main-grid">
+          <div className="big-card"><PostCardSkeleton big /></div>
+          <PostCardSkeleton />
+          <PostCardSkeleton />
         </div>
       ) : (
         <>
-          <div style={{ display:'grid', gridTemplateColumns:'1.6fr 1fr', gridTemplateRows:'auto auto', gap:'20px', marginTop:'40px' }}>
-            <div style={{ gridRow:'1/3' }}>
+          <div className="posts-main-grid">
+            <div className="big-card">
               <PostCard post={posts[0]} big index={0} />
             </div>
             <PostCard post={posts[1]} index={1} />
             <PostCard post={posts[2]} index={2} />
           </div>
-          <div style={{ display:'grid', gridTemplateColumns:'repeat(3,1fr)', gap:'20px', marginTop:'20px' }}>
+          <div className="posts-secondary-grid">
             {posts.slice(3,6).map((p, i) => <PostCard key={p.id} post={p} index={i+3} />)}
           </div>
         </>
@@ -178,9 +233,10 @@ export function TrendingSection() {
   return (
     <section id="trending" ref={ref} style={{ padding:'96px 5%', background:'var(--trending-bg, #fff)' }}>
       <div className="eyebrow"><div className="eyebrow-line" style={{ background:'var(--trending-eyebrow-color,var(--coral))' }} /><span className="eyebrow-text" style={{ color:'var(--trending-eyebrow-color,var(--coral))' }}>What the community is reading</span></div>
-      <h2 style={{ fontFamily:'var(--font-serif)', fontSize:'var(--trending-section-title-size, 42px)', fontWeight:900, color:'var(--trending-section-title, var(--ink))', lineHeight:1.05, letterSpacing:'-1.5px', marginBottom:'14px' }}>Trending<br /><em style={{ fontStyle:'italic', color:'var(--trending-accent-color, var(--teal))' }}>This Week</em></h2>
+      <h2 style={{ fontFamily:'var(--font-serif)', fontSize:'clamp(28px,4vw,var(--trending-section-title-size,42px))', fontWeight:900, color:'var(--trending-section-title, var(--ink))', lineHeight:1.05, letterSpacing:'-1.5px', marginBottom:'14px' }}>Trending<br /><em style={{ fontStyle:'italic', color:'var(--trending-accent-color, var(--teal))' }}>This Week</em></h2>
 
-      <div className='trending-grid' className='trending-grid' style={{ display:'grid', gridTemplateColumns:'1.4fr 1fr', gap:'40px', marginTop:'56px', alignItems:'start' }}>
+      {/* RESPONSIVE GRID: 2-col on desktop, 1-col stacked on tablet/mobile */}
+      <div className="trending-outer-grid">
 
         {/* Trending list */}
         <div>
@@ -188,9 +244,9 @@ export function TrendingSection() {
             <motion.a key={t.num} href="#" initial={{ opacity:0, y:18 }} animate={inView ? { opacity:1, y:0 } : {}} transition={{ delay:i*.09 }}
               style={{ display:'flex', gap:'16px', alignItems:'flex-start', padding:'20px 0', borderBottom:'1px solid var(--border2)', cursor:'pointer', textDecoration:'none', color:'inherit' }}>
               <div style={{ fontFamily:'var(--font-serif)', fontSize:'var(--trending-rank-size,32px)', fontWeight:900, color:'var(--trending-num-color,var(--parchment))', lineHeight:1, flexShrink:0, minWidth:'44px' }}>{t.num}</div>
-              <div>
+              <div style={{ flex:1, minWidth:0 }}>
                 <div style={{ fontFamily:'var(--font-mono)', fontSize:'var(--trending-cat-size,11px)', fontWeight:700, letterSpacing:'1px', textTransform:'uppercase', color:'var(--trending-cat-color,var(--coral))', marginBottom:'5px' }}>{t.tag}</div>
-                <div style={{ fontFamily:'var(--font-serif)', fontSize:'var(--trending-title-size,17px)', fontWeight:600, color:'var(--trending-title-color,var(--ink))', lineHeight:1.35, marginBottom:'8px', transition:'color .2s' }}>{t.title}</div>
+                <div style={{ fontFamily:'var(--font-serif)', fontSize:'var(--trending-title-size,17px)', fontWeight:600, color:'var(--trending-title-color,var(--ink))', lineHeight:1.35, marginBottom:'8px' }}>{t.title}</div>
                 <div style={{ display:'flex', gap:'14px', fontSize:'12px', color:'var(--trending-meta-color,var(--muted))' }}>
                   <span>👁 {t.reads} reads</span><span>❤️ {t.likes}</span><span>💬 {t.comments}</span>
                 </div>
@@ -200,7 +256,7 @@ export function TrendingSection() {
         </div>
 
         {/* Sidebar */}
-        <div style={{ display:'flex', flexDirection:'column', gap:'20px' }}>
+        <div className="trending-sidebar-col" style={{ display:'flex', flexDirection:'column', gap:'20px' }}>
           <div className="sidebar-card" style={{ background:'var(--trending-sidebar-bg,var(--cream))' }}>
             <div style={{ fontFamily:'var(--font-serif)', fontSize:'16px', fontWeight:700, color:'var(--ink)', marginBottom:'16px' }}>Browse Topics</div>
             <div style={{ display:'flex', flexWrap:'wrap', gap:'8px' }}>
@@ -228,7 +284,6 @@ export function TrendingSection() {
               </div>
             ))}
           </div>
-          {/* Ad slot sidebar */}
           <div style={{ background:'var(--ad-bg)', border:'1px dashed var(--ad-border)', borderRadius:'var(--radius)', padding:'16px', textAlign:'center', minHeight:'120px', display:'flex', alignItems:'center', justifyContent:'center', flexDirection:'column', gap:'4px' }}>
             <div style={{ fontFamily:'var(--font-mono)', fontSize:'9px', color:'var(--muted)', letterSpacing:'1px', textTransform:'uppercase' }}>Advertisement</div>
             <div style={{ fontSize:'11px', color:'var(--muted)' }}>Sidebar ad · 300×250</div>
