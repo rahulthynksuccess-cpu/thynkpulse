@@ -34,54 +34,86 @@ export function Footer() {
   const tagline   = fc?.tagline   || 'The free community platform for educators, EdTech professionals, innovators and school leaders.'
   const copyright = fc?.copyright || ''
   return (
-    <footer style={{ background: 'var(--teal)', padding: '72px 5% 36px', color: 'rgba(255,255,255,0.6)' }}>
-      <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr 1fr 1fr', gap: '48px', marginBottom: '56px' }}>
+    <>
+      <style>{`
+        .footer-root { background: var(--teal); padding: 72px 5% 36px; color: rgba(255,255,255,0.6); }
+        .footer-grid {
+          display: grid;
+          grid-template-columns: 2fr 1fr 1fr 1fr;
+          gap: 48px;
+          margin-bottom: 56px;
+        }
+        .footer-bottom {
+          border-top: 1px solid rgba(255,255,255,0.15);
+          padding-top: 28px;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          font-size: 14px;
+          color: rgba(255,255,255,0.5);
+          flex-wrap: wrap;
+          gap: 8px;
+        }
+        /* Tablet */
+        @media (max-width: 1024px) {
+          .footer-grid { grid-template-columns: 1fr 1fr; gap: 32px; }
+        }
+        /* Mobile */
+        @media (max-width: 600px) {
+          .footer-root { padding: 48px 5% 28px; }
+          .footer-grid { grid-template-columns: 1fr; gap: 28px; margin-bottom: 36px; }
+          .footer-bottom { flex-direction: column; text-align: center; gap: 6px; }
+        }
+      `}</style>
+      <footer className="footer-root">
+        <div className="footer-grid">
 
-        {/* Brand */}
-        <div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '16px' }}>
-            <div style={{ width: '36px', height: '36px', background: 'rgba(255,255,255,0.15)', border: '1px solid rgba(255,255,255,0.25)', borderRadius: '9px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <span style={{ fontFamily: 'var(--font-serif)', fontWeight: 900, fontSize: '16px', color: '#fff' }}>TP</span>
+          {/* Brand */}
+          <div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '16px' }}>
+              <div style={{ width: '36px', height: '36px', background: 'rgba(255,255,255,0.15)', border: '1px solid rgba(255,255,255,0.25)', borderRadius: '9px', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                <span style={{ fontFamily: 'var(--font-serif)', fontWeight: 900, fontSize: '16px', color: '#fff' }}>TP</span>
+              </div>
+              <span style={{ fontFamily: 'var(--font-serif)', fontSize: '22px', fontWeight: 900, color: '#fff' }}>
+                Thynk <em style={{ fontStyle: 'normal', color: 'var(--gold2)' }}>Pulse</em>
+              </span>
             </div>
-            <span style={{ fontFamily: 'var(--font-serif)', fontSize: '22px', fontWeight: 900, color: '#fff' }}>
-              Thynk <em style={{ fontStyle: 'normal', color: 'var(--gold2)' }}>Pulse</em>
-            </span>
+            <p style={{ fontSize: '15px', lineHeight: 1.9, maxWidth: '280px', color: 'rgba(255,255,255,0.6)' }}>
+              {tagline}
+            </p>
           </div>
-          <p style={{ fontSize: '15px', lineHeight: 1.9, maxWidth: '280px', color: 'rgba(255,255,255,0.6)' }}>
-            {tagline}
-          </p>
+
+          {/* Link columns */}
+          {Object.entries(LINKS).map(([heading, links]) => (
+            <div key={heading}>
+              <h4 style={{ fontSize: '12px', fontWeight: 700, letterSpacing: '2px', textTransform: 'uppercase', color: 'rgba(255,255,255,0.4)', marginBottom: '20px', fontFamily: 'var(--font-mono)' }}>{heading}</h4>
+              <ul style={{ listStyle: 'none' }}>
+                {links.map(([label, href]) => (
+                  <li key={href} style={{ marginBottom: '11px' }}>
+                    <Link href={href}
+                      target={href.startsWith('http') ? '_blank' : undefined}
+                      rel={href.startsWith('http') ? 'noopener noreferrer' : undefined}
+                      style={{ fontSize: '15px', color: 'rgba(255,255,255,0.65)', textDecoration: 'none', transition: 'color .2s' }}
+                      onMouseEnter={e => (e.currentTarget as HTMLAnchorElement).style.color = '#fff'}
+                      onMouseLeave={e => (e.currentTarget as HTMLAnchorElement).style.color = 'rgba(255,255,255,0.6)'}>
+                      {label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
         </div>
 
-        {/* Link columns */}
-        {Object.entries(LINKS).map(([heading, links]) => (
-          <div key={heading}>
-            <h4 style={{ fontSize: '12px', fontWeight: 700, letterSpacing: '2px', textTransform: 'uppercase', color: 'rgba(255,255,255,0.4)', marginBottom: '20px', fontFamily: 'var(--font-mono)' }}>{heading}</h4>
-            <ul style={{ listStyle: 'none' }}>
-              {links.map(([label, href]) => (
-                <li key={href} style={{ marginBottom: '11px' }}>
-                  <Link href={href}
-                    target={href.startsWith('http') ? '_blank' : undefined}
-                    rel={href.startsWith('http') ? 'noopener noreferrer' : undefined}
-                    style={{ fontSize: '15px', color: 'rgba(255,255,255,0.65)', textDecoration: 'none', transition: 'color .2s' }}
-                    onMouseEnter={e => (e.currentTarget as HTMLAnchorElement).style.color = '#fff'}
-                    onMouseLeave={e => (e.currentTarget as HTMLAnchorElement).style.color = 'rgba(255,255,255,0.6)'}>
-                    {label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-        ))}
-      </div>
-
-      <div style={{ borderTop: '1px solid rgba(255,255,255,0.15)', paddingTop: '28px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', fontSize: '14px', color: 'rgba(255,255,255,0.5)' }}>
-        <span>
-          {copyright ? copyright : <>© {new Date().getFullYear()} Thynk Pulse · A{' '}</>}
-          <a href={config.app.parentSite} style={{ color: 'var(--gold2)', textDecoration: 'none' }}>Thynk Success</a>{' '}
-          Initiative · Free Forever 🎓
-        </span>
-        <span>Made with ❤️ for India&apos;s Education Community</span>
-      </div>
-    </footer>
+        <div className="footer-bottom">
+          <span>
+            {copyright ? copyright : <>© {new Date().getFullYear()} Thynk Pulse · A{' '}</>}
+            <a href={config.app.parentSite} style={{ color: 'var(--gold2)', textDecoration: 'none' }}>Thynk Success</a>{' '}
+            Initiative · Free Forever 🎓
+          </span>
+          <span>Made with ❤️ for India&apos;s Education Community</span>
+        </div>
+      </footer>
+    </>
   )
 }
