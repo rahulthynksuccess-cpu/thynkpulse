@@ -2,16 +2,17 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useState } from 'react'
-import { LayoutDashboard, FileText, Pencil, Users, FileCheck, Palette, LogOut, Menu, X, GraduationCap, Settings } from 'lucide-react'
+import { LayoutDashboard, FileText, Pencil, Users, FileCheck, Palette, LogOut, Menu, X, GraduationCap, Settings, BarChart2 } from 'lucide-react'
 import { useAuthStore } from '@/store/authStore'
 
 const NAV = [
-  { icon: LayoutDashboard, label: 'Overview',    href: '/admin'            },
-  { icon: Users,           label: 'Users',        href: '/admin/users'      },
-  { icon: FileCheck,       label: 'Approvals',    href: '/admin/approvals'  },
-  { icon: FileText,        label: 'Posts',        href: '/admin/posts'      },
-  { icon: Pencil,          label: 'Content',      href: '/admin/content'    },
-  { icon: Palette,         label: 'Theme',        href: '/admin/theme'      },
+  { icon: LayoutDashboard, label: 'Overview',    href: '/admin'             },
+  { icon: Users,           label: 'Users',        href: '/admin/users'       },
+  { icon: FileCheck,       label: 'Approvals',    href: '/admin/approvals'   },
+  { icon: FileText,        label: 'Posts',        href: '/admin/posts'       },
+  { icon: BarChart2,       label: 'Analytics',    href: '/admin/analytics'   },  
+  { icon: Pencil,          label: 'Content',      href: '/admin/content'     },
+  { icon: Palette,         label: 'Theme',        href: '/admin/theme'       },
 ]
 
 export function AdminLayout({ children, title, subtitle }: {
