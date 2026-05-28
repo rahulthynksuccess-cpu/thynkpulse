@@ -3,6 +3,8 @@ import './globals.css'
 import { Providers } from './providers'
 import { config } from '@/lib/config'
 import { ContentStyleInjector } from '@/components/ContentStyleInjector'
+import SessionTrackerWrapper from './SessionTrackerWrapper'
+
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
@@ -293,6 +295,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       </head>
       <body>
         <ContentStyleInjector />
+         <SessionTrackerWrapper /> 
         <Providers>{children}</Providers>
       </body>
     </html>
