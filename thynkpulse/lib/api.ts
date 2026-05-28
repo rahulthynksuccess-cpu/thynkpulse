@@ -5,13 +5,23 @@ const getBase = () => {
 
 function getToken(): string {
   if (typeof window === 'undefined') return ''
-  // Try localStorage first, then sessionStorage, then cookie
-  return (
-    localStorage.getItem('tp_token') ||
-    sessionStorage.getItem('tp_token') ||
-    document.cookie.match(/tp_token=([^;]+)/)?.[1] ||
-    ''
-  )
+  // Direct key (set by setAuth)
+  const direct = localStorage.getItem('tp_token') ||
+                 sessionStorage.getItem('tp_token')
+  if (direct) return direct
+
+  // Zustand persist fallback (stored as JSON under 'auth-storage')
+  try {
+    const raw = localStorage.getItem('auth-storage')
+    if (raw) {
+      const parsed = JSON.parse(raw)
+      const token = parsed?.state?.token
+      if (token) return token
+    }
+  } catch {}
+
+  // Cookie fallback
+  return document.cookie.match(/tp_token=([^;]+)/)?.[1] || ''
 }
 
 async function request(method: string, url: string, data?: unknown, params?: Record<string, unknown>) {
