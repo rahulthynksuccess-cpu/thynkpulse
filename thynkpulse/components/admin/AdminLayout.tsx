@@ -6,13 +6,15 @@ import { LayoutDashboard, FileText, Pencil, Users, FileCheck, Palette, LogOut, M
 import { useAuthStore } from '@/store/authStore'
 
 const NAV = [
-  { icon: LayoutDashboard, label: 'Overview',    href: '/admin'             },
-  { icon: Users,           label: 'Users',        href: '/admin/users'       },
-  { icon: FileCheck,       label: 'Approvals',    href: '/admin/approvals'   },
-  { icon: FileText,        label: 'Posts',        href: '/admin/posts'       },
-  { icon: BarChart2,       label: 'Analytics',    href: '/admin/analytics'   },  
-  { icon: Pencil,          label: 'Content',      href: '/admin/content'     },
-  { icon: Palette,         label: 'Theme',        href: '/admin/theme'       },
+  { icon: LayoutDashboard, label: 'Overview',       href: '/admin'                   },
+  { icon: Users,           label: 'Users',           href: '/admin/users'             },
+  { icon: FileCheck,       label: 'Approvals',       href: '/admin/approvals'         },
+  { icon: FileText,        label: 'Posts',           href: '/admin/posts'             },
+  { icon: MessageSquare,   label: 'Communications',  href: '/admin/communications'    },
+  { icon: Plug,            label: 'Integrations',    href: '/admin/integrations'      },
+  { icon: BarChart2,       label: 'Analytics',       href: '/admin/analytics'         },
+  { icon: Pencil,          label: 'Content',         href: '/admin/content'           },
+  { icon: Palette,         label: 'Theme',           href: '/admin/theme'             },
 ]
 
 export function AdminLayout({ children, title, subtitle }: {
