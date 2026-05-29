@@ -46,12 +46,48 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
     )
     if (res.rows.length === 0) return Response.json({ error: 'Post not found' }, { status: 404 })
 
-    if (status === 'approved') {
+     if (status === 'approved') {
       await db.query('UPDATE user_profiles SET post_count = post_count + 1 WHERE user_id = $1', [res.rows[0].author_id]).catch(() => {})
       await logActivity(res.rows[0].author_id, 'post_approved', `Post ID: ${params.id}`)
+
+      // Fetch author details for the notification
+      const authorRes = await db.query(
+        `SELECT u.email, u.phone, p.full_name, p.contact_number
+         FROM users u JOIN user_profiles p ON p.user_id = u.id
+         WHERE u.id = $1`, [res.rows[0].author_id]
+      )
+      const postRes = await db.query(`SELECT title, slug FROM posts WHERE id = $1`, [params.id])
+      const author = authorRes.rows[0]
+      const post   = postRes.rows[0]
+      if (author && post) {
+        await fireTrigger('post.approved', {
+          user_name:  author.full_name || '',
+          user_email: author.email     || '',
+          user_phone: author.contact_number || author.phone || '',
+          post_title: post.title,
+          post_url:   `${process.env.NEXT_PUBLIC_APP_URL}/post/${post.slug}`,
+        })
+      }
     }
     if (status === 'rejected') {
       await logActivity(res.rows[0].author_id, 'post_rejected', `Post ID: ${params.id}`)
+
+      const authorRes = await db.query(
+        `SELECT u.email, u.phone, p.full_name, p.contact_number
+         FROM users u JOIN user_profiles p ON p.user_id = u.id
+         WHERE u.id = $1`, [res.rows[0].author_id]
+      )
+      const postRes = await db.query(`SELECT title FROM posts WHERE id = $1`, [params.id])
+      const author = authorRes.rows[0]
+      const post   = postRes.rows[0]
+      if (author && post) {
+        await fireTrigger('post.rejected', {
+          user_name:  author.full_name || '',
+          user_email: author.email     || '',
+          user_phone: author.contact_number || author.phone || '',
+          post_title: post.title,
+        })
+      }
     }
 
     return Response.json({ message: 'Post updated' })
