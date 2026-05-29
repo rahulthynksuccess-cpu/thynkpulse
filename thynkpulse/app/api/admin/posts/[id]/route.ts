@@ -3,6 +3,7 @@ import { NextRequest } from 'next/server'
 import db from '@/lib/db'
 import { getTokenFromHeader, verifyToken } from '@/lib/auth'
 import { logActivity } from '@/lib/activity'
+import { fireTrigger } from '@/lib/comm'
 
 function authAdmin(req: NextRequest) {
   const token = getTokenFromHeader(req.headers.get('authorization') || '')
@@ -46,11 +47,11 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
     )
     if (res.rows.length === 0) return Response.json({ error: 'Post not found' }, { status: 404 })
 
-     if (status === 'approved') {
+    if (status === 'approved') {
       await db.query('UPDATE user_profiles SET post_count = post_count + 1 WHERE user_id = $1', [res.rows[0].author_id]).catch(() => {})
       await logActivity(res.rows[0].author_id, 'post_approved', `Post ID: ${params.id}`)
 
-      // Fetch author details for the notification
+      // Notify author their post is live
       const authorRes = await db.query(
         `SELECT u.email, u.phone, p.full_name, p.contact_number
          FROM users u JOIN user_profiles p ON p.user_id = u.id
@@ -69,9 +70,11 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
         })
       }
     }
+
     if (status === 'rejected') {
       await logActivity(res.rows[0].author_id, 'post_rejected', `Post ID: ${params.id}`)
 
+      // Notify author their post was rejected
       const authorRes = await db.query(
         `SELECT u.email, u.phone, p.full_name, p.contact_number
          FROM users u JOIN user_profiles p ON p.user_id = u.id
