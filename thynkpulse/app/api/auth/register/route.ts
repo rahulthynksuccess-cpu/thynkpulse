@@ -3,6 +3,7 @@ import { NextRequest } from 'next/server'
 import db from '@/lib/db'
 import { hashPassword, signToken } from '@/lib/auth'
 import { logActivity, getClientIP } from '@/lib/activity'
+import { fireTrigger } from '@/lib/comm'
 
 export async function POST(req: NextRequest) {
   try {
@@ -47,7 +48,11 @@ export async function POST(req: NextRequest) {
 
     // Log registration
     await logActivity(user.id, 'register', `New account — role: ${role}`, ip, ua)
-
+await fireTrigger('user.registered', {
+  user_name:  fullName    || '',
+  user_email: email       || '',
+  user_phone: contactNumber || phone || '',
+})
     const profileRes = await db.query('SELECT * FROM user_profiles WHERE user_id=$1', [user.id])
     const profile = profileRes.rows[0]
     const token = signToken({ userId: user.id, role: user.role })
