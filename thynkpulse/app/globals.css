@@ -527,3 +527,16 @@ h2 { font-size: clamp(28px, 4vw, 42px) !important; }
 @media (max-width: 600px) {
   .auth-card { width: 100% !important; margin: 0 !important; padding: 28px 20px !important; border-radius: 0 !important; }
 }
+
+/* ── Unified auth page background (patch2) ────────────────────
+   All three auth pages read --auth-page-bg. Change once, all
+   three update. Legacy vars kept as aliases for backwards compat. */
+:root {
+  --auth-page-bg: var(--cream);
+  --login-bg:     var(--auth-page-bg);
+  --register-bg:  var(--auth-page-bg);
+  --forgot-bg:    var(--auth-page-bg);
+}
+@media (max-width: 520px) {
+  .auth-shell-card { padding: 24px 20px !important; border-radius: 0 !important; border-left: none !important; border-right: none !important; }
+}

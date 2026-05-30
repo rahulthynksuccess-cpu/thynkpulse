@@ -5,22 +5,27 @@ const getBase = () => {
 
 function getToken(): string {
   if (typeof window === 'undefined') return ''
-  // Direct key (set by setAuth)
-  const direct = localStorage.getItem('tp_token') ||
-                 sessionStorage.getItem('tp_token')
+
+  // 1. Direct key — set by setAuth() on login
+  const direct = localStorage.getItem('tp_token') || sessionStorage.getItem('tp_token')
   if (direct) return direct
 
-  // Zustand persist fallback (stored as JSON under 'auth-storage')
+  // 2. Zustand persist fallback — key is 'tp-auth' (the name in authStore.ts)
+  //    Covers the case where tp_token was cleared but Zustand state is still hydrated
   try {
-    const raw = localStorage.getItem('auth-storage')
+    const raw = localStorage.getItem('tp-auth')
     if (raw) {
       const parsed = JSON.parse(raw)
       const token = parsed?.state?.token
-      if (token) return token
+      if (token) {
+        // Re-sync the direct key so future reads are fast
+        localStorage.setItem('tp_token', token)
+        return token
+      }
     }
   } catch {}
 
-  // Cookie fallback
+  // 3. Cookie fallback (set by setAuth)
   return document.cookie.match(/tp_token=([^;]+)/)?.[1] || ''
 }
 

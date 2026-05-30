@@ -5,17 +5,21 @@ import { hashPassword, signToken } from '@/lib/auth'
 import { logActivity, getClientIP } from '@/lib/activity'
 import { fireTrigger } from '@/lib/comm'
 
+const VALID_ROLES = ['educator', 'edtech_pro', 'student', 'parent', 'other']
+
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json()
     const { email, phone, password, role, fullName, gender, designation,
-            instituteName, companyName, contactNumber, emailId, totalExp, introduction } = body
+            instituteName, companyName, contactNumber, emailId, totalExp, introduction,
+            grade, schoolName, boardType,
+            childGrade, childSchool, parentOccupation } = body
 
     if (!password || password.length < 8)
       return Response.json({ error: 'Password must be at least 8 characters' }, { status: 400 })
     if (!email && !phone)
       return Response.json({ error: 'Email or phone is required' }, { status: 400 })
-    if (!['educator', 'edtech_pro', 'other'].includes(role))
+    if (!VALID_ROLES.includes(role))
       return Response.json({ error: 'Invalid role' }, { status: 400 })
 
     const existing = await db.query(
@@ -36,24 +40,33 @@ export async function POST(req: NextRequest) {
     )
     const user = userRes.rows[0]
 
+    // Build designation based on role
+    let designationVal = designation || null
+    if (role === 'student') {
+      designationVal = `Student${grade ? ` — Grade ${grade}` : ''}`
+    } else if (role === 'parent') {
+      designationVal = designation || 'Parent / Guardian'
+    }
+
     await db.query(
       `INSERT INTO user_profiles
        (user_id, full_name, gender, designation, institute_name, company_name,
         contact_number, email_id, total_exp, introduction,
         post_count, follower_count, following_count, total_reads)
        VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,0,0,0,0)`,
-      [user.id, fullName, gender||null, designation||null, instituteName||null,
-       companyName||null, contactNumber||null, emailId||null, totalExp||null, introduction||null]
+      [user.id, fullName, gender||null, designationVal,
+       schoolName || instituteName || null,
+       companyName||null, contactNumber||null,
+       emailId||null, totalExp||null, introduction||null]
     )
 
-    // Log registration
     await logActivity(user.id, 'register', `New account — role: ${role}`, ip, ua)
 
-    // Fire welcome communication trigger
+    // Fire welcome trigger (patch1 comm system)
     await fireTrigger('user.registered', {
-      user_name:  fullName        || '',
-      user_email: email           || '',
-      user_phone: contactNumber   || phone || '',
+      user_name:  fullName      || '',
+      user_email: email         || '',
+      user_phone: contactNumber || phone || '',
     })
 
     const profileRes = await db.query('SELECT * FROM user_profiles WHERE user_id=$1', [user.id])
@@ -61,7 +74,7 @@ export async function POST(req: NextRequest) {
     const token = signToken({ userId: user.id, role: user.role })
 
     return Response.json({
-      user: { ...user, profile: { ...profile, fullName: profile.full_name } },
+      user: { ...user, profile: { ...profile, fullName: profile.full_name }, userRole: role },
       token,
       message: 'Account created successfully',
     }, { status: 201 })
