@@ -86,8 +86,8 @@ export default function EdTechArticlesPage() {
                 onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.borderColor = 'var(--border)'; (e.currentTarget as HTMLButtonElement).style.background = 'var(--cream)' }}>
                 <span style={{ fontSize: 22 }}>{topic.icon}</span>
                 <div>
-                  <div style={{ fontSize: '13px', fontWeight: 600, color: 'var(--ink)' }}>{topic.title}</div>
-                  <div style={{ fontSize: '11px', color: 'var(--muted)' }}>{topic.count}</div>
+                  <div style={{ fontSize: '14px', fontWeight: 600, color: 'var(--ink)' }}>{topic.title}</div>
+                  <div style={{ fontSize: '13px', color: 'var(--muted)' }}>{topic.count}</div>
                 </div>
               </button>
             ))}
@@ -149,7 +149,7 @@ export default function EdTechArticlesPage() {
                       <div style={{ height: 160, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 48, background: GRADIENTS[i % GRADIENTS.length] }}>
                         {post.coverEmoji || '💡'}
                       </div>
-                      <span style={{ position: 'absolute', top: 14, left: 14, fontSize: '11px', fontWeight: 700, letterSpacing: '1px', textTransform: 'uppercase', padding: '5px 12px', borderRadius: '6px', background: 'rgba(10,95,85,.12)', color: 'var(--teal)', border: '1px solid rgba(10,95,85,.2)' }}>
+                      <span style={{ position: 'absolute', top: 14, left: 14, fontSize: '12px', fontWeight: 700, letterSpacing: '1px', textTransform: 'uppercase', padding: '5px 12px', borderRadius: '6px', background: 'rgba(10,95,85,.12)', color: 'var(--teal)', border: '1px solid rgba(10,95,85,.2)' }}>
                         EdTech
                       </span>
                     </div>
@@ -158,7 +158,7 @@ export default function EdTechArticlesPage() {
                         {post.title}
                       </div>
                       {post.excerpt && (
-                        <div style={{ fontSize: '13px', color: 'var(--muted)', lineHeight: 1.7, flex: 1, marginBottom: 16 }}>
+                        <div style={{ fontSize: '15px', color: 'var(--muted)', lineHeight: 1.75, flex: 1, marginBottom: 16 }}>
                           {post.excerpt}
                         </div>
                       )}
@@ -167,10 +167,10 @@ export default function EdTechArticlesPage() {
                           {post.author?.fullName?.split(' ').map(n => n[0]).join('').slice(0, 2) || 'U'}
                         </div>
                         <div>
-                          <div style={{ fontSize: '13px', fontWeight: 600, color: 'var(--ink)' }}>{post.author?.fullName}</div>
-                          <div style={{ fontSize: '11px', color: 'var(--muted)' }}>{post.readTime} min read</div>
+                          <div style={{ fontSize: '14px', fontWeight: 600, color: 'var(--ink)' }}>{post.author?.fullName}</div>
+                          <div style={{ fontSize: '13px', color: 'var(--muted)' }}>{post.readTime} min read</div>
                         </div>
-                        <div style={{ marginLeft: 'auto', display: 'flex', gap: 8, fontSize: '12px', color: 'var(--muted)' }}>
+                        <div style={{ marginLeft: 'auto', display: 'flex', gap: 8, fontSize: '13px', color: 'var(--muted)' }}>
                           <span>❤️ {post.likeCount}</span>
                           <span>👁 {post.viewCount >= 1000 ? `${(post.viewCount / 1000).toFixed(1)}K` : post.viewCount}</span>
                         </div>

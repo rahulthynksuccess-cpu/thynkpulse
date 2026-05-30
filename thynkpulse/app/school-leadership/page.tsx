@@ -101,8 +101,8 @@ export default function SchoolLeadershipPage() {
               <div key={p.title}
                 style={{ padding: '16px', borderRadius: 12, background: '#fff', border: '1px solid var(--border)', cursor: 'pointer' }}>
                 <div style={{ fontSize: 24, marginBottom: 6 }}>{p.icon}</div>
-                <div style={{ fontSize: '13px', fontWeight: 600, color: 'var(--ink)', marginBottom: 2 }}>{p.title}</div>
-                <div style={{ fontSize: '11px', color: 'var(--muted)' }}>{p.desc}</div>
+                <div style={{ fontSize: '14px', fontWeight: 600, color: 'var(--ink)', marginBottom: 2 }}>{p.title}</div>
+                <div style={{ fontSize: '13px', color: 'var(--muted)' }}>{p.desc}</div>
               </div>
             ))}
           </div>
@@ -124,7 +124,7 @@ export default function SchoolLeadershipPage() {
                   <div style={{ fontFamily: 'var(--font-serif)', fontSize: 'clamp(20px,2.5vw,26px)', fontWeight: 700, color: 'var(--ink)', lineHeight: 1.3, marginBottom: 10 }}>
                     {featured.title}
                   </div>
-                  <div style={{ fontSize: '14px', color: 'var(--muted)', lineHeight: 1.7, marginBottom: 20 }}>
+                  <div style={{ fontSize: '15px', color: 'var(--muted)', lineHeight: 1.7, marginBottom: 20 }}>
                     {featured.excerpt}
                   </div>
                   <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
@@ -132,10 +132,10 @@ export default function SchoolLeadershipPage() {
                       {featured.author?.fullName?.split(' ').map(n => n[0]).join('').slice(0, 2) || 'U'}
                     </div>
                     <div>
-                      <div style={{ fontSize: '13px', fontWeight: 600, color: 'var(--ink)' }}>{featured.author?.fullName}</div>
-                      <div style={{ fontSize: '12px', color: 'var(--muted)' }}>{featured.author?.designation} · {featured.readTime} min read</div>
+                      <div style={{ fontSize: '14px', fontWeight: 600, color: 'var(--ink)' }}>{featured.author?.fullName}</div>
+                      <div style={{ fontSize: '13px', color: 'var(--muted)' }}>{featured.author?.designation} · {featured.readTime} min read</div>
                     </div>
-                    <div style={{ marginLeft: 'auto', fontSize: '12px', color: 'var(--muted)' }}>
+                    <div style={{ marginLeft: 'auto', fontSize: '13px', color: 'var(--muted)' }}>
                       👁 {(featured.viewCount / 1000).toFixed(1)}K · ❤️ {featured.likeCount}
                     </div>
                   </div>
@@ -167,7 +167,7 @@ export default function SchoolLeadershipPage() {
                         {post.title}
                       </div>
                       {post.excerpt && (
-                        <div style={{ fontSize: '13px', color: 'var(--muted)', lineHeight: 1.7, flex: 1, marginBottom: 14 }}>
+                        <div style={{ fontSize: '15px', color: 'var(--muted)', lineHeight: 1.75, flex: 1, marginBottom: 14 }}>
                           {post.excerpt.slice(0, 110)}...
                         </div>
                       )}
@@ -177,9 +177,9 @@ export default function SchoolLeadershipPage() {
                         </div>
                         <div style={{ flex: 1, minWidth: 0 }}>
                           <div style={{ fontSize: '12px', fontWeight: 600, color: 'var(--ink)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{post.author?.fullName}</div>
-                          <div style={{ fontSize: '11px', color: 'var(--muted)' }}>{post.readTime} min read</div>
+                          <div style={{ fontSize: '13px', color: 'var(--muted)' }}>{post.readTime} min read</div>
                         </div>
-                        <span style={{ fontSize: '12px', color: 'var(--muted)' }}>❤️ {post.likeCount}</span>
+                        <span style={{ fontSize: '13px', color: 'var(--muted)' }}>❤️ {post.likeCount}</span>
                       </div>
                     </div>
                   </Link>

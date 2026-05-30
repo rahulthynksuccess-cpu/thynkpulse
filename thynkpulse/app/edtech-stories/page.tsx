@@ -103,7 +103,7 @@ export default function EdTechStoriesPage() {
                   <div style={{ fontFamily: 'var(--font-serif)', fontSize: 'clamp(20px,2.5vw,28px)', fontWeight: 700, color: 'var(--ink)', lineHeight: 1.3, marginBottom: 12 }}>
                     {featured.title}
                   </div>
-                  <div style={{ fontSize: '14px', color: 'var(--muted)', lineHeight: 1.7, marginBottom: 20 }}>
+                  <div style={{ fontSize: '15px', color: 'var(--muted)', lineHeight: 1.7, marginBottom: 20 }}>
                     {featured.excerpt}
                   </div>
                   <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
@@ -112,9 +112,9 @@ export default function EdTechStoriesPage() {
                     </div>
                     <div>
                       <div style={{ fontSize: '14px', fontWeight: 600, color: 'var(--ink)' }}>{featured.author?.fullName}</div>
-                      <div style={{ fontSize: '12px', color: 'var(--muted)' }}>{featured.author?.designation} · {featured.readTime} min read</div>
+                      <div style={{ fontSize: '13px', color: 'var(--muted)' }}>{featured.author?.designation} · {featured.readTime} min read</div>
                     </div>
-                    <div style={{ marginLeft: 'auto', fontSize: '12px', color: 'var(--muted)' }}>
+                    <div style={{ marginLeft: 'auto', fontSize: '13px', color: 'var(--muted)' }}>
                       ❤️ {featured.likeCount} · 💬 {featured.commentCount}
                     </div>
                   </div>
@@ -145,7 +145,7 @@ export default function EdTechStoriesPage() {
                         {post.title}
                       </div>
                       {post.excerpt && (
-                        <div style={{ fontSize: '13px', color: 'var(--muted)', lineHeight: 1.7, flex: 1, marginBottom: 14 }}>
+                        <div style={{ fontSize: '15px', color: 'var(--muted)', lineHeight: 1.75, flex: 1, marginBottom: 14 }}>
                           {post.excerpt.slice(0, 120)}...
                         </div>
                       )}
@@ -155,9 +155,9 @@ export default function EdTechStoriesPage() {
                         </div>
                         <div style={{ flex: 1, minWidth: 0 }}>
                           <div style={{ fontSize: '12px', fontWeight: 600, color: 'var(--ink)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{post.author?.fullName}</div>
-                          <div style={{ fontSize: '11px', color: 'var(--muted)' }}>{post.readTime} min read</div>
+                          <div style={{ fontSize: '13px', color: 'var(--muted)' }}>{post.readTime} min read</div>
                         </div>
-                        <span style={{ fontSize: '12px', color: 'var(--muted)' }}>❤️ {post.likeCount}</span>
+                        <span style={{ fontSize: '13px', color: 'var(--muted)' }}>❤️ {post.likeCount}</span>
                       </div>
                     </div>
                   </Link>

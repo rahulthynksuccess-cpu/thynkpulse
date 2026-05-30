@@ -95,11 +95,11 @@ function PostCard({ post, big=false, index=0 }: { post: Post; big?: boolean; ind
           </span>
         </div>
         <div style={{ padding:'22px', flex:1, display:'flex', flexDirection:'column' }}>
-          <div style={{ fontFamily:'var(--font-serif)', fontSize: big ? 'var(--post-title-size,26px)' : 'var(--post-title-size,18px)', fontWeight:600, color:'var(--post-title-color,var(--ink))', lineHeight:1.35, marginBottom:'8px' }}>
+          <div style={{ fontFamily:'var(--font-serif)', fontSize: big ? 'var(--post-title-size,26px)' : 'var(--post-title-size,19px)', fontWeight:600, color:'var(--post-title-color,var(--ink))', lineHeight:1.35, marginBottom:'8px' }}>
             {post.title}
           </div>
           {post.excerpt && (
-            <div style={{ fontSize:'var(--post-excerpt-size,13px)', color:'var(--post-excerpt-color,var(--muted))', lineHeight:1.7, marginBottom:'16px', flex:1 }}>
+            <div style={{ fontSize:'var(--post-excerpt-size,15px)', color:'var(--post-excerpt-color,var(--muted))', lineHeight:1.7, marginBottom:'16px', flex:1 }}>
               {post.excerpt}
             </div>
           )}
@@ -108,8 +108,8 @@ function PostCard({ post, big=false, index=0 }: { post: Post; big?: boolean; ind
               {post.author?.fullName?.split(' ').map(n=>n[0]).join('').slice(0,2) || 'U'}
             </div>
             <div style={{ flex:1, minWidth:0 }}>
-              <div style={{ fontSize:'13px', fontWeight:600, color:'var(--ink)', overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap' }}>{post.author?.fullName || 'Author'}</div>
-              <div style={{ fontSize:'11px', color:'var(--muted)' }}>{post.author?.designation} · {post.readTime} min read</div>
+              <div style={{ fontSize:'14px', fontWeight:600, color:'var(--ink)', overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap' }}>{post.author?.fullName || 'Author'}</div>
+              <div style={{ fontSize:'12px', color:'var(--muted)' }}>{post.author?.designation} · {post.readTime} min read</div>
             </div>
             <div style={{ display:'flex', gap:'8px', fontSize:'12px', color:'var(--muted)', flexShrink:0 }}>
               <span>❤️ {post.likeCount}</span>
@@ -246,7 +246,7 @@ export function TrendingSection() {
               <div style={{ fontFamily:'var(--font-serif)', fontSize:'var(--trending-rank-size,32px)', fontWeight:900, color:'var(--trending-num-color,var(--parchment))', lineHeight:1, flexShrink:0, minWidth:'44px' }}>{t.num}</div>
               <div style={{ flex:1, minWidth:0 }}>
                 <div style={{ fontFamily:'var(--font-mono)', fontSize:'var(--trending-cat-size,11px)', fontWeight:700, letterSpacing:'1px', textTransform:'uppercase', color:'var(--trending-cat-color,var(--coral))', marginBottom:'5px' }}>{t.tag}</div>
-                <div style={{ fontFamily:'var(--font-serif)', fontSize:'var(--trending-title-size,17px)', fontWeight:600, color:'var(--trending-title-color,var(--ink))', lineHeight:1.35, marginBottom:'8px' }}>{t.title}</div>
+                <div style={{ fontFamily:'var(--font-serif)', fontSize:'var(--trending-title-size,18px)', fontWeight:600, color:'var(--trending-title-color,var(--ink))', lineHeight:1.35, marginBottom:'8px' }}>{t.title}</div>
                 <div style={{ display:'flex', gap:'14px', fontSize:'12px', color:'var(--trending-meta-color,var(--muted))' }}>
                   <span>👁 {t.reads} reads</span><span>❤️ {t.likes}</span><span>💬 {t.comments}</span>
                 </div>
@@ -286,7 +286,7 @@ export function TrendingSection() {
           </div>
           <div style={{ background:'var(--ad-bg)', border:'1px dashed var(--ad-border)', borderRadius:'var(--radius)', padding:'16px', textAlign:'center', minHeight:'120px', display:'flex', alignItems:'center', justifyContent:'center', flexDirection:'column', gap:'4px' }}>
             <div style={{ fontFamily:'var(--font-mono)', fontSize:'9px', color:'var(--muted)', letterSpacing:'1px', textTransform:'uppercase' }}>Advertisement</div>
-            <div style={{ fontSize:'11px', color:'var(--muted)' }}>Sidebar ad · 300×250</div>
+            <div style={{ fontSize:'12px', color:'var(--muted)' }}>Sidebar ad · 300×250</div>
           </div>
         </div>
       </div>

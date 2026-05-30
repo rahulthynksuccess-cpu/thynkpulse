@@ -6,26 +6,25 @@ const getBase = () => {
 function getToken(): string {
   if (typeof window === 'undefined') return ''
 
-  // 1. Direct key — set by setAuth() on login
+  // 1. Direct key — written by setAuth() on login AND on every rehydration (onRehydrateStorage)
   const direct = localStorage.getItem('tp_token') || sessionStorage.getItem('tp_token')
   if (direct) return direct
 
-  // 2. Zustand persist fallback — key is 'tp-auth' (the name in authStore.ts)
-  //    Covers the case where tp_token was cleared but Zustand state is still hydrated
+  // 2. Zustand persist fallback — key is 'tp-auth' (name in authStore.ts)
+  //    Catches the edge case where tp_token was cleared but Zustand state survived
   try {
     const raw = localStorage.getItem('tp-auth')
     if (raw) {
       const parsed = JSON.parse(raw)
       const token = parsed?.state?.token
       if (token) {
-        // Re-sync the direct key so future reads are fast
-        localStorage.setItem('tp_token', token)
+        localStorage.setItem('tp_token', token) // re-sync for next reads
         return token
       }
     }
   } catch {}
 
-  // 3. Cookie fallback (set by setAuth)
+  // 3. Cookie fallback
   return document.cookie.match(/tp_token=([^;]+)/)?.[1] || ''
 }
 
@@ -50,6 +49,7 @@ async function request(method: string, url: string, data?: unknown, params?: Rec
   if (!res.ok) {
     let errMsg = `HTTP ${res.status}`
     try { const e = await res.json(); errMsg = e.error || e.message || errMsg } catch {}
+    // If 401/403, the real message surfaces so admin knows to re-login
     throw new Error(errMsg)
   }
 

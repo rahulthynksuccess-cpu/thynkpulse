@@ -21,7 +21,6 @@ export const useAuthStore = create<AuthState>()(
       setAuth: (user, token) => {
         if (typeof window !== 'undefined') {
           localStorage.setItem('tp_token', token)
-          // Write cookie so server-side and api.ts can read it
           document.cookie = `tp_token=${token}; path=/; max-age=${7*24*3600}; samesite=strict`
         }
         set({ user, token, isAuthenticated: true })
@@ -41,6 +40,19 @@ export const useAuthStore = create<AuthState>()(
     {
       name: 'tp-auth',
       partialize: state => ({ user: state.user, token: state.token, isAuthenticated: state.isAuthenticated }),
+
+      // ── KEY FIX ──────────────────────────────────────────────────────────
+      // When Zustand rehydrates (every page load / tab open), it calls set()
+      // directly and does NOT call setAuth(). So localStorage.tp_token would
+      // be stale or missing after a Vercel re-deploy.
+      // onRehydrateStorage re-syncs tp_token every time the store loads,
+      // ensuring apiPost always has a valid token in localStorage.
+      onRehydrateStorage: () => (state) => {
+        if (!state?.token || typeof window === 'undefined') return
+        // Re-write tp_token so api.ts getToken() always finds it
+        localStorage.setItem('tp_token', state.token)
+        document.cookie = `tp_token=${state.token}; path=/; max-age=${7*24*3600}; samesite=strict`
+      },
     }
   )
 )

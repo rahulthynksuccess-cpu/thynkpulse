@@ -27,15 +27,15 @@ const DEFAULT: Record<string, any> = {
   statsBg:'#FFFFFF', statNumSize:36, statNumColor:'#1A1208',
   statLabelSize:11, statLabelColor:'#7A6A52',
   /* Posts section */
-  postsBg:'#FDF6EC', postTitleSize:20, postTitleColor:'#1A1208',
-  postExcerptSize:13, postExcerptColor:'#7A6A52',
+  postsBg:'#FDF6EC', postTitleSize:22, postTitleColor:'#1A1208',
+  postExcerptSize:15, postExcerptColor:'#7A6A52',
   postCatColor:'#0A5F55', postCardBg:'#FFFFFF',
   /* Trending */
   trendingBg:'#FFFFFF', trendingNumColor:'#EDE0C8',
-  trendingTitleSize:17, trendingTitleColor:'#1A1208',
+  trendingTitleSize:18, trendingTitleColor:'#1A1208',
   /* Community section */
-  communityBg:'#FFFFFF', communityTitleSize:17, communityTitleColor:'#1A1208',
-  communityDescSize:13, communityDescColor:'#7A6A52',
+  communityBg:'#FFFFFF', communityTitleSize:18, communityTitleColor:'#1A1208',
+  communityDescSize:14, communityDescColor:'#7A6A52',
   /* CTA section */
   ctaSectionBg:'#FDF6EC', ctaH2Size:38, ctaH2Color:'#1A1208',
   ctaBg:'#0A5F55', ctaColor:'#FFFFFF', ctaSize:15,
@@ -43,6 +43,8 @@ const DEFAULT: Record<string, any> = {
   footerBg:'#0A5F55', footerTextColor:'rgba(255,255,255,0.6)',
   footerLinkColor:'#E5B64A', footerHeadingColor:'rgba(255,255,255,0.35)',
   footerTextSize:13,
+  /* Auth pages — ONE variable controls all three auth pages */
+  authPageBg:'#FDF6EC',
   /* Login page */
   loginBg:'#FDF6EC', loginCardBg:'#FFFFFF',
   loginH1Size:30, loginH1Color:'#1A1208',
@@ -433,9 +435,14 @@ function SectionControls({ section, t, onChange }: { section:string; t:any; onCh
     )
 
     case 'login': return (
-      <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:'16px' }}>
+      <div style={{ display:'flex', flexDirection:'column', gap:'14px' }}>
+        <div style={{ padding:'12px 14px', background:'rgba(10,95,85,.05)', border:'1.5px solid rgba(10,95,85,.2)', borderRadius:'10px', fontSize:'12px', color:'var(--teal)', fontFamily:'var(--font-sans)' }}>
+          💡 <strong>Auth Page Background</strong> controls the background of Login, Register, and Forgot Password — all three at once.
+        </div>
+        <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:'16px' }}>
         <div>
-          <ColorPicker label="Page background"  k="loginBg"          t={t} onChange={onChange} />
+          <ColorPicker label="Auth page background (all 3 pages)" k="authPageBg" t={t} onChange={onChange} />
+          <ColorPicker label="Card background"  k="loginCardBg"      t={t} onChange={onChange} />
           <ColorPicker label="Card background"  k="loginCardBg"      t={t} onChange={onChange} />
           <ColorPicker label="Headline colour"  k="loginH1Color"     t={t} onChange={onChange} />
           <ColorPicker label="Label colour"     k="loginLabelColor"  t={t} onChange={onChange} />
@@ -446,6 +453,7 @@ function SectionControls({ section, t, onChange }: { section:string; t:any; onCh
           <SliderRow label="Headline size" k="loginH1Size"    min={20} max={48} t={t} onChange={onChange} />
           <SliderRow label="Label size"    k="loginLabelSize" min={9}  max={14} t={t} onChange={onChange} />
         </div>
+      </div>
       </div>
     )
 
@@ -529,46 +537,6 @@ function SectionControls({ section, t, onChange }: { section:string; t:any; onCh
           <SliderRow label="Excerpt font size" k="postExcerptSize" min={11} max={18} t={t} onChange={onChange} />
           <SliderRow label="Card border radius" k="postCardRadius" min={0}  max={32} t={t} onChange={onChange} />
           <SliderRow label="Card shadow"        k="postCardShadow" min={0}  max={5}  t={t} onChange={onChange} />
-        </div>
-      </div>
-    )
-
-    case 'error-page': return (
-      <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:'16px' }}>
-        <div>
-          <ColorPicker label="Page background" k="errorBg"      t={t} onChange={onChange} />
-          <ColorPicker label="Heading colour"  k="errorH1Color" t={t} onChange={onChange} />
-        </div>
-      </div>
-    )
-
-    case 'forgot-password': return (
-      <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:'16px' }}>
-        <div>
-          <ColorPicker label="Page background" k="forgotBg"      t={t} onChange={onChange} />
-          <ColorPicker label="Card background" k="forgotCardBg"  t={t} onChange={onChange} />
-          <ColorPicker label="Heading colour"  k="forgotH1Color" t={t} onChange={onChange} />
-        </div>
-        <div>
-          <SliderRow label="Heading size" k="forgotH1Size" min={20} max={48} t={t} onChange={onChange} />
-        </div>
-      </div>
-    )
-
-    case 'post-cards': return (
-      <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:'16px' }}>
-        <div>
-          <ColorPicker label="Card background"     k="postCardBg"       t={t} onChange={onChange} />
-          <ColorPicker label="Title colour"        k="postTitleColor"   t={t} onChange={onChange} />
-          <ColorPicker label="Excerpt colour"      k="postExcerptColor" t={t} onChange={onChange} />
-          <ColorPicker label="Category colour"     k="postCatColor"     t={t} onChange={onChange} />
-          <ColorPicker label="Feed background"     k="postsBg"          t={t} onChange={onChange} />
-        </div>
-        <div>
-          <SliderRow label="Title size"    k="postTitleSize"   min={14} max={32} t={t} onChange={onChange} />
-          <SliderRow label="Excerpt size"  k="postExcerptSize" min={11} max={18} t={t} onChange={onChange} />
-          <SliderRow label="Card radius"   k="postCardRadius"  min={0}  max={32} t={t} onChange={onChange} />
-          <SliderRow label="Card shadow"   k="postCardShadow"  min={0}  max={5}  t={t} onChange={onChange} />
         </div>
       </div>
     )
@@ -1567,7 +1535,7 @@ export default function AdminThemePage() {
   const saveMutation = useMutation({
     mutationFn: () => apiPost('/admin/theme', { theme }),
     onSuccess: () => { toast.success('✅ Theme saved! Site updates in 60 seconds.'); setUnsaved(false) },
-    onError: () => toast.error('Failed to save'),
+    onError: (e: any) => toast.error(e?.message === 'HTTP 401' ? '🔑 Session expired — please log out and log back in' : e?.message === 'HTTP 403' ? '🚫 Forbidden — make sure your account has Admin role' : `❌ Save failed: ${e?.message || 'unknown error'}`),
   })
 
   const handleChange = (key: string, val: any) => {

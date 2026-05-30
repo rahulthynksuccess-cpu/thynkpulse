@@ -49,7 +49,7 @@ function PostCard({ post, index = 0 }: { post: Post; index?: number }) {
             {post.title}
           </div>
           {post.excerpt && (
-            <div style={{ fontSize: '13px', color: 'var(--muted)', lineHeight: 1.7, marginBottom: 16, flex: 1 }}>
+            <div style={{ fontSize: '15px', color: 'var(--muted)', lineHeight: 1.75, marginBottom: 16, flex: 1 }}>
               {post.excerpt}
             </div>
           )}
@@ -58,12 +58,12 @@ function PostCard({ post, index = 0 }: { post: Post; index?: number }) {
               {post.author?.fullName?.split(' ').map(n => n[0]).join('').slice(0, 2) || 'U'}
             </div>
             <div style={{ flex: 1, minWidth: 0 }}>
-              <div style={{ fontSize: '13px', fontWeight: 600, color: 'var(--ink)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+              <div style={{ fontSize: '14px', fontWeight: 600, color: 'var(--ink)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                 {post.author?.fullName || 'Author'}
               </div>
-              <div style={{ fontSize: '11px', color: 'var(--muted)' }}>{post.readTime} min read</div>
+              <div style={{ fontSize: '13px', color: 'var(--muted)' }}>{post.readTime} min read</div>
             </div>
-            <div style={{ display: 'flex', gap: 8, fontSize: '12px', color: 'var(--muted)', flexShrink: 0 }}>
+            <div style={{ display: 'flex', gap: 8, fontSize: '13px', color: 'var(--muted)', flexShrink: 0 }}>
               <span>❤️ {post.likeCount}</span>
               <span>👁 {post.viewCount >= 1000 ? `${(post.viewCount / 1000).toFixed(1)}K` : post.viewCount}</span>
             </div>
@@ -194,7 +194,7 @@ export default function LatestPostsPage() {
                     className="btn-outline" style={{ padding: '10px 20px', opacity: page === 1 ? 0.4 : 1 }}>
                     ← Prev
                   </button>
-                  <span style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 14, color: 'var(--muted)' }}>
+                  <span style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 15, color: 'var(--muted)' }}>
                     Page {page} of {totalPages}
                   </span>
                   <button onClick={() => setPage(p => Math.min(totalPages, p + 1))} disabled={page === totalPages}

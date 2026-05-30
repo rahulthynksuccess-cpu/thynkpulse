@@ -105,13 +105,13 @@ export default function TrendingNowPage() {
                     </div>
                     {/* Content */}
                     <div style={{ flex: 1 }}>
-                      <div style={{ fontFamily: 'var(--font-mono)', fontSize: '11px', fontWeight: 700, letterSpacing: '1px', textTransform: 'uppercase', color: 'var(--coral)', marginBottom: 6 }}>
+                      <div style={{ fontFamily: 'var(--font-mono)', fontSize: '12px', fontWeight: 700, letterSpacing: '1px', textTransform: 'uppercase', color: 'var(--coral)', marginBottom: 6 }}>
                         {post.category}
                       </div>
                       <div style={{ fontFamily: 'var(--font-serif)', fontSize: 19, fontWeight: 600, color: 'var(--ink)', lineHeight: 1.35, marginBottom: 8 }}>
                         {post.title}
                       </div>
-                      <div style={{ display: 'flex', gap: 14, fontSize: '12px', color: 'var(--muted)', flexWrap: 'wrap' }}>
+                      <div style={{ display: 'flex', gap: 14, fontSize: '13px', color: 'var(--muted)', flexWrap: 'wrap' }}>
                         <span>✍️ {post.author?.fullName}</span>
                         <span>👁 {post.viewCount >= 1000 ? `${(post.viewCount / 1000).toFixed(1)}K` : post.viewCount} reads</span>
                         <span>❤️ {post.likeCount >= 1000 ? `${(post.likeCount / 1000).toFixed(1)}K` : post.likeCount}</span>

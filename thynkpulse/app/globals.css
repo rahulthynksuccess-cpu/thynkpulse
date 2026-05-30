@@ -528,15 +528,53 @@ h2 { font-size: clamp(28px, 4vw, 42px) !important; }
   .auth-card { width: 100% !important; margin: 0 !important; padding: 28px 20px !important; border-radius: 0 !important; }
 }
 
-/* ── Unified auth page background (patch2) ────────────────────
-   All three auth pages read --auth-page-bg. Change once, all
-   three update. Legacy vars kept as aliases for backwards compat. */
+/* ── Unified auth background ──────────────────────────────────────── */
 :root {
   --auth-page-bg: var(--cream);
   --login-bg:     var(--auth-page-bg);
   --register-bg:  var(--auth-page-bg);
   --forgot-bg:    var(--auth-page-bg);
 }
-@media (max-width: 520px) {
-  .auth-shell-card { padding: 24px 20px !important; border-radius: 0 !important; border-left: none !important; border-right: none !important; }
+
+/* ── Post card readability fixes ──────────────────────────────────── */
+/* Increase excerpt, meta, and category text so all cards are easy to read */
+.pcard .post-excerpt,
+[class*="pcard"] p {
+  font-size: var(--post-excerpt-size, 15px) !important;
+  line-height: 1.75 !important;
+  color: var(--post-excerpt-color, var(--muted)) !important;
 }
+
+/* Author name on cards */
+.pcard .author-name {
+  font-size: 14px !important;
+  font-weight: 600 !important;
+}
+
+/* "1 min read" meta on cards */
+.pcard .post-meta {
+  font-size: 12px !important;
+}
+
+/* Category badge on cards */
+.pcard .cat-badge {
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  letter-spacing: .5px !important;
+}
+
+/* Latest-posts page grid card text specifically */
+.latest-card-title  { font-size: 17px !important; line-height: 1.4 !important; }
+.latest-card-excerpt { font-size: 14px !important; line-height: 1.7 !important; }
+.latest-card-meta   { font-size: 12px !important; }
+
+/* Global readable body text */
+p, li, td, dd {
+  font-size: var(--size-base, 15px);
+  line-height: 1.8;
+}
+
+/* Heading sizes — clamp for all screens */
+h1 { font-size: clamp(32px, 5vw, var(--size-h1, 56px)); }
+h2 { font-size: clamp(26px, 4vw, var(--size-h2, 42px)); }
+h3 { font-size: clamp(20px, 3vw, var(--size-h3, 28px)); }

@@ -128,18 +128,18 @@ export default function WritersPage() {
                       </div>
                     }
                     <div style={{ flex: 1, minWidth: 0 }}>
-                      <div style={{ fontFamily: 'var(--font-serif)', fontSize: '16px', fontWeight: 700, color: 'var(--ink)', marginBottom: 2 }}>{w.fullName || w.name}</div>
-                      <div style={{ fontSize: '12px', color: 'var(--muted)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                      <div style={{ fontFamily: 'var(--font-serif)', fontSize: '17px', fontWeight: 700, color: 'var(--ink)', marginBottom: 2 }}>{w.fullName || w.name}</div>
+                      <div style={{ fontSize: '13px', color: 'var(--muted)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                         {w.designation || w.role}{(w.instituteName || w.companyName) ? ` · ${w.instituteName || w.companyName}` : ''}
                       </div>
                     </div>
                   </div>
                   {(w.bio || w.introduction) && (
-                    <div style={{ fontSize: '13px', color: 'var(--muted)', lineHeight: 1.6, marginBottom: 16 }}>
+                    <div style={{ fontSize: '15px', color: 'var(--muted)', lineHeight: 1.75, marginBottom: 16 }}>
                       {(w.bio || w.introduction || '').slice(0, 100)}{(w.bio || w.introduction || '').length > 100 ? '...' : ''}
                     </div>
                   )}
-                  <div style={{ display: 'flex', gap: 14, fontSize: '12px', color: 'var(--muted)', marginBottom: 16 }}>
+                  <div style={{ display: 'flex', gap: 14, fontSize: '13px', color: 'var(--muted)', marginBottom: 16 }}>
                     <span><strong style={{ color: 'var(--teal)' }}>{(w.followerCount || 0) >= 1000 ? `${((w.followerCount || 0) / 1000).toFixed(1)}K` : (w.followerCount || 0)}</strong> followers</span>
                     <span><strong style={{ color: 'var(--ink)' }}>{w.postCount || 0}</strong> articles</span>
                     {(w.totalReads || 0) > 0 && <span><strong style={{ color: 'var(--coral)' }}>{(w.totalReads || 0) >= 1000 ? `${((w.totalReads || 0) / 1000).toFixed(0)}K` : (w.totalReads || 0)}</strong> reads</span>}
