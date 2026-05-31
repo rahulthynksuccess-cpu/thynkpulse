@@ -1,7 +1,7 @@
 export const dynamic = "force-dynamic"
 import { NextRequest } from 'next/server'
 import db from '@/lib/db'
-import { getTokenFromHeader, verifyToken } from '@/lib/auth'
+import { requireAdmin, isAdminError } from '@/lib/adminAuth'
 
 async function ensureTable() {
   await db.query(`
@@ -23,10 +23,8 @@ export async function GET() {
 }
 
 export async function POST(req: NextRequest) {
-  const token = getTokenFromHeader(req.headers.get('authorization') || '')
-  if (!token) return Response.json({ error: 'Unauthorised' }, { status: 401 })
-  const payload = verifyToken(token) as any
-  if (!payload || payload.role !== 'admin') return Response.json({ error: 'Forbidden' }, { status: 403 })
+  const auth = await requireAdmin(req)
+  if (isAdminError(auth)) return auth
   await ensureTable()
   try {
     const body = await req.json()

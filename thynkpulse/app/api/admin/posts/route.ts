@@ -1,13 +1,11 @@
 export const dynamic = "force-dynamic"
 import { NextRequest } from 'next/server'
 import db from '@/lib/db'
-import { getTokenFromHeader, verifyToken } from '@/lib/auth'
+import { requireAdmin, isAdminError } from '@/lib/adminAuth'
 
 export async function GET(req: NextRequest) {
-  const token = getTokenFromHeader(req.headers.get('authorization') || '')
-  if (!token) return Response.json({ error: 'Unauthorised' }, { status: 401 })
-  const payload = verifyToken(token)
-  if (!payload || payload.role !== 'admin') return Response.json({ error: 'Forbidden' }, { status: 403 })
+  const auth = await requireAdmin(req)
+  if (isAdminError(auth)) return auth
 
   const { searchParams } = new URL(req.url)
   const status = searchParams.get('status') || 'pending'

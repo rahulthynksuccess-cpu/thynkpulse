@@ -1,20 +1,12 @@
 export const dynamic = "force-dynamic"
 import { NextRequest } from 'next/server'
 import db from '@/lib/db'
-import { getTokenFromHeader, verifyToken } from '@/lib/auth'
+import { requireAdmin, isAdminError } from '@/lib/adminAuth'
 import { logActivity } from '@/lib/activity'
-import { fireTrigger } from '@/lib/comm'
-
-function authAdmin(req: NextRequest) {
-  const token = getTokenFromHeader(req.headers.get('authorization') || '')
-  if (!token) return null
-  const payload = verifyToken(token)
-  if (!payload || payload.role !== 'admin') return null
-  return payload
-}
 
 export async function PUT(req: NextRequest, { params }: { params: { id: string } }) {
-  if (!authAdmin(req)) return Response.json({ error: 'Forbidden' }, { status: 403 })
+  const auth = await requireAdmin(req)
+  if (isAdminError(auth)) return auth
 
   try {
     const body = await req.json()
@@ -50,47 +42,9 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
     if (status === 'approved') {
       await db.query('UPDATE user_profiles SET post_count = post_count + 1 WHERE user_id = $1', [res.rows[0].author_id]).catch(() => {})
       await logActivity(res.rows[0].author_id, 'post_approved', `Post ID: ${params.id}`)
-
-      // Notify author their post is live
-      const authorRes = await db.query(
-        `SELECT u.email, u.phone, p.full_name, p.contact_number
-         FROM users u JOIN user_profiles p ON p.user_id = u.id
-         WHERE u.id = $1`, [res.rows[0].author_id]
-      )
-      const postRes = await db.query(`SELECT title, slug FROM posts WHERE id = $1`, [params.id])
-      const author = authorRes.rows[0]
-      const post   = postRes.rows[0]
-      if (author && post) {
-        await fireTrigger('post.approved', {
-          user_name:  author.full_name || '',
-          user_email: author.email     || '',
-          user_phone: author.contact_number || author.phone || '',
-          post_title: post.title,
-          post_url:   `${process.env.NEXT_PUBLIC_APP_URL}/post/${post.slug}`,
-        })
-      }
     }
-
     if (status === 'rejected') {
       await logActivity(res.rows[0].author_id, 'post_rejected', `Post ID: ${params.id}`)
-
-      // Notify author their post was rejected
-      const authorRes = await db.query(
-        `SELECT u.email, u.phone, p.full_name, p.contact_number
-         FROM users u JOIN user_profiles p ON p.user_id = u.id
-         WHERE u.id = $1`, [res.rows[0].author_id]
-      )
-      const postRes = await db.query(`SELECT title FROM posts WHERE id = $1`, [params.id])
-      const author = authorRes.rows[0]
-      const post   = postRes.rows[0]
-      if (author && post) {
-        await fireTrigger('post.rejected', {
-          user_name:  author.full_name || '',
-          user_email: author.email     || '',
-          user_phone: author.contact_number || author.phone || '',
-          post_title: post.title,
-        })
-      }
     }
 
     return Response.json({ message: 'Post updated' })
@@ -101,7 +55,8 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
 }
 
 export async function DELETE(req: NextRequest, { params }: { params: { id: string } }) {
-  if (!authAdmin(req)) return Response.json({ error: 'Forbidden' }, { status: 403 })
+  const auth = await requireAdmin(req)
+  if (isAdminError(auth)) return auth
   try {
     const res = await db.query('DELETE FROM posts WHERE id = $1 RETURNING id', [params.id])
     if (res.rows.length === 0) return Response.json({ error: 'Post not found' }, { status: 404 })

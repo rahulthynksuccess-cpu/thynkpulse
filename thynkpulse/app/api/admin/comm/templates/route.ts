@@ -2,19 +2,12 @@
 export const dynamic = 'force-dynamic'
 import { NextRequest } from 'next/server'
 import db from '@/lib/db'
-import { getTokenFromHeader, verifyToken } from '@/lib/auth'
-
-function adminOnly(req: NextRequest) {
-  const token = getTokenFromHeader(req.headers.get('authorization') || '')
-  if (!token) return null
-  const p = verifyToken(token) as any
-  return p?.role === 'admin' ? p : null
-}
+import { requireAdmin, isAdminError } from '@/lib/adminAuth'
 
 // GET /api/admin/comm/templates
 export async function GET(req: NextRequest) {
-  const p = adminOnly(req)
-  if (!p) return Response.json({ error: 'Forbidden' }, { status: 403 })
+  const auth = await requireAdmin(req)
+  if (isAdminError(auth)) return auth
   const { rows } = await db.query(
     `SELECT * FROM comm_templates ORDER BY created_at DESC`
   )
@@ -23,8 +16,8 @@ export async function GET(req: NextRequest) {
 
 // POST /api/admin/comm/templates  — create
 export async function POST(req: NextRequest) {
-  const p = adminOnly(req)
-  if (!p) return Response.json({ error: 'Forbidden' }, { status: 403 })
+  const auth = await requireAdmin(req)
+  if (isAdminError(auth)) return auth
   const { name, channel, subject, body, whatsapp_template_name, whatsapp_template_lang, is_active } = await req.json()
   if (!name || !body || !channel) return Response.json({ error: 'name, body and channel required' }, { status: 400 })
   const { rows } = await db.query(
@@ -37,8 +30,8 @@ export async function POST(req: NextRequest) {
 
 // PATCH /api/admin/comm/templates  — update
 export async function PATCH(req: NextRequest) {
-  const p = adminOnly(req)
-  if (!p) return Response.json({ error: 'Forbidden' }, { status: 403 })
+  const auth = await requireAdmin(req)
+  if (isAdminError(auth)) return auth
   const { id, ...fields } = await req.json()
   if (!id) return Response.json({ error: 'id required' }, { status: 400 })
   const allowed = ['name','channel','subject','body','whatsapp_template_name','whatsapp_template_lang','is_active']
@@ -55,8 +48,8 @@ export async function PATCH(req: NextRequest) {
 
 // DELETE /api/admin/comm/templates
 export async function DELETE(req: NextRequest) {
-  const p = adminOnly(req)
-  if (!p) return Response.json({ error: 'Forbidden' }, { status: 403 })
+  const auth = await requireAdmin(req)
+  if (isAdminError(auth)) return auth
   const { id } = await req.json()
   await db.query(`DELETE FROM comm_templates WHERE id = $1`, [id])
   return Response.json({ ok: true })

@@ -21,7 +21,7 @@ export const useAuthStore = create<AuthState>()(
       setAuth: (user, token) => {
         if (typeof window !== 'undefined') {
           localStorage.setItem('tp_token', token)
-          document.cookie = `tp_token=${token}; path=/; max-age=${7*24*3600}; samesite=strict`
+          document.cookie = `tp_token=${token}; path=/; max-age=${7 * 24 * 3600}; samesite=strict`
         }
         set({ user, token, isAuthenticated: true })
       },
@@ -29,6 +29,7 @@ export const useAuthStore = create<AuthState>()(
       logout: () => {
         if (typeof window !== 'undefined') {
           localStorage.removeItem('tp_token')
+          localStorage.removeItem('tp-auth')
           document.cookie = 'tp_token=; path=/; max-age=0'
         }
         set({ user: null, token: null, isAuthenticated: false })
@@ -39,19 +40,17 @@ export const useAuthStore = create<AuthState>()(
     }),
     {
       name: 'tp-auth',
-      partialize: state => ({ user: state.user, token: state.token, isAuthenticated: state.isAuthenticated }),
+      partialize: s => ({ user: s.user, token: s.token, isAuthenticated: s.isAuthenticated }),
 
-      // ── KEY FIX ──────────────────────────────────────────────────────────
-      // When Zustand rehydrates (every page load / tab open), it calls set()
-      // directly and does NOT call setAuth(). So localStorage.tp_token would
-      // be stale or missing after a Vercel re-deploy.
-      // onRehydrateStorage re-syncs tp_token every time the store loads,
-      // ensuring apiPost always has a valid token in localStorage.
+      // ── CRITICAL FIX ──────────────────────────────────────────────
+      // Zustand persist rehydrates by calling set() — NOT setAuth().
+      // So localStorage.tp_token is never refreshed on page load.
+      // This hook re-syncs it every time the app starts, ensuring
+      // api.ts always finds the token via localStorage.getItem('tp_token').
       onRehydrateStorage: () => (state) => {
         if (!state?.token || typeof window === 'undefined') return
-        // Re-write tp_token so api.ts getToken() always finds it
         localStorage.setItem('tp_token', state.token)
-        document.cookie = `tp_token=${state.token}; path=/; max-age=${7*24*3600}; samesite=strict`
+        document.cookie = `tp_token=${state.token}; path=/; max-age=${7 * 24 * 3600}; samesite=strict`
       },
     }
   )

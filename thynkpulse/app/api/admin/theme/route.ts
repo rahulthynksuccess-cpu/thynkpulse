@@ -1,7 +1,7 @@
 export const dynamic = "force-dynamic"
 import { NextRequest } from 'next/server'
 import db from '@/lib/db'
-import { getTokenFromHeader, verifyToken } from '@/lib/auth'
+import { requireAdmin, isAdminError } from '@/lib/adminAuth'
 
 /* ── Ensure settings table exists ── */
 async function ensureTable() {

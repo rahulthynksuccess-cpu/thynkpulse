@@ -3,21 +3,14 @@
 export const dynamic = 'force-dynamic'
 import { NextRequest } from 'next/server'
 import db from '@/lib/db'
-import { getTokenFromHeader, verifyToken } from '@/lib/auth'
-
-function adminOnly(req: NextRequest) {
-  const token = getTokenFromHeader(req.headers.get('authorization') || '')
-  if (!token) return null
-  const p = verifyToken(token) as any
-  return p?.role === 'admin' ? p : null
-}
+import { requireAdmin, isAdminError } from '@/lib/adminAuth'
 
 const KEYS = ['comm.email_smtp_configs', 'comm.whatsapp_settings']
 
 // GET /api/admin/comm/settings  — returns both email and whatsapp settings
 export async function GET(req: NextRequest) {
-  const p = adminOnly(req)
-  if (!p) return Response.json({ error: 'Forbidden' }, { status: 403 })
+  const auth = await requireAdmin(req)
+  if (isAdminError(auth)) return auth
   const { rows } = await db.query(
     `SELECT key, value FROM site_settings WHERE key = ANY($1)`,
     [KEYS]
@@ -33,8 +26,8 @@ export async function GET(req: NextRequest) {
 // Body: { key: 'comm.email_smtp_configs', value: [...] }
 //    or { key: 'comm.whatsapp_settings',  value: {...} }
 export async function POST(req: NextRequest) {
-  const p = adminOnly(req)
-  if (!p) return Response.json({ error: 'Forbidden' }, { status: 403 })
+  const auth = await requireAdmin(req)
+  if (isAdminError(auth)) return auth
   const { key, value } = await req.json()
   if (!key || !KEYS.includes(key)) return Response.json({ error: 'Invalid key' }, { status: 400 })
   await db.query(

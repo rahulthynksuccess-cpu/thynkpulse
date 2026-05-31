@@ -1,24 +1,23 @@
+// lib/api.ts
 const getBase = () => {
   if (typeof window !== 'undefined') return '/api'
   return (process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000') + '/api'
 }
 
-function getToken(): string {
+export function getToken(): string {
   if (typeof window === 'undefined') return ''
 
-  // 1. Direct key — written by setAuth() on login AND on every rehydration (onRehydrateStorage)
+  // 1. Direct localStorage key — set by setAuth() on login
   const direct = localStorage.getItem('tp_token') || sessionStorage.getItem('tp_token')
   if (direct) return direct
 
-  // 2. Zustand persist fallback — key is 'tp-auth' (name in authStore.ts)
-  //    Catches the edge case where tp_token was cleared but Zustand state survived
+  // 2. Zustand persist fallback — key is 'tp-auth'
   try {
     const raw = localStorage.getItem('tp-auth')
     if (raw) {
-      const parsed = JSON.parse(raw)
-      const token = parsed?.state?.token
+      const token = JSON.parse(raw)?.state?.token
       if (token) {
-        localStorage.setItem('tp_token', token) // re-sync for next reads
+        localStorage.setItem('tp_token', token) // re-sync
         return token
       }
     }
@@ -28,9 +27,13 @@ function getToken(): string {
   return document.cookie.match(/tp_token=([^;]+)/)?.[1] || ''
 }
 
-async function request(method: string, url: string, data?: unknown, params?: Record<string, unknown>) {
+async function request(
+  method: string,
+  url: string,
+  data?: unknown,
+  params?: Record<string, unknown>
+) {
   const token = getToken()
-
   const fullUrl = new URL(
     getBase() + url,
     typeof window !== 'undefined' ? window.location.origin : 'http://localhost:3000'
@@ -43,14 +46,29 @@ async function request(method: string, url: string, data?: unknown, params?: Rec
       'Content-Type': 'application/json',
       ...(token ? { Authorization: `Bearer ${token}` } : {}),
     },
-    ...(data ? { body: JSON.stringify(data) } : {}),
+    ...(data !== undefined ? { body: JSON.stringify(data) } : {}),
   })
 
   if (!res.ok) {
-    let errMsg = `HTTP ${res.status}`
-    try { const e = await res.json(); errMsg = e.error || e.message || errMsg } catch {}
-    // If 401/403, the real message surfaces so admin knows to re-login
-    throw new Error(errMsg)
+    let errBody: any = {}
+    try { errBody = await res.json() } catch {}
+
+    const msg = errBody?.error || errBody?.message || `HTTP ${res.status}`
+
+    // 401 = session expired → clear stored token so next request forces re-login
+    if (res.status === 401) {
+      if (typeof window !== 'undefined') {
+        localStorage.removeItem('tp_token')
+      }
+      throw new Error(`🔑 Session expired — please log out and sign in again. (${msg})`)
+    }
+
+    // 403 = wrong role → show the SQL fix from the server
+    if (res.status === 403) {
+      throw new Error(`🚫 ${msg}`)
+    }
+
+    throw new Error(msg)
   }
 
   const text = await res.text()

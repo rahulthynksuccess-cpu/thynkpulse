@@ -27,8 +27,8 @@ const DEFAULT: Record<string, any> = {
   statsBg:'#FFFFFF', statNumSize:36, statNumColor:'#1A1208',
   statLabelSize:11, statLabelColor:'#7A6A52',
   /* Posts section */
-  postsBg:'#FDF6EC', postTitleSize:22, postTitleColor:'#1A1208',
-  postExcerptSize:15, postExcerptColor:'#7A6A52',
+  postsBg:'#FDF6EC', postTitleSize:20, postTitleColor:'#1A1208',
+  postExcerptSize:13, postExcerptColor:'#7A6A52',
   postCatColor:'#0A5F55', postCardBg:'#FFFFFF',
   /* Trending */
   trendingBg:'#FFFFFF', trendingNumColor:'#EDE0C8',
@@ -529,6 +529,46 @@ function SectionControls({ section, t, onChange }: { section:string; t:any; onCh
           <SliderRow label="Excerpt font size" k="postExcerptSize" min={11} max={18} t={t} onChange={onChange} />
           <SliderRow label="Card border radius" k="postCardRadius" min={0}  max={32} t={t} onChange={onChange} />
           <SliderRow label="Card shadow"        k="postCardShadow" min={0}  max={5}  t={t} onChange={onChange} />
+        </div>
+      </div>
+    )
+
+    case 'error-page': return (
+      <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:'16px' }}>
+        <div>
+          <ColorPicker label="Page background" k="errorBg"      t={t} onChange={onChange} />
+          <ColorPicker label="Heading colour"  k="errorH1Color" t={t} onChange={onChange} />
+        </div>
+      </div>
+    )
+
+    case 'forgot-password': return (
+      <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:'16px' }}>
+        <div>
+          <ColorPicker label="Page background" k="forgotBg"      t={t} onChange={onChange} />
+          <ColorPicker label="Card background" k="forgotCardBg"  t={t} onChange={onChange} />
+          <ColorPicker label="Heading colour"  k="forgotH1Color" t={t} onChange={onChange} />
+        </div>
+        <div>
+          <SliderRow label="Heading size" k="forgotH1Size" min={20} max={48} t={t} onChange={onChange} />
+        </div>
+      </div>
+    )
+
+    case 'post-cards': return (
+      <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:'16px' }}>
+        <div>
+          <ColorPicker label="Card background"     k="postCardBg"       t={t} onChange={onChange} />
+          <ColorPicker label="Title colour"        k="postTitleColor"   t={t} onChange={onChange} />
+          <ColorPicker label="Excerpt colour"      k="postExcerptColor" t={t} onChange={onChange} />
+          <ColorPicker label="Category colour"     k="postCatColor"     t={t} onChange={onChange} />
+          <ColorPicker label="Feed background"     k="postsBg"          t={t} onChange={onChange} />
+        </div>
+        <div>
+          <SliderRow label="Title size"    k="postTitleSize"   min={14} max={32} t={t} onChange={onChange} />
+          <SliderRow label="Excerpt size"  k="postExcerptSize" min={11} max={18} t={t} onChange={onChange} />
+          <SliderRow label="Card radius"   k="postCardRadius"  min={0}  max={32} t={t} onChange={onChange} />
+          <SliderRow label="Card shadow"   k="postCardShadow"  min={0}  max={5}  t={t} onChange={onChange} />
         </div>
       </div>
     )
@@ -1527,16 +1567,7 @@ export default function AdminThemePage() {
   const saveMutation = useMutation({
     mutationFn: () => apiPost('/admin/theme', { theme }),
     onSuccess: () => { toast.success('✅ Theme saved! Site updates in 60 seconds.'); setUnsaved(false) },
-    onError: (e: any) => {
-      const msg = e?.message || 'Unknown error'
-      if (msg.includes('expired') || msg.includes('log out') || msg.includes('RELOGIN')) {
-        toast.error('🔑 Session expired — please Log Out and sign back in, then try saving again.', { duration: 8000 })
-      } else if (msg.includes('role') || msg.includes('admin')) {
-        toast.error(`🚫 ${msg}`, { duration: 10000 })
-      } else {
-        toast.error(`❌ Save failed: ${msg}`, { duration: 6000 })
-      }
-    },
+    onError: () => toast.error('Failed to save'),
   })
 
   const handleChange = (key: string, val: any) => {

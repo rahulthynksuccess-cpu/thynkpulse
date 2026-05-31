@@ -1011,7 +1011,16 @@ export default function AdminContentPage() {
       }})
     },
     onSuccess: () => { toast.success('🚀 All changes pushed to live site!'); setSavedGroups({}); setDirtyGroups({}) },
-    onError: () => toast.error('Push failed — try again'),
+    onError: (e: any) => {
+      const msg = e?.message || 'Unknown error'
+      if (msg.includes('expired') || msg.includes('log out') || msg.includes('RELOGIN')) {
+        toast.error('Session expired — Log Out and sign back in, then push again.', { duration: 8000 })
+      } else if (msg.includes('role') || msg.includes('admin') || msg.includes('Forbidden')) {
+        toast.error(msg, { duration: 10000 })
+      } else {
+        toast.error('Push failed: ' + msg, { duration: 6000 })
+      }
+    },
   })
 
   const v = (id: string) => values[id] || ALL_FIELDS[id]?.default || ''

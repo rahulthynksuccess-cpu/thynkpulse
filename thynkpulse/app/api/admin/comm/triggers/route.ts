@@ -2,19 +2,12 @@
 export const dynamic = 'force-dynamic'
 import { NextRequest } from 'next/server'
 import db from '@/lib/db'
-import { getTokenFromHeader, verifyToken } from '@/lib/auth'
-
-function adminOnly(req: NextRequest) {
-  const token = getTokenFromHeader(req.headers.get('authorization') || '')
-  if (!token) return null
-  const p = verifyToken(token) as any
-  return p?.role === 'admin' ? p : null
-}
+import { requireAdmin, isAdminError } from '@/lib/adminAuth'
 
 // GET /api/admin/comm/triggers
 export async function GET(req: NextRequest) {
-  const p = adminOnly(req)
-  if (!p) return Response.json({ error: 'Forbidden' }, { status: 403 })
+  const auth = await requireAdmin(req)
+  if (isAdminError(auth)) return auth
   const { rows } = await db.query(`
     SELECT t.*, tmpl.name AS template_name, tmpl.channel AS template_channel
     FROM comm_triggers t
@@ -26,8 +19,8 @@ export async function GET(req: NextRequest) {
 
 // POST — create trigger
 export async function POST(req: NextRequest) {
-  const p = adminOnly(req)
-  if (!p) return Response.json({ error: 'Forbidden' }, { status: 403 })
+  const auth = await requireAdmin(req)
+  if (isAdminError(auth)) return auth
   const { event_type, channel, template_id, recipient_type, is_active } = await req.json()
   if (!event_type || !channel || !template_id) return Response.json({ error: 'event_type, channel and template_id required' }, { status: 400 })
   const { rows } = await db.query(
@@ -40,8 +33,8 @@ export async function POST(req: NextRequest) {
 
 // PATCH — update trigger
 export async function PATCH(req: NextRequest) {
-  const p = adminOnly(req)
-  if (!p) return Response.json({ error: 'Forbidden' }, { status: 403 })
+  const auth = await requireAdmin(req)
+  if (isAdminError(auth)) return auth
   const { id, ...fields } = await req.json()
   if (!id) return Response.json({ error: 'id required' }, { status: 400 })
   const allowed = ['event_type','channel','template_id','recipient_type','is_active']
@@ -58,8 +51,8 @@ export async function PATCH(req: NextRequest) {
 
 // DELETE — remove trigger
 export async function DELETE(req: NextRequest) {
-  const p = adminOnly(req)
-  if (!p) return Response.json({ error: 'Forbidden' }, { status: 403 })
+  const auth = await requireAdmin(req)
+  if (isAdminError(auth)) return auth
   const { id } = await req.json()
   await db.query(`DELETE FROM comm_triggers WHERE id = $1`, [id])
   return Response.json({ ok: true })

@@ -2,22 +2,15 @@
 // Tests email SMTP or WhatsApp API without saving config
 export const dynamic = 'force-dynamic'
 import { NextRequest } from 'next/server'
-import { getTokenFromHeader, verifyToken } from '@/lib/auth'
+import { requireAdmin, isAdminError } from '@/lib/adminAuth'
 import nodemailer from 'nodemailer'
-
-function adminOnly(req: NextRequest) {
-  const token = getTokenFromHeader(req.headers.get('authorization') || '')
-  if (!token) return null
-  const p = verifyToken(token) as any
-  return p?.role === 'admin' ? p : null
-}
 
 // POST /api/admin/comm/test
 // Body (email):     { type: 'email', to, smtpHost, smtpPort, smtpUser, smtpPass, fromName, fromEmail }
 // Body (whatsapp):  { type: 'whatsapp', provider, to, message, ...providerFields }
 export async function POST(req: NextRequest) {
-  const p = adminOnly(req)
-  if (!p) return Response.json({ error: 'Forbidden' }, { status: 403 })
+  const auth = await requireAdmin(req)
+  if (isAdminError(auth)) return auth
 
   const body = await req.json()
   const { type } = body
