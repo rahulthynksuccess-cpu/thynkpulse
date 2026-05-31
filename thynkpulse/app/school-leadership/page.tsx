@@ -10,6 +10,7 @@ import { Footer } from '@/components/layout/Footer'
 import { apiGet } from '@/lib/api'
 import { useContent } from '@/hooks/useContent'
 import { Post } from '@/types'
+import { PageHeroSection } from '@/components/layout/PageHeroSection'
 
 const GRADIENTS = [
   'linear-gradient(135deg,#FEF9EC,#F7E8BE)',
@@ -61,19 +62,13 @@ export default function SchoolLeadershipPage() {
       <Navbar />
       <main style={{ minHeight: '100vh' }}>
         {/* Hero */}
-        <div style={{ background: 'linear-gradient(135deg,#C9922A 0%,#E5B64A 100%)', padding: '72px 5% 64px' }}>
-          <div style={{ maxWidth: 800 }}>
-            <div style={{ fontFamily: 'var(--font-mono)', fontSize: '11px', fontWeight: 700, letterSpacing: '2px', textTransform: 'uppercase', color: 'rgba(255,255,255,.6)', marginBottom: 16 }}>
-              {pageContent?.heroEyebrow || '🏆 School Leadership'}
-            </div>
-            <h1 style={{ fontFamily: 'var(--font-serif)', fontSize: 'clamp(32px,5vw,56px)', fontWeight: 900, color: '#fff', lineHeight: 1.1, marginBottom: 16 }}>
-              {pageContent?.heroTitle || 'School Leadership'}
-            </h1>
-            <p style={{ fontSize: '17px', color: 'rgba(255,255,255,.85)', lineHeight: 1.7, maxWidth: 560 }}>
-              {pageContent?.heroSubtitle || "Insights from principals, directors, and administrators who are navigating the complex realities of leading educational institutions in modern India."}
-            </p>
-          </div>
-        </div>
+        <PageHeroSection
+          eyebrow="🏆 School Leadership"
+          title="School"
+          accent="Leadership"
+          subtitle="Principals, administrators, and school owners sharing governance insights and transformation stories."
+        >
+        </PageHeroSection>
 
         {/* Search */}
         <div style={{ background: '#fff', borderBottom: '1px solid var(--border)', padding: '0 5%' }}>
@@ -102,7 +97,7 @@ export default function SchoolLeadershipPage() {
                 style={{ padding: '16px', borderRadius: 12, background: '#fff', border: '1px solid var(--border)', cursor: 'pointer' }}>
                 <div style={{ fontSize: 24, marginBottom: 6 }}>{p.icon}</div>
                 <div style={{ fontSize: '14px', fontWeight: 600, color: 'var(--ink)', marginBottom: 2 }}>{p.title}</div>
-                <div style={{ fontSize: '13px', color: 'var(--muted)' }}>{p.desc}</div>
+                <div style={{ fontSize: '15px', color: 'var(--muted)' }}>{p.desc}</div>
               </div>
             ))}
           </div>
@@ -118,7 +113,7 @@ export default function SchoolLeadershipPage() {
                   {featured.coverEmoji || '🏆'}
                 </div>
                 <div style={{ padding: '36px 32px' }}>
-                  <div style={{ fontFamily: 'var(--font-mono)', fontSize: '11px', fontWeight: 700, letterSpacing: '2px', textTransform: 'uppercase', color: 'var(--gold)', marginBottom: 10 }}>
+                  <div style={{ fontFamily: 'var(--font-mono)', fontSize: '12px', fontWeight: 700, letterSpacing: '2px', textTransform: 'uppercase', color: 'var(--gold)', marginBottom: 10 }}>
                     ⭐ Featured Leadership Article
                   </div>
                   <div style={{ fontFamily: 'var(--font-serif)', fontSize: 'clamp(20px,2.5vw,26px)', fontWeight: 700, color: 'var(--ink)', lineHeight: 1.3, marginBottom: 10 }}>
@@ -133,9 +128,9 @@ export default function SchoolLeadershipPage() {
                     </div>
                     <div>
                       <div style={{ fontSize: '14px', fontWeight: 600, color: 'var(--ink)' }}>{featured.author?.fullName}</div>
-                      <div style={{ fontSize: '13px', color: 'var(--muted)' }}>{featured.author?.designation} · {featured.readTime} min read</div>
+                      <div style={{ fontSize: '15px', color: 'var(--muted)' }}>{featured.author?.designation} · {featured.readTime} min read</div>
                     </div>
-                    <div style={{ marginLeft: 'auto', fontSize: '13px', color: 'var(--muted)' }}>
+                    <div style={{ marginLeft: 'auto', fontSize: '15px', color: 'var(--muted)' }}>
                       👁 {(featured.viewCount / 1000).toFixed(1)}K · ❤️ {featured.likeCount}
                     </div>
                   </div>
@@ -177,9 +172,9 @@ export default function SchoolLeadershipPage() {
                         </div>
                         <div style={{ flex: 1, minWidth: 0 }}>
                           <div style={{ fontSize: '12px', fontWeight: 600, color: 'var(--ink)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{post.author?.fullName}</div>
-                          <div style={{ fontSize: '13px', color: 'var(--muted)' }}>{post.readTime} min read</div>
+                          <div style={{ fontSize: '15px', color: 'var(--muted)' }}>{post.readTime} min read</div>
                         </div>
-                        <span style={{ fontSize: '13px', color: 'var(--muted)' }}>❤️ {post.likeCount}</span>
+                        <span style={{ fontSize: '15px', color: 'var(--muted)' }}>❤️ {post.likeCount}</span>
                       </div>
                     </div>
                   </Link>

@@ -9,6 +9,7 @@ import { Footer } from '@/components/layout/Footer'
 import { apiGet } from '@/lib/api'
 import { useContent } from '@/hooks/useContent'
 import { Post } from '@/types'
+import { PageHeroSection } from '@/components/layout/PageHeroSection'
 
 const PERIODS = ['This Week', 'This Month', 'All Time']
 const GRADIENTS = [
@@ -48,19 +49,13 @@ export default function TrendingNowPage() {
       <Navbar />
       <main style={{ minHeight: '100vh', background: '#fff' }}>
         {/* Hero */}
-        <div style={{ background: 'linear-gradient(135deg, var(--coral) 0%, #c0392b 100%)', padding: '72px 5% 64px', color: '#fff' }}>
-          <div style={{ maxWidth: 800 }}>
-            <div style={{ fontFamily: 'var(--font-mono)', fontSize: '11px', fontWeight: 700, letterSpacing: '2px', textTransform: 'uppercase', color: 'rgba(255,255,255,.6)', marginBottom: 16 }}>
-              🔥 What's Hot
-            </div>
-            <h1 style={{ fontFamily: 'var(--font-serif)', fontSize: 'clamp(32px,5vw,56px)', fontWeight: 900, color: '#fff', lineHeight: 1.1, marginBottom: 16 }}>
-              {pageContent?.heroTitle || 'Trending Now'}
-            </h1>
-            <p style={{ fontSize: '17px', color: 'rgba(255,255,255,.8)', lineHeight: 1.7, maxWidth: 540 }}>
-              {pageContent?.heroSubtitle || "The articles the community can't stop reading, sharing, and discussing right now."}
-            </p>
-          </div>
-        </div>
+        <PageHeroSection
+          eyebrow="🔥 What's Hot"
+          title="Trending"
+          accent="Now"
+          subtitle="The articles the community can't stop reading, sharing, and discussing right now."
+        >
+        </PageHeroSection>
 
         {/* Period filter */}
         <div style={{ background: '#fff', borderBottom: '1px solid var(--border)', padding: '0 5%' }}>
@@ -111,7 +106,7 @@ export default function TrendingNowPage() {
                       <div style={{ fontFamily: 'var(--font-serif)', fontSize: 19, fontWeight: 600, color: 'var(--ink)', lineHeight: 1.35, marginBottom: 8 }}>
                         {post.title}
                       </div>
-                      <div style={{ display: 'flex', gap: 14, fontSize: '13px', color: 'var(--muted)', flexWrap: 'wrap' }}>
+                      <div style={{ display: 'flex', gap: 14, fontSize: '15px', color: 'var(--muted)', flexWrap: 'wrap' }}>
                         <span>✍️ {post.author?.fullName}</span>
                         <span>👁 {post.viewCount >= 1000 ? `${(post.viewCount / 1000).toFixed(1)}K` : post.viewCount} reads</span>
                         <span>❤️ {post.likeCount >= 1000 ? `${(post.likeCount / 1000).toFixed(1)}K` : post.likeCount}</span>

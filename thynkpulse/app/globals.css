@@ -528,53 +528,44 @@ h2 { font-size: clamp(28px, 4vw, 42px) !important; }
   .auth-card { width: 100% !important; margin: 0 !important; padding: 28px 20px !important; border-radius: 0 !important; }
 }
 
-/* ── Unified auth background ──────────────────────────────────────── */
+/* ── Unified auth background ──────────────────────────── */
 :root {
-  --auth-page-bg: var(--cream);
-  --login-bg:     var(--auth-page-bg);
-  --register-bg:  var(--auth-page-bg);
-  --forgot-bg:    var(--auth-page-bg);
+  --auth-page-bg:  var(--cream);
+  --login-bg:      var(--auth-page-bg);
+  --register-bg:   var(--auth-page-bg);
+  --forgot-bg:     var(--auth-page-bg);
+
+  /* Single variable controls hero background on ALL listing pages.
+     Change this in the theme controller to update every page at once. */
+  --page-hero-bg: linear-gradient(135deg,var(--teal) 0%,#0D7A6D 60%,var(--plum) 100%);
 }
 
-/* ── Post card readability fixes ──────────────────────────────────── */
-/* Increase excerpt, meta, and category text so all cards are easy to read */
-.pcard .post-excerpt,
-[class*="pcard"] p {
-  font-size: var(--post-excerpt-size, 15px) !important;
-  line-height: 1.75 !important;
-  color: var(--post-excerpt-color, var(--muted)) !important;
+/* ── Page hero responsive ─────────────────────────────── */
+.page-hero { box-sizing: border-box; }
+
+@media (max-width: 768px) {
+  .page-hero { padding: 56px 5% 48px !important; }
+  .page-hero h1 { font-size: clamp(28px, 8vw, 48px) !important; }
+  .page-hero p  { font-size: 15px !important; }
 }
 
-/* Author name on cards */
-.pcard .author-name {
-  font-size: 14px !important;
-  font-weight: 600 !important;
+@media (max-width: 480px) {
+  .page-hero { padding: 44px 5% 36px !important; }
+  .page-hero h1 { font-size: clamp(26px, 9vw, 40px) !important; }
 }
 
-/* "1 min read" meta on cards */
-.pcard .post-meta {
-  font-size: 12px !important;
+/* ── Global font readability ──────────────────────────── */
+body { font-size: 15px; }
+
+article p, .prose p { font-size: 18px !important; line-height: 1.9 !important; }
+article h2 { font-size: 28px !important; }
+article h3 { font-size: 22px !important; }
+article li { font-size: 17px !important; line-height: 1.8 !important; }
+
+footer a, footer li, footer p { font-size: 15px !important; }
+nav a, header a { font-size: 14px !important; }
+input, textarea, select { font-size: 15px !important; }
+
+@media (max-width: 768px) {
+  body { -webkit-text-size-adjust: 100%; }
 }
-
-/* Category badge on cards */
-.pcard .cat-badge {
-  font-size: 11px !important;
-  font-weight: 700 !important;
-  letter-spacing: .5px !important;
-}
-
-/* Latest-posts page grid card text specifically */
-.latest-card-title  { font-size: 17px !important; line-height: 1.4 !important; }
-.latest-card-excerpt { font-size: 14px !important; line-height: 1.7 !important; }
-.latest-card-meta   { font-size: 12px !important; }
-
-/* Global readable body text */
-p, li, td, dd {
-  font-size: var(--size-base, 15px);
-  line-height: 1.8;
-}
-
-/* Heading sizes — clamp for all screens */
-h1 { font-size: clamp(32px, 5vw, var(--size-h1, 56px)); }
-h2 { font-size: clamp(26px, 4vw, var(--size-h2, 42px)); }
-h3 { font-size: clamp(20px, 3vw, var(--size-h3, 28px)); }
