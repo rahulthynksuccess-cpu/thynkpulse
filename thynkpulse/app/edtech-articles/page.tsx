@@ -10,7 +10,6 @@ import { Footer } from '@/components/layout/Footer'
 import { apiGet } from '@/lib/api'
 import { useContent } from '@/hooks/useContent'
 import { Post } from '@/types'
-import { PageHeroSection } from '@/components/layout/PageHeroSection'
 
 const SUBCATS = ['All EdTech', 'AI & ML', 'Ed-Finance', 'Products', 'Startups', 'Research', 'Policy']
 const GRADIENTS = [
@@ -63,13 +62,19 @@ export default function EdTechArticlesPage() {
       <Navbar />
       <main style={{ minHeight: '100vh', background: 'var(--cream)' }}>
         {/* Hero */}
-        <PageHeroSection
-          eyebrow="💡 EdTech"
-          title="EdTech"
-          accent="Articles"
-          subtitle="Insights, case studies and deep-dives from India's EdTech ecosystem."
-        >
-        </PageHeroSection>
+        <div style={{ background: 'linear-gradient(135deg, var(--teal) 0%, #0D7A6D 100%)', padding: '72px 5% 64px' }}>
+          <div style={{ maxWidth: 800 }}>
+            <div style={{ fontFamily: 'var(--font-mono)', fontSize: '13px', fontWeight: 700, letterSpacing: '2px', textTransform: 'uppercase', color: 'rgba(255,255,255,.5)', marginBottom: 16 }}>
+              {pageContent?.heroEyebrow || 'EdTech Category'}
+            </div>
+            <h1 style={{ fontFamily: 'var(--font-serif)', fontSize: 'clamp(32px,5vw,56px)', fontWeight: 900, color: '#fff', lineHeight: 1.1, marginBottom: 16 }}>
+              {pageContent?.heroTitle || 'EdTech Articles'}
+            </h1>
+            <p style={{ fontSize: '17px', color: 'rgba(255,255,255,.75)', lineHeight: 1.7, maxWidth: 560 }}>
+              {pageContent?.heroSubtitle || "In-depth analysis, product deep-dives, funding news, and thought leadership from EdTech founders, investors, and practitioners."}
+            </p>
+          </div>
+        </div>
 
         {/* Topic pills */}
         <div style={{ background: '#fff', borderBottom: '1px solid var(--border)', padding: '28px 5%' }}>
@@ -144,7 +149,7 @@ export default function EdTechArticlesPage() {
                       <div style={{ height: 160, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 48, background: GRADIENTS[i % GRADIENTS.length] }}>
                         {post.coverEmoji || '💡'}
                       </div>
-                      <span style={{ position: 'absolute', top: 14, left: 14, fontSize: '12px', fontWeight: 700, letterSpacing: '1px', textTransform: 'uppercase', padding: '5px 12px', borderRadius: '6px', background: 'rgba(10,95,85,.12)', color: 'var(--teal)', border: '1px solid rgba(10,95,85,.2)' }}>
+                      <span style={{ position: 'absolute', top: 14, left: 14, fontSize: '13px', fontWeight: 700, letterSpacing: '1px', textTransform: 'uppercase', padding: '5px 12px', borderRadius: '6px', background: 'rgba(10,95,85,.12)', color: 'var(--teal)', border: '1px solid rgba(10,95,85,.2)' }}>
                         EdTech
                       </span>
                     </div>
@@ -153,7 +158,7 @@ export default function EdTechArticlesPage() {
                         {post.title}
                       </div>
                       {post.excerpt && (
-                        <div style={{ fontSize: '15px', color: 'var(--muted)', lineHeight: 1.75, flex: 1, marginBottom: 16 }}>
+                        <div style={{ fontSize: '15px', color: 'var(--muted)', lineHeight: 1.7, flex: 1, marginBottom: 16 }}>
                           {post.excerpt}
                         </div>
                       )}
@@ -165,7 +170,7 @@ export default function EdTechArticlesPage() {
                           <div style={{ fontSize: '14px', fontWeight: 600, color: 'var(--ink)' }}>{post.author?.fullName}</div>
                           <div style={{ fontSize: '15px', color: 'var(--muted)' }}>{post.readTime} min read</div>
                         </div>
-                        <div style={{ marginLeft: 'auto', display: 'flex', gap: 8, fontSize: '15px', color: 'var(--muted)' }}>
+                        <div style={{ marginLeft: 'auto', display: 'flex', gap: 8, fontSize: '14px', color: 'var(--muted)' }}>
                           <span>❤️ {post.likeCount}</span>
                           <span>👁 {post.viewCount >= 1000 ? `${(post.viewCount / 1000).toFixed(1)}K` : post.viewCount}</span>
                         </div>

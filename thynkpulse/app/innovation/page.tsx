@@ -10,7 +10,6 @@ import { Footer } from '@/components/layout/Footer'
 import { apiGet } from '@/lib/api'
 import { useContent } from '@/hooks/useContent'
 import { Post } from '@/types'
-import { PageHeroSection } from '@/components/layout/PageHeroSection'
 
 const GRADIENTS = [
   'linear-gradient(135deg,#EFF0FE,#C9CDF7)',
@@ -64,13 +63,19 @@ export default function InnovationPage() {
       <Navbar />
       <main style={{ minHeight: '100vh', background: 'var(--cream)' }}>
         {/* Hero */}
-        <PageHeroSection
-          eyebrow="🚀 Innovation"
-          title="Innovation"
-          accent="Hub"
-          subtitle="Cutting-edge ideas, experiments, and breakthroughs reshaping education in India and beyond."
-        >
-        </PageHeroSection>
+        <div style={{ background: 'linear-gradient(135deg,#3D1F5E 0%,#6B35A8 50%,#0A5F55 100%)', padding: '72px 5% 64px' }}>
+          <div style={{ maxWidth: 800 }}>
+            <div style={{ fontFamily: 'var(--font-mono)', fontSize: '13px', fontWeight: 700, letterSpacing: '2px', textTransform: 'uppercase', color: 'rgba(255,255,255,.5)', marginBottom: 16 }}>
+              {pageContent?.heroEyebrow || '💡 Innovation Hub'}
+            </div>
+            <h1 style={{ fontFamily: 'var(--font-serif)', fontSize: 'clamp(32px,5vw,56px)', fontWeight: 900, color: '#fff', lineHeight: 1.1, marginBottom: 16 }}>
+              {pageContent?.heroTitle || 'Innovation in Education'}
+            </h1>
+            <p style={{ fontSize: '17px', color: 'rgba(255,255,255,.75)', lineHeight: 1.7, maxWidth: 580 }}>
+              {pageContent?.heroSubtitle || "Cutting-edge ideas, experimental models, and real-world case studies from educators and technologists reimagining how learning happens."}
+            </p>
+          </div>
+        </div>
 
         {/* Innovation areas */}
         <div style={{ background: '#fff', padding: '28px 5%', borderBottom: '1px solid var(--border)', display: 'flex', gap: 10, overflowX: 'auto', scrollbarWidth: 'none' }}>
@@ -94,13 +99,13 @@ export default function InnovationPage() {
                   {featured.coverEmoji || '💡'}
                 </div>
                 <div style={{ padding: '40px 36px', background: '#fff', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-                  <div style={{ fontFamily: 'var(--font-mono)', fontSize: '12px', fontWeight: 700, letterSpacing: '2px', textTransform: 'uppercase', color: 'var(--plum)', marginBottom: 12 }}>
+                  <div style={{ fontFamily: 'var(--font-mono)', fontSize: '13px', fontWeight: 700, letterSpacing: '2px', textTransform: 'uppercase', color: 'var(--plum)', marginBottom: 12 }}>
                     ⭐ Featured Innovation
                   </div>
                   <div style={{ fontFamily: 'var(--font-serif)', fontSize: 'clamp(20px,2.5vw,28px)', fontWeight: 700, color: 'var(--ink)', lineHeight: 1.3, marginBottom: 12 }}>
                     {featured.title}
                   </div>
-                  <div style={{ fontSize: '15px', color: 'var(--muted)', lineHeight: 1.7, marginBottom: 20 }}>
+                  <div style={{ fontSize: '14px', color: 'var(--muted)', lineHeight: 1.7, marginBottom: 20 }}>
                     {featured.excerpt}
                   </div>
                   <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
@@ -109,9 +114,9 @@ export default function InnovationPage() {
                     </div>
                     <div>
                       <div style={{ fontSize: '14px', fontWeight: 600, color: 'var(--ink)' }}>{featured.author?.fullName}</div>
-                      <div style={{ fontSize: '15px', color: 'var(--muted)' }}>{featured.readTime} min read</div>
+                      <div style={{ fontSize: '14px', color: 'var(--muted)' }}>{featured.readTime} min read</div>
                     </div>
-                    <div style={{ marginLeft: 'auto', fontSize: '15px', color: 'var(--muted)' }}>
+                    <div style={{ marginLeft: 'auto', fontSize: '14px', color: 'var(--muted)' }}>
                       👁 {(featured.viewCount / 1000).toFixed(1)}K · ❤️ {featured.likeCount}
                     </div>
                   </div>
@@ -143,7 +148,7 @@ export default function InnovationPage() {
                         {post.title}
                       </div>
                       {post.excerpt && (
-                        <div style={{ fontSize: '15px', color: 'var(--muted)', lineHeight: 1.75, flex: 1, marginBottom: 14 }}>
+                        <div style={{ fontSize: '15px', color: 'var(--muted)', lineHeight: 1.7, flex: 1, marginBottom: 14 }}>
                           {post.excerpt.slice(0, 110)}...
                         </div>
                       )}
@@ -155,7 +160,7 @@ export default function InnovationPage() {
                           <div style={{ fontSize: '12px', fontWeight: 600, color: 'var(--ink)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{post.author?.fullName}</div>
                           <div style={{ fontSize: '15px', color: 'var(--muted)' }}>{post.readTime} min read</div>
                         </div>
-                        <span style={{ fontSize: '15px', color: 'var(--muted)' }}>❤️ {post.likeCount}</span>
+                        <span style={{ fontSize: '14px', color: 'var(--muted)' }}>❤️ {post.likeCount}</span>
                       </div>
                     </div>
                   </Link>

@@ -10,7 +10,6 @@ import { Footer } from '@/components/layout/Footer'
 import { apiGet } from '@/lib/api'
 import { useContent } from '@/hooks/useContent'
 import { Post } from '@/types'
-import { PageHeroSection } from '@/components/layout/PageHeroSection'
 
 const GRADIENTS = [
   'linear-gradient(135deg,#EAF4F0,#C0E6DC)',
@@ -62,13 +61,19 @@ export default function EdTechStoriesPage() {
       <Navbar />
       <main style={{ minHeight: '100vh', background: '#fff' }}>
         {/* Hero */}
-        <PageHeroSection
-          eyebrow="📖 Educator Stories"
-          title="Educator"
-          accent="Stories"
-          subtitle="Real classroom stories, teaching breakthroughs, and honest reflections from educators across India."
-        >
-        </PageHeroSection>
+        <div style={{ background: 'linear-gradient(135deg,#3D1F5E 0%,#5B3185 100%)', padding: '72px 5% 64px' }}>
+          <div style={{ maxWidth: 800 }}>
+            <div style={{ fontFamily: 'var(--font-mono)', fontSize: '13px', fontWeight: 700, letterSpacing: '2px', textTransform: 'uppercase', color: 'rgba(255,255,255,.5)', marginBottom: 16 }}>
+              {pageContent?.heroEyebrow || '✍️ Real Stories'}
+            </div>
+            <h1 style={{ fontFamily: 'var(--font-serif)', fontSize: 'clamp(32px,5vw,56px)', fontWeight: 900, color: '#fff', lineHeight: 1.1, marginBottom: 16 }}>
+              {pageContent?.heroTitle || 'EdTech Stories'}
+            </h1>
+            <p style={{ fontSize: '17px', color: 'rgba(255,255,255,.75)', lineHeight: 1.7, maxWidth: 560 }}>
+              {pageContent?.heroSubtitle || "Personal narratives from educators and EdTech professionals — the real stories behind the industry, in their own words."}
+            </p>
+          </div>
+        </div>
 
         {/* Story themes */}
         <div style={{ background: 'var(--cream)', padding: '24px 5%', borderBottom: '1px solid var(--border)', display: 'flex', gap: 10, overflowX: 'auto', scrollbarWidth: 'none' }}>
@@ -92,13 +97,13 @@ export default function EdTechStoriesPage() {
                   {featured.coverEmoji || '✍️'}
                 </div>
                 <div style={{ padding: '40px 36px', display: 'flex', flexDirection: 'column', justifyContent: 'center', background: '#fff' }}>
-                  <div style={{ fontFamily: 'var(--font-mono)', fontSize: '12px', fontWeight: 700, letterSpacing: '2px', textTransform: 'uppercase', color: 'var(--plum)', marginBottom: 12 }}>
+                  <div style={{ fontFamily: 'var(--font-mono)', fontSize: '13px', fontWeight: 700, letterSpacing: '2px', textTransform: 'uppercase', color: 'var(--plum)', marginBottom: 12 }}>
                     ⭐ Featured Story
                   </div>
                   <div style={{ fontFamily: 'var(--font-serif)', fontSize: 'clamp(20px,2.5vw,28px)', fontWeight: 700, color: 'var(--ink)', lineHeight: 1.3, marginBottom: 12 }}>
                     {featured.title}
                   </div>
-                  <div style={{ fontSize: '15px', color: 'var(--muted)', lineHeight: 1.7, marginBottom: 20 }}>
+                  <div style={{ fontSize: '14px', color: 'var(--muted)', lineHeight: 1.7, marginBottom: 20 }}>
                     {featured.excerpt}
                   </div>
                   <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
@@ -107,9 +112,9 @@ export default function EdTechStoriesPage() {
                     </div>
                     <div>
                       <div style={{ fontSize: '14px', fontWeight: 600, color: 'var(--ink)' }}>{featured.author?.fullName}</div>
-                      <div style={{ fontSize: '15px', color: 'var(--muted)' }}>{featured.author?.designation} · {featured.readTime} min read</div>
+                      <div style={{ fontSize: '14px', color: 'var(--muted)' }}>{featured.author?.designation} · {featured.readTime} min read</div>
                     </div>
-                    <div style={{ marginLeft: 'auto', fontSize: '15px', color: 'var(--muted)' }}>
+                    <div style={{ marginLeft: 'auto', fontSize: '14px', color: 'var(--muted)' }}>
                       ❤️ {featured.likeCount} · 💬 {featured.commentCount}
                     </div>
                   </div>
@@ -140,7 +145,7 @@ export default function EdTechStoriesPage() {
                         {post.title}
                       </div>
                       {post.excerpt && (
-                        <div style={{ fontSize: '15px', color: 'var(--muted)', lineHeight: 1.75, flex: 1, marginBottom: 14 }}>
+                        <div style={{ fontSize: '15px', color: 'var(--muted)', lineHeight: 1.7, flex: 1, marginBottom: 14 }}>
                           {post.excerpt.slice(0, 120)}...
                         </div>
                       )}
@@ -152,7 +157,7 @@ export default function EdTechStoriesPage() {
                           <div style={{ fontSize: '12px', fontWeight: 600, color: 'var(--ink)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{post.author?.fullName}</div>
                           <div style={{ fontSize: '15px', color: 'var(--muted)' }}>{post.readTime} min read</div>
                         </div>
-                        <span style={{ fontSize: '15px', color: 'var(--muted)' }}>❤️ {post.likeCount}</span>
+                        <span style={{ fontSize: '14px', color: 'var(--muted)' }}>❤️ {post.likeCount}</span>
                       </div>
                     </div>
                   </Link>

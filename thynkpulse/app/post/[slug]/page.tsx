@@ -43,7 +43,7 @@ function CommentItem({ comment, postId, depth=0 }: { comment:Comment; postId:str
         <div style={{ flex:1 }}>
           <div style={{ display:'flex', alignItems:'center', gap:'8px', marginBottom:'4px' }}>
             <span style={{ fontSize:'14px', fontWeight:600, color:'var(--ink)', fontFamily:'var(--font-sans)' }}>{comment.author?.fullName || 'User'}</span>
-            <span style={{ fontSize:'11px', color:'var(--muted)', fontFamily:'var(--font-sans)' }}>
+            <span style={{ fontSize:'15px', color:'var(--muted)', fontFamily:'var(--font-sans)' }}>
               {comment.createdAt ? formatDistanceToNow(new Date(comment.createdAt), { addSuffix:true }) : 'just now'}
             </span>
           </div>
@@ -79,7 +79,7 @@ function PostCard({ post }: { post: Post }) {
       </div>
       <div>
         <div style={{ fontFamily:'var(--font-serif)', fontSize:'14px', fontWeight:700, color:'var(--ink)', lineHeight:1.35, marginBottom:'4px' }}>{post.title}</div>
-        <div style={{ fontSize:'11px', color:'var(--muted)', fontFamily:'var(--font-sans)' }}>
+        <div style={{ fontSize:'15px', color:'var(--muted)', fontFamily:'var(--font-sans)' }}>
           👁 {post.viewCount >= 1000 ? `${(post.viewCount/1000).toFixed(1)}K` : post.viewCount} · ❤️ {post.likeCount}
         </div>
       </div>
@@ -169,14 +169,14 @@ export default function PostPage() {
           {/* LEFT — Article */}
           <article>
             {/* Breadcrumb */}
-            <Link href="/" style={{ display:'inline-flex', alignItems:'center', gap:'6px', fontSize:'13px', color:'var(--muted)', textDecoration:'none', fontFamily:'var(--font-sans)', marginBottom:'28px' }}>
+            <Link href="/" style={{ display:'inline-flex', alignItems:'center', gap:'6px', fontSize:'15px', color:'var(--muted)', textDecoration:'none', fontFamily:'var(--font-sans)', marginBottom:'28px' }}>
               <ArrowLeft style={{ width:14, height:14 }} /> Back to Feed
             </Link>
 
             {/* Category + meta */}
             <div style={{ display:'flex', alignItems:'center', gap:'10px', marginBottom:'18px' }}>
               <span className="badge badge-teal" style={{ fontSize:'11px' }}>{post.category}</span>
-              <span style={{ fontSize:'12px', color:'var(--muted)', fontFamily:'var(--font-mono)' }}>{post.readTime} min read</span>
+              <span style={{ fontSize:'14px', color:'var(--muted)', fontFamily:'var(--font-mono)' }}>{post.readTime} min read</span>
               {post.isFeatured && <span className="badge badge-coral" style={{ fontSize:'11px' }}>✦ Featured</span>}
             </div>
 
@@ -196,14 +196,14 @@ export default function PostPage() {
             <div style={{ display:'flex', alignItems:'center', gap:'14px', padding:'18px 0', borderTop:'1px solid var(--border)', borderBottom:'1px solid var(--border)', marginBottom:'40px' }}>
               <Avatar name={post.author?.fullName || 'Author'} size={48} radius={13} />
               <div style={{ flex:1 }}>
-                <Link href={`/profile/${post.authorId}`} style={{ fontSize:'15px', fontWeight:700, color:'var(--ink)', textDecoration:'none', fontFamily:'var(--font-sans)' }}>
+                <Link href={`/profile/${post.authorId}`} style={{ fontSize:'17px', fontWeight:700, color:'var(--ink)', textDecoration:'none', fontFamily:'var(--font-sans)' }}>
                   {post.author?.fullName || 'Author'}
                 </Link>
-                <div style={{ fontSize:'12px', color:'var(--muted)', marginTop:'2px', fontFamily:'var(--font-sans)' }}>
+                <div style={{ fontSize:'14px', color:'var(--muted)', marginTop:'2px', fontFamily:'var(--font-sans)' }}>
                   {post.author?.designation}{post.publishedAt ? ` · ${formatDistanceToNow(new Date(post.publishedAt), { addSuffix:true })}` : ''}
                 </div>
               </div>
-              <div style={{ display:'flex', gap:'16px', fontSize:'13px', color:'var(--muted)', fontFamily:'var(--font-sans)', fontWeight:500 }}>
+              <div style={{ display:'flex', gap:'16px', fontSize:'15px', color:'var(--muted)', fontFamily:'var(--font-sans)', fontWeight:500 }}>
                 <span style={{ display:'flex', alignItems:'center', gap:'4px' }}><Eye style={{ width:13, height:13 }} /> {viewStr}</span>
                 <span style={{ display:'flex', alignItems:'center', gap:'4px' }}><Heart style={{ width:13, height:13 }} /> {post.likeCount + (liked ? 1 : 0)}</span>
                 <span style={{ display:'flex', alignItems:'center', gap:'4px' }}><MessageSquare style={{ width:13, height:13 }} /> {post.commentCount}</span>
@@ -212,7 +212,7 @@ export default function PostPage() {
 
             {/* Article body */}
             <div style={{
-              fontSize:'var(--post-page-body-size,17px)',
+              fontSize: 'var(--post-page-body-size,18px)',
               color:'var(--post-page-body-color,var(--ink))',
               lineHeight:1.9,
               fontWeight:'var(--post-page-body-weight,300)' as any,
@@ -298,7 +298,7 @@ export default function PostPage() {
                   <Link href={`/profile/${post.authorId}`} style={{ fontSize:'14px', fontWeight:700, color:'var(--ink)', textDecoration:'none', fontFamily:'var(--font-sans)' }}>
                     {post.author?.fullName}
                   </Link>
-                  <div style={{ fontSize:'12px', color:'var(--muted)', fontFamily:'var(--font-sans)' }}>{post.author?.designation}</div>
+                  <div style={{ fontSize:'14px', color:'var(--muted)', fontFamily:'var(--font-sans)' }}>{post.author?.designation}</div>
                 </div>
               </div>
               <Link href={`/profile/${post.authorId}`} className="btn-outline" style={{ width:'100%', textAlign:'center' as const, justifyContent:'center', fontSize:'13px', padding:'8px' }}>

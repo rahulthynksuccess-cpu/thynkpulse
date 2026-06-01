@@ -10,7 +10,6 @@ import { apiGet } from '@/lib/api'
 import { Post } from '@/types'
 import { useContent } from '@/hooks/useContent'
 import { Search } from 'lucide-react'
-import { PageHeroSection } from '@/components/layout/PageHeroSection'
 
 const CATS = ['All', 'EdTech', 'Educator', 'Sales Pro', 'Leadership', 'Innovation', 'Career', 'Research']
 const GRADIENTS = [
@@ -37,7 +36,7 @@ function PostCard({ post, index = 0 }: { post: Post; index?: number }) {
             {post.coverEmoji || '📝'}
           </div>
           <span style={{
-            position: 'absolute', top: 14, left: 14, fontSize: '12px', fontWeight: 700,
+            position: 'absolute', top: 14, left: 14, fontSize: '13px', fontWeight: 700,
             letterSpacing: '1px', textTransform: 'uppercase', padding: '5px 12px',
             borderRadius: '6px', background: 'rgba(10,95,85,.12)', color: 'var(--teal)',
             border: '1px solid rgba(10,95,85,.2)'
@@ -50,7 +49,7 @@ function PostCard({ post, index = 0 }: { post: Post; index?: number }) {
             {post.title}
           </div>
           {post.excerpt && (
-            <div style={{ fontSize: '15px', color: 'var(--muted)', lineHeight: 1.75, marginBottom: 16, flex: 1 }}>
+            <div style={{ fontSize: '15px', color: 'var(--muted)', lineHeight: 1.7, marginBottom: 16, flex: 1 }}>
               {post.excerpt}
             </div>
           )}
@@ -64,7 +63,7 @@ function PostCard({ post, index = 0 }: { post: Post; index?: number }) {
               </div>
               <div style={{ fontSize: '15px', color: 'var(--muted)' }}>{post.readTime} min read</div>
             </div>
-            <div style={{ display: 'flex', gap: 8, fontSize: '15px', color: 'var(--muted)', flexShrink: 0 }}>
+            <div style={{ display: 'flex', gap: 8, fontSize: '14px', color: 'var(--muted)', flexShrink: 0 }}>
               <span>❤️ {post.likeCount}</span>
               <span>👁 {post.viewCount >= 1000 ? `${(post.viewCount / 1000).toFixed(1)}K` : post.viewCount}</span>
             </div>
@@ -117,13 +116,19 @@ export default function LatestPostsPage() {
       <Navbar />
       <main style={{ minHeight: '100vh', background: 'var(--latest-posts-bg, var(--cream))' }}>
         {/* Hero */}
-        <PageHeroSection
-          eyebrow="📰 Community Feed"
-          title="Latest"
-          accent="Posts"
-          subtitle="Fresh articles from educators, EdTech founders, sales pros, and innovators shaping the future of education."
-        >
-        </PageHeroSection>
+        <div style={{ background: 'var(--latest-posts-hero-bg, var(--teal))', padding: '72px 5% 64px', color: 'var(--latest-posts-hero-color, #fff)' }}>
+          <div style={{ maxWidth: 800 }}>
+            <div style={{ fontFamily: 'var(--font-mono)', fontSize: '13px', fontWeight: 700, letterSpacing: '2px', textTransform: 'uppercase', color: 'rgba(255,255,255,.5)', marginBottom: 16 }}>
+              {pageContent?.heroEyebrow || 'Community Feed'}
+            </div>
+            <h1 style={{ fontFamily: 'var(--font-serif)', fontSize: 'clamp(32px,5vw,56px)', fontWeight: 900, color: 'var(--latest-posts-hero-color, #fff)', lineHeight: 1.1, marginBottom: 16 }}>
+              {pageContent?.heroTitle || 'Latest Posts'}
+            </h1>
+            <p style={{ fontSize: '17px', color: 'rgba(255,255,255,.7)', lineHeight: 1.7, maxWidth: 540 }}>
+              {pageContent?.heroSubtitle || 'Fresh articles from educators, EdTech founders, sales pros, and innovators shaping the future of education.'}
+            </p>
+          </div>
+        </div>
 
         {/* Search + Filters */}
         <div style={{ background: '#fff', borderBottom: '1px solid var(--border)', padding: '0 5%', position: 'sticky', top: 0, zIndex: 10 }}>
@@ -189,7 +194,7 @@ export default function LatestPostsPage() {
                     className="btn-outline" style={{ padding: '10px 20px', opacity: page === 1 ? 0.4 : 1 }}>
                     ← Prev
                   </button>
-                  <span style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 15, color: 'var(--muted)' }}>
+                  <span style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 14, color: 'var(--muted)' }}>
                     Page {page} of {totalPages}
                   </span>
                   <button onClick={() => setPage(p => Math.min(totalPages, p + 1))} disabled={page === totalPages}

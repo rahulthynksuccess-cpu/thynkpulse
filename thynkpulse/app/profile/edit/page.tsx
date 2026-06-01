@@ -28,7 +28,7 @@ const inp: React.CSSProperties = {
 }
 
 const lbl: React.CSSProperties = {
-  display: 'block', fontSize: '11px', fontWeight: 700,
+  display: 'block', fontSize: '13px', fontWeight: 700,
   letterSpacing: '1.2px', textTransform: 'uppercase' as const,
   color: 'rgba(255,255,255,0.45)', marginBottom: '7px',
   fontFamily: "'DM Mono', monospace",
@@ -162,7 +162,7 @@ export default function EditProfilePage() {
                   : <span style={{ color: step===s.id ? '#64DCBE' : 'rgba(255,255,255,0.3)', fontSize:'11px' }}>{s.id}</span>}
               </div>
               <div>
-                <div style={{ fontSize:'13px', fontWeight:600, color: step===s.id ? '#fff' : s.id < step ? 'rgba(255,255,255,0.6)' : 'rgba(255,255,255,0.3)' }}>{s.label}</div>
+                <div style={{ fontSize:'14px', fontWeight:600, color: step===s.id ? '#fff' : s.id < step ? 'rgba(255,255,255,0.6)' : 'rgba(255,255,255,0.3)' }}>{s.label}</div>
                 <div style={{ fontSize:'11px', color:'rgba(255,255,255,0.25)', marginTop:'1px' }}>{s.desc}</div>
               </div>
               {step===s.id && <div style={{ marginLeft:'auto', width:6, height:6, borderRadius:'50%', background:'#64DCBE', boxShadow:'0 0 8px #64DCBE' }} />}
@@ -334,7 +334,7 @@ export default function EditProfilePage() {
                 {(form.fullName || form.designation) && (
                   <motion.div initial={{opacity:0,y:10}} animate={{opacity:1,y:0}}
                     style={{ padding:'20px', borderRadius:'14px', background:'rgba(255,255,255,0.04)', border:'1px solid rgba(255,255,255,0.08)', marginTop:'8px' }}>
-                    <div style={{ fontSize:'11px', fontWeight:700, letterSpacing:'1.5px', textTransform:'uppercase', color:'rgba(255,255,255,0.25)', marginBottom:'12px', fontFamily:"'DM Mono',monospace" }}>Your profile preview</div>
+                    <div style={{ fontSize:'13px', fontWeight:700, letterSpacing:'1.5px', textTransform:'uppercase', color:'rgba(255,255,255,0.25)', marginBottom:'12px', fontFamily:"'DM Mono',monospace" }}>Your profile preview</div>
                     <div style={{ display:'flex', alignItems:'center', gap:'12px' }}>
                       <div style={{ width:44, height:44, borderRadius:'12px', background:'linear-gradient(135deg,#0A5F55,#12A090)', display:'flex', alignItems:'center', justifyContent:'center', fontFamily:"'Fraunces',serif", fontWeight:900, fontSize:'18px', color:'#fff', flexShrink:0 }}>
                         {(form.fullName||'?')[0].toUpperCase()}

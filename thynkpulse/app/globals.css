@@ -528,44 +528,92 @@ h2 { font-size: clamp(28px, 4vw, 42px) !important; }
   .auth-card { width: 100% !important; margin: 0 !important; padding: 28px 20px !important; border-radius: 0 !important; }
 }
 
-/* ── Unified auth background ──────────────────────────── */
+/* ═══════════════════════════════════════════════════════════
+   THYNKPULSE — COMPLETE FONT & UI FIX
+   ═══════════════════════════════════════════════════════════ */
+
+/* ── Auth pages: one variable controls all three ─────────── */
 :root {
-  --auth-page-bg:  var(--cream);
-  --login-bg:      var(--auth-page-bg);
-  --register-bg:   var(--auth-page-bg);
-  --forgot-bg:     var(--auth-page-bg);
-
-  /* Single variable controls hero background on ALL listing pages.
-     Change this in the theme controller to update every page at once. */
-  --page-hero-bg: linear-gradient(135deg,var(--teal) 0%,#0D7A6D 60%,var(--plum) 100%);
+  --auth-page-bg: var(--cream);
+  --login-bg:     var(--auth-page-bg);
+  --register-bg:  var(--auth-page-bg);
+  --forgot-bg:    var(--auth-page-bg);
 }
 
-/* ── Page hero responsive ─────────────────────────────── */
-.page-hero { box-sizing: border-box; }
+/* ── Base readable defaults ──────────────────────────────── */
+body { font-size: 15px; line-height: 1.7; }
 
-@media (max-width: 768px) {
-  .page-hero { padding: 56px 5% 48px !important; }
-  .page-hero h1 { font-size: clamp(28px, 8vw, 48px) !important; }
-  .page-hero p  { font-size: 15px !important; }
+/* ── Post/article card text (all listing pages) ──────────── */
+/* These !important rules override inline styles where needed */
+.pcard { font-size: 15px; }
+
+/* Excerpt paragraphs inside cards */
+.pcard p,
+.pcard div[style*="lineHeight: 1.7"],
+.pcard div[style*="lineHeight: 1.75"] {
+  font-size: 15px !important;
+  line-height: 1.75 !important;
 }
 
-@media (max-width: 480px) {
-  .page-hero { padding: 44px 5% 36px !important; }
-  .page-hero h1 { font-size: clamp(26px, 9vw, 40px) !important; }
+/* Author/name in cards */
+.pcard div[style*="fontWeight: 600"][style*="overflow: hidden"] {
+  font-size: 14px !important;
 }
 
-/* ── Global font readability ──────────────────────────── */
-body { font-size: 15px; }
+/* Meta: read time, views */
+.pcard div[style*="gap: 8"][style*="flexShrink: 0"],
+.pcard div[style*="gap: 8px"][style*="flexShrink: 0"] {
+  font-size: 13px !important;
+}
 
-article p, .prose p { font-size: 18px !important; line-height: 1.9 !important; }
-article h2 { font-size: 28px !important; }
-article h3 { font-size: 22px !important; }
-article li { font-size: 17px !important; line-height: 1.8 !important; }
+/* ── Post detail / article body ──────────────────────────── */
+.post-content p,
+.prose p,
+article > div > p {
+  font-size: 18px !important;
+  line-height: 1.9 !important;
+}
+.post-content h2, article h2 { font-size: 28px !important; margin-top: 40px !important; }
+.post-content h3, article h3 { font-size: 22px !important; margin-top: 32px !important; }
+.post-content li, article li  { font-size: 17px !important; line-height: 1.85 !important; }
+.post-content blockquote      { font-size: 18px !important; }
 
-footer a, footer li, footer p { font-size: 15px !important; }
-nav a, header a { font-size: 14px !important; }
+/* ── Community page category cards ──────────────────────── */
+/* Card description text */
+div[class*="community"] p,
+section[id="community"] p {
+  font-size: 15px !important;
+  line-height: 1.75 !important;
+}
+
+/* ── Writer cards ────────────────────────────────────────── */
+.writer-card p    { font-size: 15px !important; }
+.writer-card span { font-size: 13px !important; }
+
+/* ── Section descriptions under h2 ──────────────────────── */
+section > p, .section-desc {
+  font-size: 17px !important;
+  line-height: 1.8 !important;
+}
+
+/* ── Profile page ────────────────────────────────────────── */
+.profile-bio   { font-size: 16px !important; line-height: 1.85 !important; }
+.profile-stats { font-size: 13px !important; }
+
+/* ── Footer ──────────────────────────────────────────────── */
+footer a, footer li, footer p, footer span { font-size: 15px !important; }
+footer .footer-small { font-size: 13px !important; }
+
+/* ── Navbar links ────────────────────────────────────────── */
+nav a { font-size: 14px !important; }
+
+/* ── Forms ───────────────────────────────────────────────── */
 input, textarea, select { font-size: 15px !important; }
+label { font-size: 13px !important; }
 
+/* ── Mobile text scale ───────────────────────────────────── */
 @media (max-width: 768px) {
-  body { -webkit-text-size-adjust: 100%; }
+  body { -webkit-text-size-adjust: 100%; font-size: 15px; }
+  .post-content p, article > div > p { font-size: 16px !important; }
+  section > p { font-size: 16px !important; }
 }

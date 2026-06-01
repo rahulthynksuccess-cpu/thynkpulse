@@ -30,7 +30,7 @@ function StatCard({ icon, label, value, accent }: { icon:React.ReactNode; label:
         {icon}
       </div>
       <div style={{ fontFamily:'var(--font-serif)', fontSize:'26px', fontWeight:900, color:'var(--ink)', lineHeight:1 }}>{value || 0}</div>
-      <div style={{ fontSize:'11px', color:'var(--muted)', fontFamily:'var(--font-sans)', fontWeight:500, textTransform:'uppercase' as const, letterSpacing:'1px' }}>{label}</div>
+      <div style={{ fontSize:'15px', color:'var(--muted)', fontFamily:'var(--font-sans)', fontWeight:500, textTransform:'uppercase' as const, letterSpacing:'1px' }}>{label}</div>
     </div>
   )
 }
@@ -116,7 +116,7 @@ export default function ProfilePage() {
                     {profile.fullName}
                   </h1>
                   {profile.isVerified && (
-                    <span style={{ display:'inline-flex', alignItems:'center', gap:'4px', fontSize:'11px', fontWeight:700, color:'var(--teal)', background:'rgba(10,95,85,.08)', border:'1px solid rgba(10,95,85,.2)', borderRadius:'100px', padding:'3px 10px', fontFamily:'var(--font-sans)' }}>
+                    <span style={{ display:'inline-flex', alignItems:'center', gap:'4px', fontSize:'13px', fontWeight:700, color:'var(--teal)', background:'rgba(10,95,85,.08)', border:'1px solid rgba(10,95,85,.2)', borderRadius:'100px', padding:'3px 10px', fontFamily:'var(--font-sans)' }}>
                       ✓ Verified
                     </span>
                   )}
@@ -125,7 +125,7 @@ export default function ProfilePage() {
                   {profile.designation}{profile.companyName ? ` · ${profile.companyName}` : ''}{profile.instituteName ? ` · ${profile.instituteName}` : ''}
                 </div>
                 {profile.location && (
-                  <div style={{ display:'inline-flex', alignItems:'center', gap:'4px', fontSize:'12px', color:'var(--muted)', fontFamily:'var(--font-sans)', marginBottom:'10px' }}>
+                  <div style={{ display:'inline-flex', alignItems:'center', gap:'4px', fontSize:'14px', color:'var(--muted)', fontFamily:'var(--font-sans)', marginBottom:'10px' }}>
                     <MapPin style={{ width:12, height:12 }} /> {profile.location}
                   </div>
                 )}
@@ -206,13 +206,13 @@ export default function ProfilePage() {
                   <div style={{ flex:1, minWidth:0 }}>
                     <div style={{ display:'flex', gap:'8px', marginBottom:'6px', flexWrap:'wrap' }}>
                       <span className="badge badge-teal" style={{ fontSize:'10px' }}>{post.category}</span>
-                      <span style={{ fontSize:'11px', color:'var(--muted)', fontFamily:'var(--font-mono)' }}>{post.readTime} min read</span>
+                      <span style={{ fontSize:'15px', color:'var(--muted)', fontFamily:'var(--font-mono)' }}>{post.readTime} min read</span>
                     </div>
                     <div style={{ fontFamily:'var(--font-serif)', fontSize:'18px', fontWeight:700, color:'var(--ink)', lineHeight:1.3, marginBottom:'6px' }}>{post.title}</div>
-                    {post.excerpt && <div style={{ fontSize:'13px', color:'var(--muted)', lineHeight:1.6, fontWeight:300, fontFamily:'var(--font-sans)' }}>{post.excerpt.slice(0, 120)}{post.excerpt.length > 120 ? '…' : ''}</div>}
+                    {post.excerpt && <div style={{ fontSize:'15px', color:'var(--muted)', lineHeight:1.6, fontWeight:300, fontFamily:'var(--font-sans)' }}>{post.excerpt.slice(0, 120)}{post.excerpt.length > 120 ? '…' : ''}</div>}
                   </div>
                   {/* Stats */}
-                  <div style={{ display:'flex', flexDirection:'column', alignItems:'flex-end', gap:'5px', fontSize:'12px', color:'var(--muted)', fontFamily:'var(--font-sans)', flexShrink:0 }}>
+                  <div style={{ display:'flex', flexDirection:'column', alignItems:'flex-end', gap:'5px', fontSize:'14px', color:'var(--muted)', fontFamily:'var(--font-sans)', flexShrink:0 }}>
                     <span style={{ display:'flex', alignItems:'center', gap:'3px' }}><Eye style={{ width:11, height:11 }} /> {fmt(post.viewCount || 0)}</span>
                     <span style={{ display:'flex', alignItems:'center', gap:'3px' }}><Heart style={{ width:11, height:11 }} /> {post.likeCount || 0}</span>
                     <span style={{ display:'flex', alignItems:'center', gap:'3px' }}><MessageSquare style={{ width:11, height:11 }} /> {post.commentCount || 0}</span>
