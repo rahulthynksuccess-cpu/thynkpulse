@@ -16,7 +16,7 @@ const COMMUNITIES = [
   { emoji: '🔬', gradient: 'linear-gradient(135deg,#EAF4F1,#C4E4DC)', title: 'Researchers & Innovators', desc: 'Bridge the gap between academic research and classroom practice. Make findings accessible and actionable.', count: '290+', unit: 'researchers', color: 'var(--teal)', category: 'Research' },
   { emoji: '🌍', gradient: 'linear-gradient(135deg,#FDF0F0,#F5CBCB)', title: 'International Educators', desc: 'Education challenges are global. Connect with practitioners from 40+ countries and diverse education systems.', count: '40+', unit: 'countries', color: 'var(--coral)', category: 'International' },
   { emoji: '🎓', gradient: 'linear-gradient(135deg,#EEF4FF,#C8D9F8)', title: 'Students', desc: 'A space for curious learners to read, explore ideas, and follow educators and innovators shaping their future.', count: '1,200+', unit: 'students', color: '#4F7BE8', category: 'Student' },
-  { emoji: '👨‍👩‍👧', gradient: 'linear-gradient(135deg,#FFF0F8,#F5C8E5)', title: 'Parents & Guardians', desc: 'Stay informed about education trends, school choices, and how to support your child's learning journey.', count: '800+', unit: 'parents', color: '#C2407A', category: 'Parent' }
+  { emoji: '👨‍👩‍👧', gradient: 'linear-gradient(135deg,#FFF0F8,#F5C8E5)', title: 'Parents & Guardians', desc: 'Stay informed about education trends, school choices, and how to support your child\\'s learning journey.', count: '800+', unit: 'parents', color: '#C2407A', category: 'Parent' }.
 ]
 
 const AVATAR_BG = ['var(--teal)', 'var(--coral)', 'var(--gold)', 'var(--plum)', 'var(--teal2)', 'var(--coral2)']
