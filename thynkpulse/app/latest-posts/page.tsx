@@ -36,7 +36,7 @@ function PostCard({ post, index = 0 }: { post: Post; index?: number }) {
             {post.coverEmoji || '📝'}
           </div>
           <span style={{
-            position: 'absolute', top: 14, left: 14, fontSize: '13px', fontWeight: 700,
+            position: 'absolute', top: 14, left: 14, fontSize: '12px', fontWeight: 700,
             letterSpacing: '1px', textTransform: 'uppercase', padding: '5px 12px',
             borderRadius: '6px', background: 'rgba(10,95,85,.12)', color: 'var(--teal)',
             border: '1px solid rgba(10,95,85,.2)'
@@ -45,11 +45,11 @@ function PostCard({ post, index = 0 }: { post: Post; index?: number }) {
           </span>
         </div>
         <div style={{ padding: '22px', flex: 1, display: 'flex', flexDirection: 'column' }}>
-          <div style={{ fontFamily: 'var(--font-serif)', fontSize: 18, fontWeight: 600, color: 'var(--ink)', lineHeight: 1.35, marginBottom: 8 }}>
+          <div style={{ fontFamily: 'var(--font-serif)', fontSize: 20, fontWeight: 700, color: 'var(--ink)', lineHeight: 1.35, marginBottom: 10 }}>
             {post.title}
           </div>
           {post.excerpt && (
-            <div style={{ fontSize: '15px', color: 'var(--muted)', lineHeight: 1.7, marginBottom: 16, flex: 1 }}>
+            <div style={{ fontSize: '15px', color: 'var(--muted)', lineHeight: 1.75, marginBottom: 16, flex: 1 }}>
               {post.excerpt}
             </div>
           )}
@@ -61,9 +61,9 @@ function PostCard({ post, index = 0 }: { post: Post; index?: number }) {
               <div style={{ fontSize: '14px', fontWeight: 600, color: 'var(--ink)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                 {post.author?.fullName || 'Author'}
               </div>
-              <div style={{ fontSize: '15px', color: 'var(--muted)' }}>{post.readTime} min read</div>
+              <div style={{ fontSize: '13px', color: 'var(--muted)' }}>{post.readTime} min read</div>
             </div>
-            <div style={{ display: 'flex', gap: 8, fontSize: '14px', color: 'var(--muted)', flexShrink: 0 }}>
+            <div style={{ display: 'flex', gap: 8, fontSize: '13px', color: 'var(--muted)', flexShrink: 0 }}>
               <span>❤️ {post.likeCount}</span>
               <span>👁 {post.viewCount >= 1000 ? `${(post.viewCount / 1000).toFixed(1)}K` : post.viewCount}</span>
             </div>
@@ -114,11 +114,11 @@ export default function LatestPostsPage() {
   return (
     <>
       <Navbar />
-      <main style={{ minHeight: '100vh', background: 'var(--latest-posts-bg, var(--cream))' }}>
+      <main style={{ background: 'var(--latest-posts-bg, var(--cream))' }}>
         {/* Hero */}
         <div style={{ background: 'var(--latest-posts-hero-bg, var(--teal))', padding: '72px 5% 64px', color: 'var(--latest-posts-hero-color, #fff)' }}>
           <div style={{ maxWidth: 800 }}>
-            <div style={{ fontFamily: 'var(--font-mono)', fontSize: '13px', fontWeight: 700, letterSpacing: '2px', textTransform: 'uppercase', color: 'rgba(255,255,255,.5)', marginBottom: 16 }}>
+            <div style={{ fontFamily: 'var(--font-mono)', fontSize: '11px', fontWeight: 700, letterSpacing: '2px', textTransform: 'uppercase', color: 'rgba(255,255,255,.5)', marginBottom: 16 }}>
               {pageContent?.heroEyebrow || 'Community Feed'}
             </div>
             <h1 style={{ fontFamily: 'var(--font-serif)', fontSize: 'clamp(32px,5vw,56px)', fontWeight: 900, color: 'var(--latest-posts-hero-color, #fff)', lineHeight: 1.1, marginBottom: 16 }}>

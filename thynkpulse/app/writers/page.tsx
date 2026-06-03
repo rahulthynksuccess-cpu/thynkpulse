@@ -9,7 +9,7 @@ import { Footer } from '@/components/layout/Footer'
 import { useContent } from '@/hooks/useContent'
 import { FollowButton } from '@/components/ui/FollowButton'
 
-const ROLES = ['All Writers', 'Educator', 'EdTech Pro', 'School Leader', 'Researcher', 'Sales Pro']
+const ROLES = ['All Writers', 'Educator', 'EdTech Pro', 'School Leader', 'Researcher', 'Sales Pro', 'Student', 'Parent']
 const AVATAR_BG = ['var(--teal)', 'var(--coral)', 'var(--gold)', 'var(--plum)', 'var(--teal2)', 'var(--coral2)']
 
 const FALLBACK_WRITERS = [
@@ -47,11 +47,11 @@ export default function WritersPage() {
   return (
     <>
       <Navbar />
-      <main style={{ minHeight: '100vh', background: 'var(--cream)' }}>
+      <main style={{ background: 'var(--cream)' }}>
         {/* Hero */}
         <div style={{ background: 'var(--teal)', padding: '72px 5% 64px' }}>
           <div style={{ maxWidth: 800 }}>
-            <div style={{ fontFamily: 'var(--font-mono)', fontSize: '13px', fontWeight: 700, letterSpacing: '2px', textTransform: 'uppercase', color: 'rgba(255,255,255,.5)', marginBottom: 16 }}>
+            <div style={{ fontFamily: 'var(--font-mono)', fontSize: '11px', fontWeight: 700, letterSpacing: '2px', textTransform: 'uppercase', color: 'rgba(255,255,255,.5)', marginBottom: 16 }}>
               ✍️ Writers Directory
             </div>
             <h1 style={{ fontFamily: 'var(--font-serif)', fontSize: 'clamp(32px,5vw,56px)', fontWeight: 900, color: '#fff', lineHeight: 1.1, marginBottom: 16 }}>
@@ -129,24 +129,24 @@ export default function WritersPage() {
                     }
                     <div style={{ flex: 1, minWidth: 0 }}>
                       <div style={{ fontFamily: 'var(--font-serif)', fontSize: '16px', fontWeight: 700, color: 'var(--ink)', marginBottom: 2 }}>{w.fullName || w.name}</div>
-                      <div style={{ fontSize: '14px', color: 'var(--muted)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                      <div style={{ fontSize: '12px', color: 'var(--muted)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                         {w.designation || w.role}{(w.instituteName || w.companyName) ? ` · ${w.instituteName || w.companyName}` : ''}
                       </div>
                     </div>
                   </div>
                   {(w.bio || w.introduction) && (
-                    <div style={{ fontSize: '15px', color: 'var(--muted)', lineHeight: 1.6, marginBottom: 16 }}>
+                    <div style={{ fontSize: '13px', color: 'var(--muted)', lineHeight: 1.6, marginBottom: 16 }}>
                       {(w.bio || w.introduction || '').slice(0, 100)}{(w.bio || w.introduction || '').length > 100 ? '...' : ''}
                     </div>
                   )}
-                  <div style={{ display: 'flex', gap: 14, fontSize: '14px', color: 'var(--muted)', marginBottom: 16 }}>
+                  <div style={{ display: 'flex', gap: 14, fontSize: '13px', color: 'var(--muted)', marginBottom: 16 }}>
                     <span><strong style={{ color: 'var(--teal)' }}>{(w.followerCount || 0) >= 1000 ? `${((w.followerCount || 0) / 1000).toFixed(1)}K` : (w.followerCount || 0)}</strong> followers</span>
                     <span><strong style={{ color: 'var(--ink)' }}>{w.postCount || 0}</strong> articles</span>
                     {(w.totalReads || 0) > 0 && <span><strong style={{ color: 'var(--coral)' }}>{(w.totalReads || 0) >= 1000 ? `${((w.totalReads || 0) / 1000).toFixed(0)}K` : (w.totalReads || 0)}</strong> reads</span>}
                   </div>
                   <div style={{ display: 'flex', gap: 8 }}>
                     <Link href={`/profile/${w.username}`}
-                      style={{ flex: 1, padding: '9px', borderRadius: 9, border: '1px solid var(--border)', fontSize: '12px', fontWeight: 600, textAlign: 'center', color: 'var(--ink)', textDecoration: 'none', transition: 'all .2s' }}>
+                      style={{ flex: 1, padding: '9px', borderRadius: 9, border: '1px solid var(--border)', fontSize: '13px', fontWeight: 600, textAlign: 'center', color: 'var(--ink)', textDecoration: 'none', transition: 'all .2s' }}>
                       View Profile
                     </Link>
                     <FollowButton targetUsername={w.username || w.email || w.id} targetName={w.fullName || w.name} size="sm" />
@@ -165,8 +165,16 @@ export default function WritersPage() {
           <p style={{ fontSize: 16, color: 'rgba(255,255,255,.75)', maxWidth: 440, margin: '0 auto 28px' }}>
             Join 2,400+ writers sharing knowledge with India's education community. It's free.
           </p>
-          <Link href="/write" className="btn-primary" style={{ display: 'inline-block', textDecoration: 'none', background: 'var(--gold2)', color: 'var(--ink)' }}>
-            Start Writing Today →
+          <Link href="/write" style={{
+            display: 'inline-flex', alignItems: 'center', gap: 8,
+            padding: '16px 36px', borderRadius: 14,
+            background: 'var(--gold2,#E5B64A)', color: 'var(--ink)',
+            fontFamily: 'var(--font-sans)', fontSize: 17, fontWeight: 800,
+            textDecoration: 'none', letterSpacing: '-.2px',
+            boxShadow: '0 4px 20px rgba(201,146,42,.35)',
+            transition: 'transform .2s, box-shadow .2s',
+          }}>
+            ✍️ Start Writing Today →
           </Link>
         </div>
       </main>

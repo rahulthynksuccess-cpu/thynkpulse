@@ -15,6 +15,8 @@ const COMMUNITIES = [
   { emoji: '🏆', gradient: 'linear-gradient(135deg,#FEF9EC,#F7E8BE)', title: 'School Leaders', desc: 'Principals and administrators sharing governance insights, procurement decisions, and transformation stories.', count: '620+', unit: 'leaders', color: 'var(--gold)', category: 'Leadership' },
   { emoji: '🔬', gradient: 'linear-gradient(135deg,#EAF4F1,#C4E4DC)', title: 'Researchers & Innovators', desc: 'Bridge the gap between academic research and classroom practice. Make findings accessible and actionable.', count: '290+', unit: 'researchers', color: 'var(--teal)', category: 'Research' },
   { emoji: '🌍', gradient: 'linear-gradient(135deg,#FDF0F0,#F5CBCB)', title: 'International Educators', desc: 'Education challenges are global. Connect with practitioners from 40+ countries and diverse education systems.', count: '40+', unit: 'countries', color: 'var(--coral)', category: 'International' },
+  { emoji: '🎓', gradient: 'linear-gradient(135deg,#EEF4FF,#C8D9F8)', title: 'Students', desc: 'A space for curious learners to read, explore ideas, and follow educators and innovators shaping their future.', count: '1,200+', unit: 'students', color: '#4F7BE8', category: 'Student' },
+  { emoji: '👨‍👩‍👧', gradient: 'linear-gradient(135deg,#FFF0F8,#F5C8E5)', title: 'Parents & Guardians', desc: 'Stay informed about education trends, school choices, and how to support your child's learning journey.', count: '800+', unit: 'parents', color: '#C2407A', category: 'Parent' },
 ]
 
 const AVATAR_BG = ['var(--teal)', 'var(--coral)', 'var(--gold)', 'var(--plum)', 'var(--teal2)', 'var(--coral2)']
@@ -61,7 +63,7 @@ export default function CommunityPage() {
           <div style={{ position: 'absolute', top: -100, right: -100, width: 400, height: 400, borderRadius: '50%', background: 'rgba(255,255,255,.04)' }} />
           <div style={{ position: 'absolute', bottom: -80, left: '30%', width: 300, height: 300, borderRadius: '50%', background: 'rgba(255,255,255,.03)' }} />
           <div style={{ maxWidth: 800, position: 'relative', zIndex: 1 }}>
-            <div style={{ fontFamily: 'var(--font-mono)', fontSize: '13px', fontWeight: 700, letterSpacing: '2px', textTransform: 'uppercase', color: 'rgba(255,255,255,.5)', marginBottom: 16 }}>
+            <div style={{ fontFamily: 'var(--font-mono)', fontSize: '11px', fontWeight: 700, letterSpacing: '2px', textTransform: 'uppercase', color: 'rgba(255,255,255,.5)', marginBottom: 16 }}>
               {pageContent?.heroEyebrow || '🤝 Community Hub'}
             </div>
             <h1 style={{ fontFamily: 'var(--font-serif)', fontSize: 'clamp(32px,5vw,60px)', fontWeight: 900, color: 'var(--community-hero-color,#fff)', lineHeight: 1.1, marginBottom: 16 }}>
@@ -86,7 +88,7 @@ export default function CommunityPage() {
           {STATS.map((s, i) => (
             <div key={s.label} style={{ padding: '24px', textAlign: 'center', borderRight: i < 3 ? '1px solid var(--border)' : 'none' }}>
               <div style={{ fontFamily: 'var(--font-serif)', fontSize: 36, fontWeight: 900, color: 'var(--teal)', lineHeight: 1 }}>{s.n}</div>
-              <div style={{ fontSize: '14px', color: 'var(--muted)', marginTop: 4 }}>{s.label}</div>
+              <div style={{ fontSize: '12px', color: 'var(--muted)', marginTop: 4 }}>{s.label}</div>
             </div>
           ))}
         </div>
@@ -111,7 +113,7 @@ export default function CommunityPage() {
                   <div style={{ position: 'absolute', right: '-10px', bottom: '-10px', fontSize: '100px', opacity: .12, lineHeight: 1 }}>{c.emoji}</div>
                   <div style={{ width: '52px', height: '52px', borderRadius: '14px', background: 'rgba(255,255,255,.7)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '24px', marginBottom: '20px', boxShadow: '0 2px 12px rgba(0,0,0,.06)' }}>{c.emoji}</div>
                   <div style={{ fontFamily: 'var(--font-serif)', fontSize: '20px', fontWeight: 700, color: 'var(--ink)', marginBottom: '10px' }}>{c.title}</div>
-                  <div style={{ fontSize: '15px', color: 'var(--muted)', lineHeight: 1.7, marginBottom: '18px' }}>{c.desc}</div>
+                  <div style={{ fontSize: '13px', color: 'var(--muted)', lineHeight: 1.7, marginBottom: '18px' }}>{c.desc}</div>
                   <div style={{ fontSize: '12px', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '6px' }}>
                     <div style={{ width: 6, height: 6, borderRadius: '50%', background: c.color }} />
                     <span style={{ color: c.color }}>{c.count} {c.unit}</span>
@@ -144,11 +146,11 @@ export default function CommunityPage() {
                     </div>
                   }
                   <div>
-                    <div style={{ fontFamily: 'var(--font-serif)', fontSize: '17px', fontWeight: 700, color: 'var(--ink)' }}>{w.fullName || w.name}</div>
-                    <div style={{ fontSize: '14px', color: 'var(--muted)' }}>{w.designation || w.role}</div>
+                    <div style={{ fontFamily: 'var(--font-serif)', fontSize: '16px', fontWeight: 700, color: 'var(--ink)' }}>{w.fullName || w.name}</div>
+                    <div style={{ fontSize: '12px', color: 'var(--muted)' }}>{w.designation || w.role}</div>
                   </div>
                 </div>
-                <div style={{ display: 'flex', gap: 16, fontSize: '14px', color: 'var(--muted)', marginBottom: 16 }}>
+                <div style={{ display: 'flex', gap: 16, fontSize: '12px', color: 'var(--muted)', marginBottom: 16 }}>
                   <div><span style={{ fontWeight: 700, color: 'var(--teal)' }}>{(w.followerCount || 0) >= 1000 ? `${((w.followerCount || 0) / 1000).toFixed(1)}K` : (w.followerCount || 0)}</span> followers</div>
                   <div><span style={{ fontWeight: 700, color: 'var(--ink)' }}>{w.postCount || 0}</span> articles</div>
                   {w.totalReads > 0 && <div><span style={{ fontWeight: 700, color: 'var(--coral)' }}>{w.totalReads >= 1000 ? `${(w.totalReads / 1000).toFixed(0)}K` : w.totalReads}</span> reads</div>}
@@ -189,7 +191,7 @@ export default function CommunityPage() {
                   <div style={{ fontFamily: 'var(--font-serif)', fontSize: '16px', fontWeight: 600, color: 'var(--ink)', lineHeight: 1.4, marginBottom: 6 }}>
                     {d.title}
                   </div>
-                  <div style={{ display: 'flex', gap: 12, fontSize: '14px', color: 'var(--muted)' }}>
+                  <div style={{ display: 'flex', gap: 12, fontSize: '12px', color: 'var(--muted)' }}>
                     <span style={{ background: 'rgba(10,95,85,.1)', color: 'var(--teal)', padding: '2px 8px', borderRadius: 4, fontWeight: 600 }}>{d.category}</span>
                     <span>💬 {d.replies} replies</span>
                     <span>🕐 {d.time}</span>
