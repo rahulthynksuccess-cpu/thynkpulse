@@ -1,65 +1,148 @@
-# Thynk Pulse
+# ThynkPulse — Loyalty Badge System
+## Implementation Guide
 
-India's Education Community Platform — by [Thynk Success](https://thynksuccess.com)
+---
 
-## Stack
-- **Frontend:** Next.js 14 · TypeScript · Tailwind CSS · Framer Motion
-- **State:** Zustand · TanStack Query
-- **Backend:** Next.js API Routes · PostgreSQL
-- **Auth:** JWT (bcryptjs)
+## Files Delivered
 
-## Quick Start
+| File | Purpose |
+|------|---------|
+| `lib/badges.ts` | All badge definitions + `computeEarnedBadges()`, `computeEliteTag()`, `getNextBadge()` |
+| `components/ui/BadgeDisplay.tsx` | `VerifiedBadge`, `BadgeChip`, `EliteTag`, `BadgeShelf`, `BadgeGrid`, `BadgeProgressBar` |
+| `app/api/users/[username]/badges/route.ts` | GET endpoint returning earned badges + progress |
+| `app/profile/[username]/page.tsx` | Full patched profile page with Badges tab |
+| `migration_badges.sql` | DB migration — `comment_count` column, triggers, `user_badges` table, view |
+| `ADMIN_USERS_PATCH.ts` | Step-by-step instructions for admin users page verify button |
+
+---
+
+## Step 1 — Run the Migration
 
 ```bash
-# 1. Install dependencies
-npm install
-
-# 2. Set up environment variables
-cp .env.example .env.local
-# Fill in DATABASE_URL and JWT_SECRET
-
-# 3. Create database tables
-psql $DATABASE_URL < schema.sql
-
-# 4. Run dev server
-npm run dev
+psql $DATABASE_URL -f migration_badges.sql
 ```
 
-## Environment Variables
+This adds:
+- `user_profiles.comment_count` (with backfill + auto-increment trigger)
+- `user_badges` table (optional persistent store for one-time badges)
+- `v_user_badge_stats` view for admin queries
 
-| Key | Description |
+---
+
+## Step 2 — Copy files into your project
+
+```
+lib/badges.ts                              → thynkpulse/lib/badges.ts
+components/ui/BadgeDisplay.tsx             → thynkpulse/components/ui/BadgeDisplay.tsx
+app/api/users/[username]/badges/route.ts   → thynkpulse/app/api/users/[username]/badges/route.ts
+app/profile/[username]/page.tsx            → thynkpulse/app/profile/[username]/page.tsx  (replaces existing)
+```
+
+---
+
+## Step 3 — Apply Admin Users Patch
+
+Open `app/admin/users/page.tsx` and make these changes (detailed in `ADMIN_USERS_PATCH.ts`):
+
+1. Add `verifyMutation` after the existing `toggleMutation`
+2. Add **Verified** column to table `<th>`
+3. Add ✅/— cell in table row after Status
+4. Add **Verify/Unverify** button in the Actions cell
+5. Optionally show ✅ emoji beside name
+
+> The backend `PUT /admin/users/[id]` route already supports `isVerified` — no API changes needed.
+
+---
+
+## How Badges Work
+
+### Badge Logic (computed on-the-fly)
+Badges are **not stored** — they are computed live from user stats each time the profile loads. This means they automatically update as users hit milestones.
+
+The only stored badges are in `user_badges` (optional) for **one-time event badges** like "First Published Post" — use this if you want to send a notification when the badge is first earned.
+
+### Badge Categories
+
+| Category | Trigger | Top Badge |
+|----------|---------|-----------|
+| ✅ Verified | Admin approves user | Verified |
+| 📝 Content Creator | Posts published | ThynkPulse Icon (500 posts) |
+| 💬 Engagement | Comments made | Community Pillar (1,000 comments) |
+| ❤️ Appreciation | Likes received on posts | Influential Voice (5,000 likes) |
+| 🔗 Networking | Followers (connections) | Ecosystem Builder (1,000) |
+| 🎓 Educator | Education-category posts | Education Ambassador |
+
+### Elite Status Tags
+Computed from `(postCount, followerCount)` thresholds. Displayed beside the user's name on their profile. The highest qualifying tag is shown.
+
+| Tag | Requirement |
 |-----|-------------|
-| `DATABASE_URL` | PostgreSQL connection string (Neon / Supabase / Render) |
-| `JWT_SECRET` | Long random string for signing tokens |
-| `NEXT_PUBLIC_APP_URL` | Your deployed URL |
-| `NEXT_PUBLIC_ADS_ENABLED` | `true` to activate ad slots (monetisation) |
+| 🌱 Emerging Voice | 10+ posts |
+| ⭐ Thought Leader | 25 posts + 50 followers |
+| 🔥 Knowledge Champion | 50 posts + 100 followers |
+| 💎 Visionary Author | 250 posts + 500 followers |
+| 👑 Community Pillar | 1,000+ followers |
+| 🚀 Future Skills Champion | 50 posts + 200 followers |
+| 🏆 ThynkPulse Ambassador | 100 posts + 500 followers |
+| 👑 ThynkPulse Legend | 500 posts + 1,000 followers |
 
-## Default Admin Login
-- Email: `admin@thynkpulse.in`
-- Password: `Admin@1234` ← **change this immediately**
+---
 
-## Pages
+## API Reference
 
-| Route | Description |
-|-------|-------------|
-| `/` | Homepage — feed, trending, community |
-| `/login` | Sign in |
-| `/register` | 3-step registration (Educator / EdTech Pro / Other) |
-| `/write` | Rich post editor |
-| `/post/[slug]` | Single post + comments |
-| `/profile/[username]` | Public profile |
-| `/profile/edit` | Edit own profile |
-| `/profile/setup` | Post-registration welcome |
-| `/admin` | Admin overview |
-| `/admin/users` | User management |
-| `/admin/approvals` | Post approval workflow |
-| `/admin/theme` | **Live Theme Controller** |
+### `GET /api/users/:username/badges`
 
-## Ad Slots (Future Monetisation)
-Set `NEXT_PUBLIC_ADS_ENABLED=true` in env and the `<AdSlot>` components activate automatically — no code changes needed.
+Returns:
+```json
+{
+  "userId": "...",
+  "stats": {
+    "isVerified": true,
+    "postCount": 27,
+    "commentCount": 143,
+    "likesReceived": 892,
+    "followerCount": 340,
+    "eduPostCount": 18
+  },
+  "earned": ["verified", "thought_leader", "engagement_builder", ...],
+  "badgeDefs": [ ...full BadgeDef objects... ],
+  "eliteTag": { "id": "thought_leader_tag", "label": "Thought Leader", "emoji": "⭐", ... },
+  "nextBadges": [
+    { "badge": { "id": "knowledge_champion", ... }, "progress": 54 }
+  ]
+}
+```
 
-## Deploy to Vercel
-1. Push to GitHub
-2. Import repo in Vercel
-3. Add env vars in Vercel dashboard
-4. Deploy — done ✓
+---
+
+## Educator Category Matching
+
+Education posts are identified by category containing any of:
+- `educat` (Education, Educational, etc.)
+- `teacher` / `school` / `learning`
+- exact match `edtech`
+
+Adjust the SQL `WHERE` clause in the badges route if your categories differ.
+
+---
+
+## Optional: One-time Badge Notifications
+
+When a user's badge tier upgrades, award a persistent record:
+
+```typescript
+// In your post approval API (app/api/admin/posts/[id]/route.ts)
+// After approving a post, check for new badges:
+
+import { computeEarnedBadges } from '@/lib/badges'
+
+// ...after incrementing post_count...
+const newBadges = computeEarnedBadges(updatedStats)
+for (const badge of newBadges) {
+  await db.query(
+    `INSERT INTO user_badges (user_id, badge_id) VALUES ($1, $2) ON CONFLICT DO NOTHING`,
+    [userId, badge.id]
+  )
+  // trigger notification here
+}
+```

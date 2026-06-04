@@ -3,12 +3,15 @@ export const dynamic = 'force-dynamic'
 import { useQuery } from '@tanstack/react-query'
 import { useParams } from 'next/navigation'
 import Link from 'next/link'
-import { ExternalLink, Linkedin, MapPin, BookOpen, Users, Eye, Zap, Heart, MessageSquare } from 'lucide-react'
+import { useState } from 'react'
+import { ExternalLink, Linkedin, MapPin, BookOpen, Users, Eye, Zap, Heart, MessageSquare, Award } from 'lucide-react'
 import { Navbar } from '@/components/layout/Navbar'
 import { Footer } from '@/components/layout/Footer'
 import { apiGet } from '@/lib/api'
 import { UserProfile, Post } from '@/types'
 import { useAuthStore } from '@/store/authStore'
+import { BadgeShelf, BadgeGrid, EliteTag, BadgeProgressBar } from '@/components/ui/BadgeDisplay'
+import { BadgeDef, getNextBadge } from '@/lib/badges'
 
 const GRADIENTS = ['linear-gradient(135deg,#EAF4F0,#C0E6DC)','linear-gradient(135deg,#FEF0EA,#F7CBB8)','linear-gradient(135deg,#EFF0FE,#C9CDF7)','linear-gradient(135deg,#FEF8E8,#F5DFA0)','linear-gradient(135deg,#F5EEF8,#DEC8F0)']
 
@@ -35,9 +38,23 @@ function StatCard({ icon, label, value, accent }: { icon:React.ReactNode; label:
   )
 }
 
+interface BadgesData {
+  stats: {
+    isVerified: boolean
+    postCount: number
+    commentCount: number
+    likesReceived: number
+    followerCount: number
+    eduPostCount: number
+  }
+  badgeDefs: BadgeDef[]
+  eliteTag: typeof import('@/lib/badges').ELITE_TAGS[0] | null
+}
+
 export default function ProfilePage() {
   const { username } = useParams<{ username: string }>()
   const { user: me } = useAuthStore()
+  const [activeTab, setActiveTab] = useState<'articles' | 'badges'>('articles')
 
   const { data: profile, isLoading } = useQuery<UserProfile>({
     queryKey: ['profile', username],
@@ -45,7 +62,6 @@ export default function ProfilePage() {
     staleTime: 5 * 60 * 1000,
   })
 
-  // Get accurate post count from actual posts API
   const { data: postsData } = useQuery<{ data: Post[]; total?: number }>({
     queryKey: ['user-posts', profile?.userId],
     queryFn: () => apiGet(`/posts?authorId=${profile?.userId}&status=approved&limit=50`),
@@ -53,15 +69,25 @@ export default function ProfilePage() {
     staleTime: 3 * 60 * 1000,
   })
 
+  const { data: badgesData } = useQuery<BadgesData>({
+    queryKey: ['user-badges', username],
+    queryFn: () => apiGet(`/users/${username}/badges`),
+    enabled: !!username,
+    staleTime: 5 * 60 * 1000,
+  })
+
   const posts = postsData?.data || []
   const isMe = me?.id === profile?.userId
 
-  // Compute accurate stats from actual post data
   const actualPostCount = postsData ? posts.length : (profile?.postCount || 0)
   const totalReads = posts.reduce((sum, p) => sum + (p.viewCount || 0), 0) || profile?.totalReads || 0
   const totalLikes = posts.reduce((sum, p) => sum + (p.likeCount || 0), 0)
 
   const fmt = (n: number) => n >= 1000 ? `${(n/1000).toFixed(1)}K` : String(n)
+
+  const earnedBadges: BadgeDef[] = badgesData?.badgeDefs || []
+  const badgeStats = badgesData?.stats
+  const isVerified = profile?.isVerified || false
 
   if (isLoading) return (
     <>
@@ -98,7 +124,7 @@ export default function ProfilePage() {
         <div style={{ maxWidth:'900px', margin:'0 auto', padding:'0 24px 80px' }}>
 
           {/* Profile card */}
-          <div style={{ background:'#fff', borderRadius:'20px', border:'1px solid var(--border)', padding:'28px 32px', marginTop:'-80px', position:'relative', marginBottom:'28px', boxShadow:'0 8px 40px rgba(0,0,0,0.08)' }}>
+          <div style={{ background:'#fff', borderRadius:'20px', border:'1px solid var(--border)', padding:'28px 32px', marginTop:'-80px', position:'relative', marginBottom:'16px', boxShadow:'0 8px 40px rgba(0,0,0,0.08)' }}>
             <div style={{ display:'flex', alignItems:'flex-start', gap:'24px', flexWrap:'wrap', marginBottom:'24px' }}>
 
               {/* Avatar */}
@@ -111,16 +137,20 @@ export default function ProfilePage() {
 
               {/* Info */}
               <div style={{ flex:1, minWidth:'200px' }}>
-                <div style={{ display:'flex', alignItems:'center', gap:'12px', flexWrap:'wrap', marginBottom:'4px' }}>
+                {/* Name + verified + elite tag */}
+                <div style={{ display:'flex', alignItems:'center', gap:'8px', flexWrap:'wrap', marginBottom:'4px' }}>
                   <h1 style={{ fontFamily:'var(--font-serif)', fontSize:'28px', fontWeight:900, color:'var(--ink)', letterSpacing:'-.5px', margin:0 }}>
                     {profile.fullName}
                   </h1>
-                  {profile.isVerified && (
-                    <span style={{ display:'inline-flex', alignItems:'center', gap:'4px', fontSize:'13px', fontWeight:700, color:'var(--teal)', background:'rgba(10,95,85,.08)', border:'1px solid rgba(10,95,85,.2)', borderRadius:'100px', padding:'3px 10px', fontFamily:'var(--font-sans)' }}>
-                      ✓ Verified
+                  {isVerified && (
+                    <span style={{ display:'inline-flex', alignItems:'center', gap:'4px', fontSize:'12px', fontWeight:700, color:'var(--teal)', background:'rgba(10,95,85,.08)', border:'1.5px solid rgba(10,95,85,.25)', borderRadius:'100px', padding:'3px 9px', fontFamily:'var(--font-sans)' }}>
+                      ✅ Verified
                     </span>
                   )}
+                  {/* Elite status tag */}
+                  {badgeStats && <EliteTag stats={badgeStats} size="sm" />}
                 </div>
+
                 <div style={{ fontSize:'14px', color:'var(--muted)', fontFamily:'var(--font-sans)', marginBottom:'10px', fontWeight:500 }}>
                   {profile.designation}{profile.companyName ? ` · ${profile.companyName}` : ''}{profile.instituteName ? ` · ${profile.instituteName}` : ''}
                 </div>
@@ -130,9 +160,14 @@ export default function ProfilePage() {
                   </div>
                 )}
                 {profile.introduction && (
-                  <p style={{ fontSize:'14px', color:'var(--ink)', lineHeight:1.75, fontWeight:300, maxWidth:'520px', fontFamily:'var(--font-sans)', margin:0 }}>
+                  <p style={{ fontSize:'14px', color:'var(--ink)', lineHeight:1.75, fontWeight:300, maxWidth:'520px', fontFamily:'var(--font-sans)', margin:'0 0 12px' }}>
                     {profile.introduction}
                   </p>
+                )}
+
+                {/* Badge shelf (top 5 earned badges) */}
+                {earnedBadges.length > 0 && (
+                  <BadgeShelf badges={earnedBadges} isVerified={isVerified} max={5} />
                 )}
               </div>
 
@@ -172,53 +207,104 @@ export default function ProfilePage() {
             </div>
           </div>
 
-          {/* Interests / badges */}
+          {/* Interests */}
           {profile.interests && (
-            <div style={{ display:'flex', gap:'8px', flexWrap:'wrap', marginBottom:'24px' }}>
+            <div style={{ display:'flex', gap:'8px', flexWrap:'wrap', marginBottom:'16px' }}>
               {String(profile.interests).split(',').map(tag => (
                 <span key={tag} className="topic-tag" style={{ fontSize:'12px' }}>{tag.trim()}</span>
               ))}
             </div>
           )}
 
-          {/* Articles */}
-          <h2 style={{ fontFamily:'var(--font-serif)', fontSize:'24px', fontWeight:900, color:'var(--ink)', marginBottom:'16px' }}>
-            Articles by {profile.fullName.split(' ')[0]}
-            {actualPostCount > 0 && <span style={{ fontSize:'16px', color:'var(--muted)', fontWeight:400, marginLeft:'8px', fontFamily:'var(--font-sans)' }}>({actualPostCount})</span>}
-          </h2>
+          {/* Tab bar: Articles | Badges */}
+          <div style={{ display:'flex', gap:'4px', marginBottom:'20px', background:'#fff', border:'1px solid var(--border)', borderRadius:'12px', padding:'4px' }}>
+            {(['articles', 'badges'] as const).map(tab => (
+              <button key={tab} onClick={() => setActiveTab(tab)}
+                style={{ flex:1, padding:'9px', borderRadius:'9px', border:'none', cursor:'pointer', fontSize:'13px', fontWeight:600, fontFamily:'var(--font-sans)', background: activeTab === tab ? 'var(--teal)' : 'transparent', color: activeTab === tab ? '#fff' : 'var(--muted)', transition:'all .18s', display:'flex', alignItems:'center', justifyContent:'center', gap:'6px' }}>
+                {tab === 'badges' ? <Award style={{ width:14, height:14 }} /> : <BookOpen style={{ width:14, height:14 }} />}
+                {tab === 'articles' ? `Articles${actualPostCount > 0 ? ` (${actualPostCount})` : ''}` : `Badges${earnedBadges.length > 0 ? ` (${earnedBadges.length})` : ''}`}
+              </button>
+            ))}
+          </div>
 
-          {posts.length === 0 ? (
-            <div style={{ textAlign:'center', padding:'56px', background:'#fff', borderRadius:'16px', border:'1px solid var(--border)', color:'var(--muted)', fontFamily:'var(--font-sans)' }}>
-              No published articles yet.
-            </div>
-          ) : (
-            <div style={{ display:'flex', flexDirection:'column', gap:'14px' }}>
-              {posts.map((post, i) => (
-                <Link key={post.id} href={`/post/${post.slug}`}
-                  style={{ display:'flex', gap:'20px', alignItems:'flex-start', background:'#fff', border:'1px solid var(--border)', borderRadius:'16px', padding:'20px 22px', textDecoration:'none', color:'inherit', transition:'all .22s' }}
-                  onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor='rgba(10,95,85,.25)'; (e.currentTarget as HTMLElement).style.transform='translateY(-2px)'; (e.currentTarget as HTMLElement).style.boxShadow='0 8px 32px rgba(10,95,85,.08)' }}
-                  onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor='var(--border)'; (e.currentTarget as HTMLElement).style.transform='none'; (e.currentTarget as HTMLElement).style.boxShadow='none' }}>
-                  {/* Cover */}
-                  <div style={{ width:68, height:68, borderRadius:'12px', display:'flex', alignItems:'center', justifyContent:'center', fontSize:'28px', background:GRADIENTS[i % GRADIENTS.length], flexShrink:0 }}>
-                    {post.coverEmoji || '📝'}
-                  </div>
-                  {/* Content */}
-                  <div style={{ flex:1, minWidth:0 }}>
-                    <div style={{ display:'flex', gap:'8px', marginBottom:'6px', flexWrap:'wrap' }}>
-                      <span className="badge badge-teal" style={{ fontSize:'10px' }}>{post.category}</span>
-                      <span style={{ fontSize:'15px', color:'var(--muted)', fontFamily:'var(--font-mono)' }}>{post.readTime} min read</span>
+          {/* ── ARTICLES TAB ─── */}
+          {activeTab === 'articles' && (
+            posts.length === 0 ? (
+              <div style={{ textAlign:'center', padding:'56px', background:'#fff', borderRadius:'16px', border:'1px solid var(--border)', color:'var(--muted)', fontFamily:'var(--font-sans)' }}>
+                No published articles yet.
+              </div>
+            ) : (
+              <div style={{ display:'flex', flexDirection:'column', gap:'14px' }}>
+                {posts.map((post, i) => (
+                  <Link key={post.id} href={`/post/${post.slug}`}
+                    style={{ display:'flex', gap:'20px', alignItems:'flex-start', background:'#fff', border:'1px solid var(--border)', borderRadius:'16px', padding:'20px 22px', textDecoration:'none', color:'inherit', transition:'all .22s' }}
+                    onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor='rgba(10,95,85,.25)'; (e.currentTarget as HTMLElement).style.transform='translateY(-2px)'; (e.currentTarget as HTMLElement).style.boxShadow='0 8px 32px rgba(10,95,85,.08)' }}
+                    onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor='var(--border)'; (e.currentTarget as HTMLElement).style.transform='none'; (e.currentTarget as HTMLElement).style.boxShadow='none' }}>
+                    <div style={{ width:68, height:68, borderRadius:'12px', display:'flex', alignItems:'center', justifyContent:'center', fontSize:'28px', background:GRADIENTS[i % GRADIENTS.length], flexShrink:0 }}>
+                      {post.coverEmoji || '📝'}
                     </div>
-                    <div style={{ fontFamily:'var(--font-serif)', fontSize:'18px', fontWeight:700, color:'var(--ink)', lineHeight:1.3, marginBottom:'6px' }}>{post.title}</div>
-                    {post.excerpt && <div style={{ fontSize:'15px', color:'var(--muted)', lineHeight:1.6, fontWeight:300, fontFamily:'var(--font-sans)' }}>{post.excerpt.slice(0, 120)}{post.excerpt.length > 120 ? '…' : ''}</div>}
+                    <div style={{ flex:1, minWidth:0 }}>
+                      <div style={{ display:'flex', gap:'8px', marginBottom:'6px', flexWrap:'wrap' }}>
+                        <span className="badge badge-teal" style={{ fontSize:'10px' }}>{post.category}</span>
+                        <span style={{ fontSize:'15px', color:'var(--muted)', fontFamily:'var(--font-mono)' }}>{post.readTime} min read</span>
+                      </div>
+                      <div style={{ fontFamily:'var(--font-serif)', fontSize:'18px', fontWeight:700, color:'var(--ink)', lineHeight:1.3, marginBottom:'6px' }}>{post.title}</div>
+                      {post.excerpt && <div style={{ fontSize:'15px', color:'var(--muted)', lineHeight:1.6, fontWeight:300, fontFamily:'var(--font-sans)' }}>{post.excerpt.slice(0, 120)}{post.excerpt.length > 120 ? '…' : ''}</div>}
+                    </div>
+                    <div style={{ display:'flex', flexDirection:'column', alignItems:'flex-end', gap:'5px', fontSize:'14px', color:'var(--muted)', fontFamily:'var(--font-sans)', flexShrink:0 }}>
+                      <span style={{ display:'flex', alignItems:'center', gap:'3px' }}><Eye style={{ width:11, height:11 }} /> {fmt(post.viewCount || 0)}</span>
+                      <span style={{ display:'flex', alignItems:'center', gap:'3px' }}><Heart style={{ width:11, height:11 }} /> {post.likeCount || 0}</span>
+                      <span style={{ display:'flex', alignItems:'center', gap:'3px' }}><MessageSquare style={{ width:11, height:11 }} /> {post.commentCount || 0}</span>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            )
+          )}
+
+          {/* ── BADGES TAB ─── */}
+          {activeTab === 'badges' && (
+            <div style={{ display:'flex', flexDirection:'column', gap:'20px' }}>
+
+              {/* Earned badge grid */}
+              <div style={{ background:'#fff', border:'1px solid var(--border)', borderRadius:'16px', padding:'24px' }}>
+                <div style={{ fontFamily:'var(--font-serif)', fontSize:'20px', fontWeight:900, color:'var(--ink)', marginBottom:'16px' }}>
+                  🏅 Earned Badges
+                </div>
+                <BadgeGrid badges={earnedBadges} isVerified={isVerified} />
+              </div>
+
+              {/* Progress toward next badges (only show to profile owner) */}
+              {isMe && badgeStats && (
+                <div style={{ background:'#fff', border:'1px solid var(--border)', borderRadius:'16px', padding:'24px' }}>
+                  <div style={{ fontFamily:'var(--font-serif)', fontSize:'20px', fontWeight:900, color:'var(--ink)', marginBottom:'16px' }}>
+                    🎯 Progress
                   </div>
-                  {/* Stats */}
-                  <div style={{ display:'flex', flexDirection:'column', alignItems:'flex-end', gap:'5px', fontSize:'14px', color:'var(--muted)', fontFamily:'var(--font-sans)', flexShrink:0 }}>
-                    <span style={{ display:'flex', alignItems:'center', gap:'3px' }}><Eye style={{ width:11, height:11 }} /> {fmt(post.viewCount || 0)}</span>
-                    <span style={{ display:'flex', alignItems:'center', gap:'3px' }}><Heart style={{ width:11, height:11 }} /> {post.likeCount || 0}</span>
-                    <span style={{ display:'flex', alignItems:'center', gap:'3px' }}><MessageSquare style={{ width:11, height:11 }} /> {post.commentCount || 0}</span>
-                  </div>
-                </Link>
-              ))}
+                  {[
+                    { metric: 'posts' as const,          label: 'Posts published',   value: badgeStats.postCount,      color: '#0A5F55' },
+                    { metric: 'comments' as const,       label: 'Comments made',     value: badgeStats.commentCount,   color: '#06B6D4' },
+                    { metric: 'likes_received' as const, label: 'Likes received',    value: badgeStats.likesReceived,  color: '#EF4444' },
+                    { metric: 'connections' as const,    label: 'Followers',         value: badgeStats.followerCount,  color: '#8B5CF6' },
+                    { metric: 'edu_posts' as const,      label: 'Education posts',   value: badgeStats.eduPostCount,   color: '#F59E0B' },
+                  ].map(({ metric, label, value, color }) => {
+                    const next = getNextBadge(metric, value)
+                    if (!next) return null
+                    return (
+                      <div key={metric} style={{ marginBottom:'16px' }}>
+                        <div style={{ fontSize:'12px', fontWeight:700, color:'var(--ink)', fontFamily:'var(--font-sans)', marginBottom:'4px' }}>
+                          {next.badge.emoji} Next: <span style={{ color }}>{next.badge.name}</span>
+                        </div>
+                        <BadgeProgressBar
+                          label={label}
+                          current={value}
+                          next={next.badge.threshold}
+                          color={color}
+                        />
+                      </div>
+                    )
+                  })}
+                </div>
+              )}
             </div>
           )}
         </div>
