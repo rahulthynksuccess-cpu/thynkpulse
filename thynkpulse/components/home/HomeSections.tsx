@@ -97,7 +97,7 @@ export function CommunitySection() {
     <section id="community" style={{ padding:'96px 5%', background:'var(--community-bg, #fff)' }}>
       <div className="eyebrow"><div className="eyebrow-line" style={{ background:'var(--community-eyebrow-color,var(--coral))' }} /><span className="eyebrow-text" style={{ color:'var(--community-eyebrow-color,var(--coral))' }}>Built for every education professional</span></div>
       <h2 style={{ fontFamily:'var(--font-serif)', fontSize:'var(--community-title-size, 42px)', fontWeight:900, color:'var(--community-title-color, var(--ink))', lineHeight:1.05, letterSpacing:'-1.5px', marginBottom:'14px' }}>One Platform,<br /><em style={{ fontStyle:'italic', color:'var(--community-accent-color, var(--teal))' }}>Every Voice</em></h2>
-      <p style={{ fontSize:'var(--community-desc-size, 16px)', color:'var(--community-desc-color, var(--muted))', lineHeight:1.8, maxWidth:'520px', marginTop:'14px', fontWeight:300 }}>Whether you teach a class of 30 or run an EdTech company — there&apos;s a place for you in Thynk Pulse.</p>
+      <p style={{ fontSize:'var(--community-desc-size, 17px)', color:'var(--community-desc-color, var(--muted))', lineHeight:1.8, maxWidth:'520px', marginTop:'14px', fontWeight:300 }}>Whether you teach a class of 30 or run an EdTech company — there&apos;s a place for you in Thynk Pulse.</p>
       <div className="comm-grid" style={{ display:'grid', gridTemplateColumns:'repeat(3,1fr)', gap:'20px', marginTop:'56px' }}>
         {communities.map((comm:any, i:number) => (
           <motion.div key={i} initial={{ opacity:0, y:22 }} whileInView={{ opacity:1, y:0 }} viewport={{ once:true }} transition={{ delay:i*.08 }}
@@ -186,7 +186,7 @@ export function ProfileSection() {
           </div>
         </div>
         <div>
-          <p style={{ fontSize:'var(--community-desc-size,16px)', color:'var(--community-desc-color,var(--muted))', lineHeight:1.8, fontWeight:300 }}>{sectionDesc}</p>
+          <p style={{ fontSize:'var(--community-desc-size,17px)', color:'var(--community-desc-color,var(--muted))', lineHeight:1.8, fontWeight:300 }}>{sectionDesc}</p>
           <div style={{ display:'flex', flexDirection:'column', gap:'22px', marginTop:'36px' }}>
             {features.map((f:any) => (
               <div key={f.title} style={{ display:'flex', gap:'16px', alignItems:'flex-start' }}>

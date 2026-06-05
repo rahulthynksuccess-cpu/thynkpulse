@@ -120,7 +120,7 @@ export function HeroSection() {
               </motion.div>
 
               <motion.div initial={{opacity:0}} animate={{opacity:1}} transition={{delay:.4}}
-                style={{ display:'flex', alignItems:'center', gap:'12px', fontSize:'13px', color:'var(--muted)', fontFamily:'var(--font-sans)', flexWrap:'wrap' }}>
+                style={{ display:'flex', alignItems:'center', gap:'12px', fontSize:'var(--hero-social-proof-size,16px)', color:'var(--muted)', fontFamily:'var(--font-sans)', flexWrap:'wrap' }}>
                 <div style={{ display:'flex' }}>
                   {['🧑‍🏫','👩‍💼','🧑‍💻','👨‍🔬','👩‍🏫'].map((e,i) => (
                     <div key={i} style={{ width:30, height:30, borderRadius:'50%', background:`hsl(${i*40+160},40%,85%)`, border:'2px solid #fff', display:'flex', alignItems:'center', justifyContent:'center', fontSize:'15px', marginLeft:i?'-9px':0 }}>{e}</div>
