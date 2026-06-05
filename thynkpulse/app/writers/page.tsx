@@ -49,7 +49,7 @@ export default function WritersPage() {
       <Navbar />
       <main style={{ background: 'var(--cream)' }}>
         {/* Hero */}
-        <div style={{ background: 'var(--teal)', padding: '72px 5% 64px' }}>
+        <div style={{ background: 'var(--teal)', padding: '96px 5% 52px' }}>
           <div style={{ maxWidth: 800 }}>
             <div style={{ fontFamily: 'var(--font-mono)', fontSize: '11px', fontWeight: 700, letterSpacing: '2px', textTransform: 'uppercase', color: 'rgba(255,255,255,.5)', marginBottom: 16 }}>
               ✍️ Writers Directory
@@ -128,7 +128,7 @@ export default function WritersPage() {
                       </div>
                     }
                     <div style={{ flex: 1, minWidth: 0 }}>
-                      <div style={{ fontFamily: 'var(--font-serif)', fontSize: '16px', fontWeight: 700, color: 'var(--ink)', marginBottom: 2 }}>{w.fullName || w.name}</div>
+                      <div style={{ fontFamily: 'var(--font-serif)', fontSize: '17px', fontWeight: 700, color: 'var(--ink)', marginBottom: 2 }}>{w.fullName || w.name}</div>
                       <div style={{ fontSize: '12px', color: 'var(--muted)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                         {w.designation || w.role}{(w.instituteName || w.companyName) ? ` · ${w.instituteName || w.companyName}` : ''}
                       </div>

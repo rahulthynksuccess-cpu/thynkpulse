@@ -36,6 +36,8 @@ const PAGES: { label: string; icon: string; sections: { id: string; label: strin
           { id:'hero.cardReadTime',  label:'Featured card — Read time',      type:'text', cssVar:'--hero-card-readtime',default:'8 min read' },
           { id:'hero.cardAuthor',    label:'Featured card — Author name',    type:'text', cssVar:'--hero-card-author',  default:'Rajesh Kumar' },
           { id:'hero.cardAuthorRole',label:'Featured card — Author role',    type:'text', cssVar:'--hero-card-role',    default:'EdTech Founder' },
+          { id:'hero.socialProof',   label:'Social proof text',             type:'text', cssVar:'--hero-social-proof-text', default:'Join 10,000+ professionals already on Thynk Pulse' },
+          { id:'hero.socialProofSize',label:'Social proof font size',       type:'size', cssVar:'--hero-social-proof-size', default:'16', min:12, max:24 },
         ],
       },
       {
@@ -276,7 +278,7 @@ const PAGES: { label: string; icon: string; sections: { id: string; label: strin
           { id:'comm.titleSize',     label:'Section title font size',    type:'size',  cssVar:'--community-title-size',   default:'42', min:24, max:72 },
           { id:'comm.accentColor',   label:'Italic accent colour',       type:'color', cssVar:'--community-accent-color', default:'#0A5F55' },
           { id:'comm.descColor',     label:'Description text colour',    type:'color', cssVar:'--community-desc-color',   default:'#7A6A52' },
-
+          { id:'comm.descSize',      label:'Description font size',      type:'size',  cssVar:'--community-desc-size',    default:'17', min:12, max:26 },
           { id:'comm.countSize',     label:'Member count font size',     type:'size',  cssVar:'--community-count-size',   default:'12', min:9, max:16 },
         ],
       },
@@ -315,6 +317,8 @@ const PAGES: { label: string; icon: string; sections: { id: string; label: strin
           { id:'writ.titleColor',    label:'"Writers Get" title colour', type:'color', cssVar:'--writers-section-title',  default:'#1A1208' },
           { id:'writ.titleSize',     label:'Section title font size',    type:'size',  cssVar:'--writers-section-title-size', default:'42', min:24, max:72 },
           { id:'writ.accentColor',   label:'Italic accent colour',       type:'color', cssVar:'--writers-accent-color',   default:'#0A5F55' },
+          { id:'writ.descColor',     label:'Section description colour', type:'color', cssVar:'--writers-desc-color',     default:'#7A6A52' },
+          { id:'writ.descSize',      label:'Section description font size', type:'size', cssVar:'--writers-desc-size',    default:'17', min:12, max:26 },
 
 
 

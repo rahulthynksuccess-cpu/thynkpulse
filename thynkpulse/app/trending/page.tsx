@@ -131,7 +131,7 @@ export default function TrendingNowPage() {
         {/* ── Hero ──────────────────────────────────────────────── */}
         <div style={{
           background:'var(--trending-hero-bg, linear-gradient(135deg,var(--teal) 0%,#0D7A6D 60%,var(--plum) 100%))',
-          padding:'72px 5% 64px', position:'relative', overflow:'hidden',
+          padding:'96px 5% 52px', position:'relative', overflow:'hidden',
         }}>
           {/* Decorative circles */}
           <div style={{ position:'absolute', top:-100, right:-100, width:400, height:400, borderRadius:'50%', background:'rgba(255,255,255,.04)', pointerEvents:'none' }} />
@@ -177,9 +177,10 @@ export default function TrendingNowPage() {
           </div>
         </div>
 
-        {/* ── Period filter bar ────────────────────────────────── */}
+        {/* ── Period filter + Topics filter bar ─────────────────── */}
         <div style={{ background:'#fff', borderBottom:'1px solid var(--border)', padding:'0 5%' }}>
-          <div style={{ display:'flex', gap:8, padding:'14px 0', overflowX:'auto', scrollbarWidth:'none' }}>
+          {/* Period filter */}
+          <div style={{ display:'flex', gap:8, padding:'14px 0 0', overflowX:'auto', scrollbarWidth:'none' }}>
             {PERIODS.map(p => (
               <button key={p} onClick={() => setActivePeriod(p)}
                 className={`filter-btn ${activePeriod === p ? 'active' : ''}`}
@@ -188,49 +189,37 @@ export default function TrendingNowPage() {
               </button>
             ))}
           </div>
-        </div>
-
-        {/* ── Posts + Sidebar ──────────────────────────────────── */}
-        <div style={{ padding:'48px 5%', maxWidth:1280, margin:'0 auto' }}>
-          <div className="trending-layout" style={{ display:'grid', gridTemplateColumns:'1fr 300px', gap:40, alignItems:'start' }}>
-
-            {/* Posts grid — SAME as Latest Posts */}
-            <div>
-              <div style={{ fontSize:'14px', fontWeight:600, color:'var(--muted)', marginBottom:24 }}>
-                {isLoading ? 'Loading…' : `${posts.length} trending articles · ${activePeriod}`}
-              </div>
-
-              {isLoading ? (
-                <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fill,minmax(280px,1fr))', gap:20 }}>
-                  {Array.from({length:6}).map((_,i) => <SkeletonCard key={i} />)}
-                </div>
-              ) : (
-                <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fill,minmax(280px,1fr))', gap:20 }}>
-                  {posts.map((post,i) => <PostCard key={post.id} post={post} index={i} />)}
-                </div>
-              )}
-            </div>
-
-            {/* Sidebar */}
-            <div style={{ display:'flex', flexDirection:'column', gap:20, position:'sticky', top:24 }}>
-              <div style={{ background:'#fff', border:'1.5px solid var(--border)', borderRadius:16, padding:22 }}>
-                <div style={{ fontFamily:'var(--font-serif)', fontSize:'17px', fontWeight:700, color:'var(--ink)', marginBottom:16 }}>
-                  🏷️ Trending Topics
-                </div>
-                <div style={{ display:'flex', flexWrap:'wrap', gap:8 }}>
-                  {TOPICS.map(t => (
-                    <span key={t} style={{ padding:'6px 12px', borderRadius:20, border:'1.5px solid var(--parchment)', background:'var(--cream)', fontSize:'13px', fontWeight:600, color:'var(--ink)', cursor:'pointer' }}>
-                      {t}
-                    </span>
-                  ))}
-                </div>
-              </div>
+          {/* Trending Topics filter */}
+          <div style={{ paddingTop:10, paddingBottom:14 }}>
+            <div style={{ fontSize:'11px', fontWeight:700, letterSpacing:'1.5px', textTransform:'uppercase', color:'var(--muted)', fontFamily:'var(--font-mono)', marginBottom:8 }}>🏷️ Trending Topics</div>
+            <div style={{ display:'flex', flexWrap:'wrap', gap:6 }}>
+              {TOPICS.map(t => (
+                <span key={t} style={{ padding:'5px 12px', borderRadius:20, border:'1.5px solid var(--parchment)', background:'var(--cream)', fontSize:'12px', fontWeight:600, color:'var(--ink)', cursor:'pointer', transition:'all .2s' }}>
+                  {t}
+                </span>
+              ))}
             </div>
           </div>
         </div>
+
+        {/* ── Posts full-width grid ─────────────────────────────── */}
+        <div style={{ padding:'48px 5%', maxWidth:1280, margin:'0 auto' }}>
+          <div style={{ fontSize:'14px', fontWeight:600, color:'var(--muted)', marginBottom:24 }}>
+            {isLoading ? 'Loading…' : `${posts.length} trending articles · ${activePeriod}`}
+          </div>
+
+          {isLoading ? (
+            <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fill,minmax(280px,1fr))', gap:20 }}>
+              {Array.from({length:6}).map((_,i) => <SkeletonCard key={i} />)}
+            </div>
+          ) : (
+            <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fill,minmax(280px,1fr))', gap:20 }}>
+              {posts.map((post,i) => <PostCard key={post.id} post={post} index={i} />)}
+            </div>
+          )}
+        </div>
       </main>
       <style>{`
-        @media (max-width:900px) { .trending-layout { grid-template-columns:1fr !important; } }
         @media (max-width:640px) { .trending-hero-grid { grid-template-columns:1fr !important; } }
       `}</style>
       <Footer />

@@ -116,7 +116,7 @@ export default function LatestPostsPage() {
       <Navbar />
       <main style={{ background: 'var(--latest-posts-bg, var(--cream))' }}>
         {/* Hero */}
-        <div style={{ background: 'var(--latest-posts-hero-bg, var(--teal))', padding: '72px 5% 64px', color: 'var(--latest-posts-hero-color, #fff)' }}>
+        <div style={{ background: 'var(--latest-posts-hero-bg, var(--teal))', padding: '96px 5% 52px', color: 'var(--latest-posts-hero-color, #fff)' }}>
           <div style={{ maxWidth: 800 }}>
             <div style={{ fontFamily: 'var(--font-mono)', fontSize: '11px', fontWeight: 700, letterSpacing: '2px', textTransform: 'uppercase', color: 'rgba(255,255,255,.5)', marginBottom: 16 }}>
               {pageContent?.heroEyebrow || 'Community Feed'}

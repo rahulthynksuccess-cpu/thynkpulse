@@ -59,7 +59,7 @@ export default function CommunityPage() {
       <Navbar />
       <main style={{ minHeight: '100vh' }}>
         {/* Hero */}
-        <div className="page-hero" style={{ background: 'linear-gradient(135deg,var(--teal) 0%,#0D7A6D 60%,var(--plum) 100%)', padding: '80px 5% 72px', position: 'relative', overflow: 'hidden' }}>
+        <div className="page-hero" style={{ background: 'linear-gradient(135deg,var(--teal) 0%,#0D7A6D 60%,var(--plum) 100%)', padding: '96px 5% 56px', position: 'relative', overflow: 'hidden' }}>
           <div style={{ position: 'absolute', top: -100, right: -100, width: 400, height: 400, borderRadius: '50%', background: 'rgba(255,255,255,.04)' }} />
           <div style={{ position: 'absolute', bottom: -80, left: '30%', width: 300, height: 300, borderRadius: '50%', background: 'rgba(255,255,255,.03)' }} />
           <div style={{ maxWidth: 800, position: 'relative', zIndex: 1 }}>
@@ -73,11 +73,11 @@ export default function CommunityPage() {
               {pageContent?.heroSubtitle || 'Connect with 10,000+ educators, EdTech founders, school leaders, and researchers — all building the future of education together.'}
             </p>
             <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
-              <Link href="/register" className="btn-primary" style={{ textDecoration: 'none', background: 'var(--gold2)', color: 'var(--ink)' }}>
-                Join Free →
+              <Link href="/write" className="btn-primary" style={{ textDecoration: 'none', background: 'var(--gold2)', color: 'var(--ink)' }}>
+                Start Writing →
               </Link>
-              <Link href="/write" className="btn-outline" style={{ textDecoration: 'none', borderColor: 'rgba(255,255,255,.3)', color: '#fff' }}>
-                Start Writing
+              <Link href="/latest-posts" className="btn-outline" style={{ textDecoration: 'none', borderColor: 'rgba(255,255,255,.3)', color: '#fff' }}>
+                Explore Articles
               </Link>
             </div>
           </div>
@@ -94,10 +94,10 @@ export default function CommunityPage() {
         </div>
 
         {/* Community segments */}
-        <div style={{ padding: '72px 5%', background: 'var(--cream)' }}>
+        <div style={{ padding: '60px 5%', background: 'var(--cream)' }}>
           <div className="eyebrow"><div className="eyebrow-line" /><span className="eyebrow-text">Find your people</span></div>
           <h2 className="s-title">One Platform,<br /><em>Every Voice</em></h2>
-          <p className="s-desc">Whether you teach a class of 30 or run an EdTech company — there's a place for you here.</p>
+          <p style={{ fontSize: '17px', color: 'var(--muted)', lineHeight: 1.8, maxWidth: 520, fontWeight: 300, marginTop: 14 }}>Whether you teach a class of 30 or run an EdTech company — there&apos;s a place for you here.</p>
 
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(300px,1fr))', gap: 20, marginTop: 48 }}>
             {COMMUNITIES.map((c, i) => (
@@ -112,9 +112,9 @@ export default function CommunityPage() {
                   onMouseLeave={e => (e.currentTarget as HTMLAnchorElement).style.borderColor = 'transparent'}>
                   <div style={{ position: 'absolute', right: '-10px', bottom: '-10px', fontSize: '100px', opacity: .12, lineHeight: 1 }}>{c.emoji}</div>
                   <div style={{ width: '52px', height: '52px', borderRadius: '14px', background: 'rgba(255,255,255,.7)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '24px', marginBottom: '20px', boxShadow: '0 2px 12px rgba(0,0,0,.06)' }}>{c.emoji}</div>
-                  <div style={{ fontFamily: 'var(--font-serif)', fontSize: '20px', fontWeight: 700, color: 'var(--ink)', marginBottom: '10px' }}>{c.title}</div>
-                  <div style={{ fontSize: '13px', color: 'var(--muted)', lineHeight: 1.7, marginBottom: '18px' }}>{c.desc}</div>
-                  <div style={{ fontSize: '12px', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '6px' }}>
+                  <div style={{ fontFamily: 'var(--font-serif)', fontSize: '21px', fontWeight: 700, color: 'var(--ink)', marginBottom: '10px' }}>{c.title}</div>
+                  <div style={{ fontSize: '15px', color: 'var(--muted)', lineHeight: 1.7, marginBottom: '18px' }}>{c.desc}</div>
+                  <div style={{ fontSize: '13px', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '6px' }}>
                     <div style={{ width: 6, height: 6, borderRadius: '50%', background: c.color }} />
                     <span style={{ color: c.color }}>{c.count} {c.unit}</span>
                   </div>
@@ -125,10 +125,10 @@ export default function CommunityPage() {
         </div>
 
         {/* Top Writers */}
-        <div style={{ padding: '72px 5%', background: '#fff' }}>
+        <div style={{ padding: '60px 5%', background: '#fff' }}>
           <div className="eyebrow"><div className="eyebrow-line" /><span className="eyebrow-text">Community voices</span></div>
           <h2 className="s-title">Top Writers<br /><em>This Month</em></h2>
-          <p className="s-desc">The community's most read and followed voices across education verticals.</p>
+          <p style={{ fontSize: '17px', color: 'var(--muted)', lineHeight: 1.8, maxWidth: 520, fontWeight: 300, marginTop: 14 }}>The community&apos;s most read and followed voices across education verticals.</p>
 
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(280px,1fr))', gap: 20, marginTop: 48 }}>
             {writers.map((w: any, i: number) => (
@@ -146,11 +146,11 @@ export default function CommunityPage() {
                     </div>
                   }
                   <div>
-                    <div style={{ fontFamily: 'var(--font-serif)', fontSize: '16px', fontWeight: 700, color: 'var(--ink)' }}>{w.fullName || w.name}</div>
-                    <div style={{ fontSize: '12px', color: 'var(--muted)' }}>{w.designation || w.role}</div>
+                    <div style={{ fontFamily: 'var(--font-serif)', fontSize: '17px', fontWeight: 700, color: 'var(--ink)' }}>{w.fullName || w.name}</div>
+                    <div style={{ fontSize: '13px', color: 'var(--muted)' }}>{w.designation || w.role}</div>
                   </div>
                 </div>
-                <div style={{ display: 'flex', gap: 16, fontSize: '12px', color: 'var(--muted)', marginBottom: 16 }}>
+                <div style={{ display: 'flex', gap: 16, fontSize: '13px', color: 'var(--muted)', marginBottom: 16 }}>
                   <div><span style={{ fontWeight: 700, color: 'var(--teal)' }}>{(w.followerCount || 0) >= 1000 ? `${((w.followerCount || 0) / 1000).toFixed(1)}K` : (w.followerCount || 0)}</span> followers</div>
                   <div><span style={{ fontWeight: 700, color: 'var(--ink)' }}>{w.postCount || 0}</span> articles</div>
                   {w.totalReads > 0 && <div><span style={{ fontWeight: 700, color: 'var(--coral)' }}>{w.totalReads >= 1000 ? `${(w.totalReads / 1000).toFixed(0)}K` : w.totalReads}</span> reads</div>}
@@ -174,48 +174,77 @@ export default function CommunityPage() {
         </div>
 
         {/* Recent discussions */}
-        <div style={{ padding: '72px 5%', background: 'var(--cream)' }}>
-          <div className="eyebrow"><div className="eyebrow-line" /><span className="eyebrow-text">What's being discussed</span></div>
+        <div style={{ padding: '72px 5% 48px', background: 'var(--cream)' }}>
+          <div className="eyebrow"><div className="eyebrow-line" /><span className="eyebrow-text">What&apos;s being discussed</span></div>
           <h2 className="s-title">Recent<br /><em>Discussions</em></h2>
-          <div style={{ marginTop: 40, maxWidth: 800 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(360px,1fr))', gap: 16, marginTop: 40 }}>
             {RECENT_DISCUSSIONS.map((d, i) => (
               <motion.div key={d.id}
-                initial={{ opacity: 0, x: -20 }}
-                whileInView={{ opacity: 1, x: 0 }}
+                initial={{ opacity: 0, y: 16 }}
+                whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.07 }}
-                style={{ display: 'flex', alignItems: 'center', gap: 16, padding: '20px 24px', background: '#fff', borderRadius: 14, border: '1.5px solid var(--border)', marginBottom: 12, cursor: 'pointer', transition: 'all .2s' }}
-                onMouseEnter={e => (e.currentTarget as HTMLDivElement).style.borderColor = 'var(--teal)'}
-                onMouseLeave={e => (e.currentTarget as HTMLDivElement).style.borderColor = 'var(--border)'}>
-                <div style={{ flex: 1 }}>
-                  <div style={{ fontFamily: 'var(--font-serif)', fontSize: '16px', fontWeight: 600, color: 'var(--ink)', lineHeight: 1.4, marginBottom: 6 }}>
-                    {d.title}
-                  </div>
-                  <div style={{ display: 'flex', gap: 12, fontSize: '12px', color: 'var(--muted)' }}>
-                    <span style={{ background: 'rgba(10,95,85,.1)', color: 'var(--teal)', padding: '2px 8px', borderRadius: 4, fontWeight: 600 }}>{d.category}</span>
-                    <span>💬 {d.replies} replies</span>
-                    <span>🕐 {d.time}</span>
-                  </div>
+                style={{ display: 'flex', flexDirection: 'column', gap: 12, padding: '22px 24px', background: '#fff', borderRadius: 16, border: '1.5px solid var(--border)', cursor: 'pointer', transition: 'all .2s' }}
+                onMouseEnter={e => { (e.currentTarget as HTMLDivElement).style.borderColor = 'var(--teal)'; (e.currentTarget as HTMLDivElement).style.transform = 'translateY(-2px)'; }}
+                onMouseLeave={e => { (e.currentTarget as HTMLDivElement).style.borderColor = 'var(--border)'; (e.currentTarget as HTMLDivElement).style.transform = 'translateY(0)'; }}>
+                <div style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
+                  <span style={{ background: 'rgba(10,95,85,.1)', color: 'var(--teal)', padding: '3px 10px', borderRadius: 6, fontWeight: 700, fontSize: '11px', letterSpacing: '0.5px' }}>{d.category}</span>
+                  <span style={{ fontSize: '12px', color: 'var(--muted)', marginLeft: 'auto' }}>🕐 {d.time}</span>
                 </div>
-                <span style={{ color: 'var(--muted)', fontSize: 18 }}>→</span>
+                <div style={{ fontFamily: 'var(--font-serif)', fontSize: '17px', fontWeight: 600, color: 'var(--ink)', lineHeight: 1.45 }}>
+                  {d.title}
+                </div>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingTop: 10, borderTop: '1px solid var(--border2)' }}>
+                  <span style={{ fontSize: '13px', color: 'var(--muted)', fontWeight: 500 }}>💬 {d.replies} replies</span>
+                  <span style={{ fontSize: '13px', color: 'var(--teal)', fontWeight: 600 }}>Join discussion →</span>
+                </div>
               </motion.div>
             ))}
           </div>
         </div>
 
         {/* Join CTA */}
-        <div style={{ background: 'var(--teal)', padding: '80px 5%', textAlign: 'center' }}>
+        <div style={{ background: 'var(--teal)', padding: '64px 5%', textAlign: 'center' }}>
           <h2 style={{ fontFamily: 'var(--font-serif)', fontSize: 'clamp(28px,4vw,48px)', fontWeight: 900, color: '#fff', marginBottom: 16 }}>
             Ready to Join the Conversation?
           </h2>
-          <p style={{ fontSize: 16, color: 'rgba(255,255,255,.75)', maxWidth: 480, margin: '0 auto 32px', lineHeight: 1.7 }}>
+          <p style={{ fontSize: 17, color: 'rgba(255,255,255,.75)', maxWidth: 480, margin: '0 auto 36px', lineHeight: 1.7, fontWeight: 300 }}>
             Free forever. No spam. Just the best conversations in Indian education.
           </p>
-          <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
-            <Link href="/register" className="btn-primary" style={{ textDecoration: 'none', background: 'var(--gold2)', color: 'var(--ink)' }}>
-              Create Free Account →
+          <div style={{ display: 'flex', gap: 14, justifyContent: 'center', flexWrap: 'wrap', alignItems: 'center' }}>
+            <Link href="/register"
+              style={{
+                textDecoration: 'none',
+                background: 'var(--gold2,#E5B64A)',
+                color: 'var(--ink)',
+                fontFamily: 'var(--font-sans)',
+                fontWeight: 800,
+                fontSize: '16px',
+                padding: '14px 32px',
+                borderRadius: '12px',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: 8,
+                boxShadow: '0 6px 20px rgba(201,146,42,.35)',
+                transition: 'all .2s',
+              }}>
+              🚀 Create Free Account
             </Link>
-            <Link href="/latest-posts" className="btn-outline" style={{ textDecoration: 'none', borderColor: 'rgba(255,255,255,.3)', color: '#fff' }}>
+            <Link href="/latest-posts"
+              style={{
+                textDecoration: 'none',
+                background: 'rgba(255,255,255,.12)',
+                border: '1.5px solid rgba(255,255,255,.3)',
+                color: '#fff',
+                fontFamily: 'var(--font-sans)',
+                fontWeight: 600,
+                fontSize: '15px',
+                padding: '13px 28px',
+                borderRadius: '12px',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: 8,
+              }}>
               Browse Articles First
             </Link>
           </div>
