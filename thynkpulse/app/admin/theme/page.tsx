@@ -1341,7 +1341,7 @@ function SectionPreview({ section, t }: { section: string; t: Record<string,any>
 
     case 'edtech-articles': return (
       <div style={{ borderRadius:'12px', overflow:'hidden', border:'1px solid rgba(26,18,8,.06)' }}>
-        <PageHero bg={s('edtechHeroBg','#0A5F55')} textColor={s('edtechHeroColor','#fff')} eyebrow="EdTech Category" title="EdTech Articles" subtitle="Analysis, funding news, and thought leadership." />
+        <PageHero bg={s('edtechHeroBg','#0A5F55')} textColor={s('edtechHeroColor','#fff')} eyebrow="💡 EdTech Category" title="EdTech Articles" subtitle="Analysis, funding news, and thought leadership." />
         <div style={{ padding:'10px 12px', background:s('edtechPillBg','#fff'), borderBottom:`1px solid ${s('edtechPillBorder','rgba(26,18,8,.08)')}`, display:'flex', gap:'6px', flexWrap:'wrap' as const }}>
           {['🤖 AI & ML','💰 Funding','📱 Products','🚀 Startups'].map(t=>(
             <span key={t} style={{ padding:'5px 10px', borderRadius:'8px', background:s('edtechPillBg','#fff'), border:`1px solid ${s('edtechPillBorder','rgba(26,18,8,.1)')}`, fontSize:'11px', color:'var(--ink)' }}>{t}</span>
@@ -1351,6 +1351,14 @@ function SectionPreview({ section, t }: { section: string; t: Record<string,any>
           <PostCard e="🤖" cat="EdTech" title="AI Rewriting Schools" excerpt="What actually works." />
           <PostCard e="💡" cat="EdTech" title="EdTech Funding 2025" excerpt="What investors want." />
           <PostCard e="🎮" cat="EdTech" title="Gamification Done Right" excerpt="Beyond points & badges." />
+        </div>
+        <div style={{ padding:'14px', background:s('edtechHeroBg','#0A5F55'), textAlign:'center' as const }}>
+          <div style={{ fontFamily:'var(--font-serif)', fontSize:'13px', fontWeight:900, color:'#fff', marginBottom:'5px' }}>Share Your EdTech Insights</div>
+          <div style={{ fontSize:'10px', color:'rgba(255,255,255,.7)', marginBottom:'8px' }}>Join 2,400+ writers in India's education community.</div>
+          <div style={{ display:'flex', gap:'6px', justifyContent:'center' }}>
+            <span style={{ padding:'5px 12px', borderRadius:'8px', background:s('gold2','#E5B64A'), color:s('ink','#1A1208'), fontSize:'10px', fontWeight:800 }}>✍️ Start Writing Free</span>
+            <span style={{ padding:'5px 10px', borderRadius:'8px', background:'rgba(255,255,255,.13)', border:'1px solid rgba(255,255,255,.3)', color:'#fff', fontSize:'10px', fontWeight:600 }}>Meet Writers →</span>
+          </div>
         </div>
       </div>
     )
@@ -1372,6 +1380,14 @@ function SectionPreview({ section, t }: { section: string; t: Record<string,any>
             <PostCard e="🤖" cat="Teaching" title="6 Months with GPT" excerpt="Honest review." />
           </div>
         </div>
+        <div style={{ padding:'14px', background:s('edtechStoriesHeroBg','#3D1F5E'), textAlign:'center' as const }}>
+          <div style={{ fontFamily:'var(--font-serif)', fontSize:'13px', fontWeight:900, color:'#fff', marginBottom:'5px' }}>Your Story Matters</div>
+          <div style={{ fontSize:'10px', color:'rgba(255,255,255,.7)', marginBottom:'8px' }}>Share your educator journey with 10,000+ readers.</div>
+          <div style={{ display:'flex', gap:'6px', justifyContent:'center' }}>
+            <span style={{ padding:'5px 12px', borderRadius:'8px', background:s('gold2','#E5B64A'), color:s('ink','#1A1208'), fontSize:'10px', fontWeight:800 }}>✍️ Share Your Story</span>
+            <span style={{ padding:'5px 10px', borderRadius:'8px', background:'rgba(255,255,255,.13)', border:'1px solid rgba(255,255,255,.3)', color:'#fff', fontSize:'10px', fontWeight:600 }}>Meet Writers →</span>
+          </div>
+        </div>
       </div>
     )
 
@@ -1391,6 +1407,14 @@ function SectionPreview({ section, t }: { section: string; t: Record<string,any>
           <PostCard e="💰" cat="Leadership" title="Turned Down ₹50L Deal" excerpt="When to say no." />
           <PostCard e="📋" cat="Leadership" title="EdTech Procurement Guide" excerpt="Buy on your terms." />
         </div>
+        <div style={{ padding:'14px', background:s('leadershipHeroBg','#C9922A'), textAlign:'center' as const }}>
+          <div style={{ fontFamily:'var(--font-serif)', fontSize:'13px', fontWeight:900, color:'#fff', marginBottom:'5px' }}>Lead. Share. Inspire.</div>
+          <div style={{ fontSize:'10px', color:'rgba(255,255,255,.8)', marginBottom:'8px' }}>Your leadership journey can guide thousands of school leaders.</div>
+          <div style={{ display:'flex', gap:'6px', justifyContent:'center' }}>
+            <span style={{ padding:'5px 12px', borderRadius:'8px', background:s('ink','#1A1208'), color:'#fff', fontSize:'10px', fontWeight:800 }}>✍️ Share Your Insights</span>
+            <span style={{ padding:'5px 10px', borderRadius:'8px', background:'rgba(255,255,255,.2)', border:'1px solid rgba(255,255,255,.4)', color:'#fff', fontSize:'10px', fontWeight:600 }}>Explore Community →</span>
+          </div>
+        </div>
       </div>
     )
 
@@ -1406,6 +1430,14 @@ function SectionPreview({ section, t }: { section: string; t: Record<string,any>
           <PostCard e="🎮" cat="Innovation" title="Gamification Done Right" excerpt="Beyond points & badges." />
           <PostCard e="🥽" cat="Innovation" title="AR/VR in Class 2025" excerpt="What actually works." />
           <PostCard e="🛠️" cat="Innovation" title="PBL at Scale" excerpt="200 schools, real data." />
+        </div>
+        <div style={{ padding:'14px', background:s('innovationHeroBg','#3D1F5E'), textAlign:'center' as const }}>
+          <div style={{ fontFamily:'var(--font-serif)', fontSize:'13px', fontWeight:900, color:'#fff', marginBottom:'5px' }}>Innovating in Education?</div>
+          <div style={{ fontSize:'10px', color:'rgba(255,255,255,.7)', marginBottom:'8px' }}>Share your breakthrough ideas with 10,000+ education professionals.</div>
+          <div style={{ display:'flex', gap:'6px', justifyContent:'center' }}>
+            <span style={{ padding:'5px 12px', borderRadius:'8px', background:s('gold2','#E5B64A'), color:s('ink','#1A1208'), fontSize:'10px', fontWeight:800 }}>✍️ Write About Innovation</span>
+            <span style={{ padding:'5px 10px', borderRadius:'8px', background:'rgba(255,255,255,.13)', border:'1px solid rgba(255,255,255,.3)', color:'#fff', fontSize:'10px', fontWeight:600 }}>Join Community →</span>
+          </div>
         </div>
       </div>
     )
@@ -1438,9 +1470,10 @@ function SectionPreview({ section, t }: { section: string; t: Record<string,any>
 
     case 'writers-page': return (
       <div style={{ borderRadius:'12px', overflow:'hidden', border:'1px solid rgba(26,18,8,.06)' }}>
-        <div style={{ padding:'20px', background:s('writersHeroBg','#0A5F55') }}>
+        <div style={{ padding:'20px', background:s('writersHeroBg','#0A5F55'), position:'relative' as const }}>
+          <div style={{ fontSize:'9px', fontFamily:'var(--font-mono)', fontWeight:700, letterSpacing:'2px', textTransform:'uppercase' as const, color:'rgba(255,255,255,.5)', marginBottom:'6px' }}>✍️ Writers Directory</div>
           <div style={{ fontFamily:'var(--font-serif)', fontSize:'20px', fontWeight:900, color:s('writersHeroColor','#fff'), marginBottom:'8px' }}>Meet the Writers</div>
-          <div style={{ background:'rgba(255,255,255,.15)', border:'1px solid rgba(255,255,255,.2)', borderRadius:'10px', padding:'9px 12px', fontSize:'12px', color:'rgba(255,255,255,.6)' }}>Search by name or role…</div>
+          <div style={{ background:'rgba(255,255,255,.15)', border:'none', borderRadius:'10px', padding:'9px 12px', fontSize:'12px', color:'rgba(255,255,255,.6)' }}>Search by name or role…</div>
         </div>
         <div style={{ padding:'6px 10px', background:'#fff', borderBottom:'1px solid rgba(26,18,8,.06)', display:'flex', gap:'4px' }}>
           {['All Writers','Educator','EdTech Pro','Leader'].map((r,i)=>(
@@ -1452,14 +1485,24 @@ function SectionPreview({ section, t }: { section: string; t: Record<string,any>
           <WriterCard name="Priya S." role="Teacher, Delhi" bg={s('coral','#E8512A')} />
           <WriterCard name="Nalini V." role="Researcher" bg={s('gold','#C9922A')} />
         </div>
+        <div style={{ padding:'16px', background:s('writersHeroBg','#0A5F55'), textAlign:'center' as const }}>
+          <div style={{ fontFamily:'var(--font-serif)', fontSize:'14px', fontWeight:900, color:'#fff', marginBottom:'6px' }}>Your Expertise Belongs Here</div>
+          <div style={{ fontSize:'11px', color:'rgba(255,255,255,.7)', marginBottom:'10px' }}>Join 2,400+ writers — it's free.</div>
+          <div style={{ display:'flex', gap:'6px', justifyContent:'center' }}>
+            <span style={{ padding:'6px 14px', borderRadius:'8px', background:s('gold2','#E5B64A'), color:s('ink','#1A1208'), fontSize:'11px', fontWeight:800 }}>✍️ Start Writing →</span>
+            <span style={{ padding:'6px 12px', borderRadius:'8px', background:'rgba(255,255,255,.13)', border:'1px solid rgba(255,255,255,.3)', color:'#fff', fontSize:'11px', fontWeight:600 }}>Browse Articles</span>
+          </div>
+        </div>
       </div>
     )
 
     case 'privacy-page': return (
       <div style={{ borderRadius:'12px', overflow:'hidden', border:'1px solid rgba(26,18,8,.06)' }}>
-        <div style={{ padding:'24px', background:s('privacyHeroBg','#0A5F55') }}>
-          <div style={{ fontFamily:'var(--font-mono)', fontSize:'9px', fontWeight:700, letterSpacing:'2px', textTransform:'uppercase' as const, color:'rgba(255,255,255,.4)', marginBottom:'6px' }}>Legal</div>
-          <div style={{ fontFamily:'var(--font-serif)', fontSize:'22px', fontWeight:900, color:s('privacyHeroColor','#fff') }}>Privacy Policy</div>
+        <div style={{ padding:'28px 24px 20px', background:s('privacyHeroBg','#0A5F55'), position:'relative' as const }}>
+          <div style={{ position:'absolute' as const, top:-40, right:-40, width:180, height:180, borderRadius:'50%', background:'rgba(255,255,255,.04)' }} />
+          <div style={{ fontFamily:'var(--font-mono)', fontSize:'9px', fontWeight:700, letterSpacing:'2px', textTransform:'uppercase' as const, color:'rgba(255,255,255,.45)', marginBottom:'8px' }}>Legal</div>
+          <div style={{ fontFamily:'var(--font-serif)', fontSize:'24px', fontWeight:900, color:s('privacyHeroColor','#fff'), letterSpacing:'-0.5px', lineHeight:1.1, marginBottom:'4px' }}>Privacy Policy</div>
+          <div style={{ fontSize:'10px', color:'rgba(255,255,255,.5)', fontWeight:300 }}>Last updated: March 2025</div>
         </div>
         <div style={{ padding:'16px', background:s('privacyBg','#fff') }}>
           <div style={{ background:'#EAF4F0', border:'1px solid rgba(10,95,85,.15)', borderRadius:'10px', padding:'12px 14px', fontSize:'12px', color:'var(--muted)', lineHeight:1.7, marginBottom:'14px' }}>
@@ -1477,9 +1520,11 @@ function SectionPreview({ section, t }: { section: string; t: Record<string,any>
 
     case 'terms-page': return (
       <div style={{ borderRadius:'12px', overflow:'hidden', border:'1px solid rgba(26,18,8,.06)' }}>
-        <div style={{ padding:'24px', background:s('termsHeroBg','#1A1208') }}>
-          <div style={{ fontFamily:'var(--font-mono)', fontSize:'9px', fontWeight:700, letterSpacing:'2px', textTransform:'uppercase' as const, color:'rgba(255,255,255,.35)', marginBottom:'6px' }}>Legal</div>
-          <div style={{ fontFamily:'var(--font-serif)', fontSize:'22px', fontWeight:900, color:s('termsHeroColor','#fff') }}>Terms of Use</div>
+        <div style={{ padding:'28px 24px 20px', background:s('termsHeroBg','#1A1208'), position:'relative' as const }}>
+          <div style={{ position:'absolute' as const, top:-40, right:-40, width:180, height:180, borderRadius:'50%', background:'rgba(255,255,255,.03)' }} />
+          <div style={{ fontFamily:'var(--font-mono)', fontSize:'9px', fontWeight:700, letterSpacing:'2px', textTransform:'uppercase' as const, color:'rgba(255,255,255,.35)', marginBottom:'8px' }}>Legal</div>
+          <div style={{ fontFamily:'var(--font-serif)', fontSize:'24px', fontWeight:900, color:s('termsHeroColor','#fff'), letterSpacing:'-0.5px', lineHeight:1.1, marginBottom:'4px' }}>Terms of Use</div>
+          <div style={{ fontSize:'10px', color:'rgba(255,255,255,.4)', fontWeight:300 }}>Last updated: March 2025</div>
         </div>
         <div style={{ padding:'16px', background:s('termsBg','#fff') }}>
           <div style={{ background:'#FFF9E6', border:'1px solid rgba(201,146,42,.2)', borderRadius:'10px', padding:'12px 14px', fontSize:'12px', color:'var(--muted)', lineHeight:1.7, marginBottom:'14px' }}>

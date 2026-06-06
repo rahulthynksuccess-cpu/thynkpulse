@@ -62,16 +62,23 @@ export default function InnovationPage() {
     <>
       <Navbar />
       <main style={{ minHeight: '100vh', background: 'var(--cream)' }}>
-        {/* Hero */}
-        <div style={{ background: 'linear-gradient(135deg,#3D1F5E 0%,#6B35A8 50%,#0A5F55 100%)', padding: '72px 5% 64px' }}>
-          <div style={{ maxWidth: 800 }}>
-            <div style={{ fontFamily: 'var(--font-mono)', fontSize: '13px', fontWeight: 700, letterSpacing: '2px', textTransform: 'uppercase', color: 'rgba(255,255,255,.5)', marginBottom: 16 }}>
+        {/* Hero — matches Latest Posts style */}
+        <div style={{
+          background: 'var(--innovation-hero-bg, linear-gradient(135deg,#3D1F5E 0%,#6B35A8 50%,#0A5F55 100%))',
+          padding: '96px 5% 52px',
+          position: 'relative',
+          overflow: 'hidden',
+        }}>
+          <div style={{ position: 'absolute', top: -100, right: -100, width: 400, height: 400, borderRadius: '50%', background: 'rgba(255,255,255,.04)', pointerEvents: 'none' }} />
+          <div style={{ position: 'absolute', bottom: -80, left: '30%', width: 300, height: 300, borderRadius: '50%', background: 'rgba(255,255,255,.03)', pointerEvents: 'none' }} />
+          <div style={{ maxWidth: 800, position: 'relative', zIndex: 1 }}>
+            <div style={{ fontFamily: 'var(--font-mono)', fontSize: '12px', fontWeight: 700, letterSpacing: '2px', textTransform: 'uppercase', color: 'rgba(255,255,255,.55)', marginBottom: 16 }}>
               {pageContent?.heroEyebrow || '💡 Innovation Hub'}
             </div>
-            <h1 style={{ fontFamily: 'var(--font-serif)', fontSize: 'clamp(32px,5vw,56px)', fontWeight: 900, color: '#fff', lineHeight: 1.1, marginBottom: 16 }}>
+            <h1 style={{ fontFamily: 'var(--font-serif)', fontSize: 'clamp(36px,5vw,60px)', fontWeight: 900, color: '#fff', lineHeight: 1.1, marginBottom: 18, letterSpacing: '-1px' }}>
               {pageContent?.heroTitle || 'Innovation in Education'}
             </h1>
-            <p style={{ fontSize: '17px', color: 'rgba(255,255,255,.75)', lineHeight: 1.7, maxWidth: 580 }}>
+            <p style={{ fontSize: '18px', color: 'rgba(255,255,255,.8)', lineHeight: 1.75, maxWidth: 580, fontWeight: 300 }}>
               {pageContent?.heroSubtitle || "Cutting-edge ideas, experimental models, and real-world case studies from educators and technologists reimagining how learning happens."}
             </p>
           </div>
@@ -144,7 +151,7 @@ export default function InnovationPage() {
                       {post.coverEmoji || '💡'}
                     </div>
                     <div style={{ padding: '22px', flex: 1, display: 'flex', flexDirection: 'column' }}>
-                      <div style={{ fontFamily: 'var(--font-serif)', fontSize: 17, fontWeight: 600, color: 'var(--ink)', lineHeight: 1.35, marginBottom: 8 }}>
+                      <div style={{ fontFamily: 'var(--font-serif)', fontSize: 18, fontWeight: 600, color: 'var(--ink)', lineHeight: 1.35, marginBottom: 8 }}>
                         {post.title}
                       </div>
                       {post.excerpt && (
@@ -153,14 +160,14 @@ export default function InnovationPage() {
                         </div>
                       )}
                       <div style={{ display: 'flex', alignItems: 'center', gap: 8, paddingTop: 12, borderTop: '1px solid var(--border2)', marginTop: 'auto' }}>
-                        <div className="avatar av-teal" style={{ width: 30, height: 30, fontSize: '12px', borderRadius: '8px' }}>
+                        <div className="avatar av-teal" style={{ width: 32, height: 32, fontSize: '13px', borderRadius: '8px' }}>
                           {post.author?.fullName?.split(' ').map(n => n[0]).join('').slice(0, 2) || 'U'}
                         </div>
                         <div style={{ flex: 1, minWidth: 0 }}>
-                          <div style={{ fontSize: '12px', fontWeight: 600, color: 'var(--ink)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{post.author?.fullName}</div>
-                          <div style={{ fontSize: '15px', color: 'var(--muted)' }}>{post.readTime} min read</div>
+                          <div style={{ fontSize: '13px', fontWeight: 600, color: 'var(--ink)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{post.author?.fullName}</div>
+                          <div style={{ fontSize: '13px', color: 'var(--muted)' }}>{post.readTime} min read</div>
                         </div>
-                        <span style={{ fontSize: '14px', color: 'var(--muted)' }}>❤️ {post.likeCount}</span>
+                        <span style={{ fontSize: '13px', color: 'var(--muted)' }}>❤️ {post.likeCount}</span>
                       </div>
                     </div>
                   </Link>
@@ -172,6 +179,54 @@ export default function InnovationPage() {
             <Link href="/latest-posts?category=Innovation" className="btn-outline" style={{ display: 'inline-flex', alignItems: 'center', gap: 8 }}>
               View All Innovation Articles →
             </Link>
+          </div>
+        </div>
+
+        {/* CTA — community page style */}
+        <div style={{ background: 'linear-gradient(135deg,#3D1F5E 0%,#0A5F55 100%)', padding: '72px 5%', textAlign: 'center', position: 'relative', overflow: 'hidden' }}>
+          <div style={{ position: 'absolute', top: -80, left: -80, width: 360, height: 360, borderRadius: '50%', background: 'rgba(255,255,255,.05)', pointerEvents: 'none' }} />
+          <div style={{ position: 'absolute', bottom: -60, right: -60, width: 280, height: 280, borderRadius: '50%', background: 'rgba(255,255,255,.04)', pointerEvents: 'none' }} />
+          <div style={{ position: 'relative', zIndex: 1 }}>
+            <h2 style={{ fontFamily: 'var(--font-serif)', fontSize: 'clamp(28px,4vw,52px)', fontWeight: 900, color: '#fff', marginBottom: 16, letterSpacing: '-1px', lineHeight: 1.1 }}>
+              Innovating in Education?
+            </h2>
+            <p style={{ fontSize: 18, color: 'rgba(255,255,255,.8)', maxWidth: 500, margin: '0 auto 44px', lineHeight: 1.75, fontWeight: 300 }}>
+              Share your breakthrough ideas and experiments with 10,000+ education professionals. Free forever.
+            </p>
+            <div style={{ display: 'flex', gap: 16, justifyContent: 'center', flexWrap: 'wrap', alignItems: 'center' }}>
+              <Link href="/write" style={{
+                textDecoration: 'none',
+                display: 'inline-flex', alignItems: 'center', gap: 10,
+                background: 'var(--gold2,#E5B64A)',
+                color: 'var(--ink,#1A1208)',
+                fontFamily: 'var(--font-sans)',
+                fontWeight: 800,
+                fontSize: '17px',
+                padding: '16px 36px',
+                borderRadius: '14px',
+                boxShadow: '0 8px 28px rgba(201,146,42,.45)',
+                transition: 'all .25s',
+                letterSpacing: '-.1px',
+              }}>
+                ✍️ Write About Innovation
+              </Link>
+              <Link href="/community" style={{
+                textDecoration: 'none',
+                display: 'inline-flex', alignItems: 'center', gap: 8,
+                background: 'rgba(255,255,255,.13)',
+                border: '2px solid rgba(255,255,255,.35)',
+                color: '#fff',
+                fontFamily: 'var(--font-sans)',
+                fontWeight: 600,
+                fontSize: '15px',
+                padding: '14px 30px',
+                borderRadius: '12px',
+                backdropFilter: 'blur(10px)',
+                transition: 'all .25s',
+              }}>
+                Join the Community →
+              </Link>
+            </div>
           </div>
         </div>
       </main>

@@ -221,6 +221,8 @@ const PAGES: { label: string; icon: string; sections: { id: string; label: strin
       {
         id: 'privacy', label: 'Privacy Policy',
         fields: [
+          { id:'priv.heroTitle',     label:'Hero title',           type:'text',   cssVar:'--priv-hero-title',        default:'Privacy Policy' },
+          { id:'priv.heroSubtitle',  label:'Hero subtitle',        type:'textarea',cssVar:'--priv-hero-subtitle',    default:'How we collect, use, and protect your data.' },
           { id:'priv.heroBg',        label:'Hero background',      type:'color',  cssVar:'--privacy-hero-bg',        default:'#0A5F55' },
           { id:'priv.heroColor',     label:'Hero text colour',     type:'color',  cssVar:'--privacy-hero-color',     default:'#ffffff' },
           { id:'priv.pageBg',        label:'Page background',      type:'color',  cssVar:'--privacy-bg',             default:'#ffffff' },
@@ -231,6 +233,8 @@ const PAGES: { label: string; icon: string; sections: { id: string; label: strin
       {
         id: 'terms', label: 'Terms of Use',
         fields: [
+          { id:'terms.heroTitle',    label:'Hero title',           type:'text',   cssVar:'--terms-hero-title',       default:'Terms of Use' },
+          { id:'terms.heroSubtitle', label:'Hero subtitle',        type:'textarea',cssVar:'--terms-hero-subtitle',  default:'Please read these terms carefully before using Thynk Pulse.' },
           { id:'terms.heroBg',       label:'Hero background',      type:'color',  cssVar:'--terms-hero-bg',          default:'#1A1208' },
           { id:'terms.heroColor',    label:'Hero text colour',     type:'color',  cssVar:'--terms-hero-color',       default:'#ffffff' },
           { id:'terms.pageBg',       label:'Page background',      type:'color',  cssVar:'--terms-bg',               default:'#ffffff' },
@@ -803,6 +807,8 @@ export default function AdminContentPage() {
         'content.trending':          { heroTitle:'tr.heroTitle', heroSubtitle:'tr.heroSubtitle' },
         'content.writers':           { heroTitle:'wr.heroTitle', heroSubtitle:'wr.heroSubtitle' },
         'content.community':         { heroTitle:'com.heroTitle', heroAccent:'com.heroAccent', heroSubtitle:'com.heroSubtitle', heroEyebrow:'com.heroEyebrow' },
+        'content.privacy':           { heroTitle:'priv.heroTitle', heroSubtitle:'priv.heroSubtitle' },
+        'content.terms':             { heroTitle:'terms.heroTitle', heroSubtitle:'terms.heroSubtitle' },
       }
       Object.entries(innerMap).forEach(([key, fieldMap]) => {
         const saved = all[key] ?? {}
@@ -976,6 +982,8 @@ export default function AdminContentPage() {
         { key: 'content.trending',          vals: { heroTitle: values['tr.heroTitle'], heroSubtitle: values['tr.heroSubtitle'] } },
         { key: 'content.writers',           vals: { heroTitle: values['wr.heroTitle'], heroSubtitle: values['wr.heroSubtitle'] } },
         { key: 'content.community',         vals: { heroTitle: values['com.heroTitle'], heroAccent: values['com.heroAccent'], heroSubtitle: values['com.heroSubtitle'], heroEyebrow: values['com.heroEyebrow'] } },
+        { key: 'content.privacy',           vals: { heroTitle: values['priv.heroTitle'], heroSubtitle: values['priv.heroSubtitle'] } },
+        { key: 'content.terms',             vals: { heroTitle: values['terms.heroTitle'], heroSubtitle: values['terms.heroSubtitle'] } },
       ]
       for (const p of innerPages) {
         if (Object.values(p.vals).some(v => v)) await apiPost('/admin/content', { key: p.key, value: p.vals })

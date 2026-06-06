@@ -13,11 +13,18 @@ export default function TermsOfUsePage() {
       <Navbar />
       <main style={{ minHeight: '100vh', background: '#fff' }}>
 
-        <div className="legal-hero" style={{ background: 'linear-gradient(135deg,var(--ink) 0%,var(--ink2) 100%)', padding: '64px 5% 56px' }}>
-          <div style={{ maxWidth: 800, margin: '0 auto' }}>
-            <div style={{ fontFamily: 'var(--font-mono)', fontSize: '11px', fontWeight: 700, letterSpacing: '2px', textTransform: 'uppercase', color: 'rgba(255,255,255,.4)', marginBottom: 14 }}>Legal</div>
-            <h1 style={{ fontFamily: 'var(--font-serif)', fontSize: 'clamp(28px,5vw,48px)', fontWeight: 900, color: '#fff', marginBottom: 12 }}>Terms of Use</h1>
-            <p style={{ fontSize: 14, color: 'rgba(255,255,255,.5)' }}>Last updated: {lastUpdated}</p>
+        <div className="legal-hero" style={{
+          background: 'var(--terms-hero-bg, linear-gradient(135deg,var(--ink) 0%,var(--ink2) 100%))',
+          padding: '96px 5% 56px',
+          position: 'relative',
+          overflow: 'hidden',
+        }}>
+          <div style={{ position: 'absolute', top: -100, right: -100, width: 400, height: 400, borderRadius: '50%', background: 'rgba(255,255,255,.03)', pointerEvents: 'none' }} />
+          <div style={{ position: 'absolute', bottom: -80, left: '30%', width: 300, height: 300, borderRadius: '50%', background: 'rgba(255,255,255,.02)', pointerEvents: 'none' }} />
+          <div style={{ maxWidth: 800, margin: '0 auto', position: 'relative', zIndex: 1 }}>
+            <div style={{ fontFamily: 'var(--font-mono)', fontSize: '12px', fontWeight: 700, letterSpacing: '2px', textTransform: 'uppercase', color: 'rgba(255,255,255,.4)', marginBottom: 16 }}>Legal</div>
+            <h1 style={{ fontFamily: 'var(--font-serif)', fontSize: 'clamp(36px,5vw,60px)', fontWeight: 900, color: '#fff', marginBottom: 14, letterSpacing: '-1px', lineHeight: 1.1 }}>{pageContent?.heroTitle || 'Terms of Use'}</h1>
+            <p style={{ fontSize: '16px', color: 'rgba(255,255,255,.5)', fontWeight: 300 }}>Last updated: {lastUpdated}</p>
           </div>
         </div>
 
@@ -183,7 +190,7 @@ export default function TermsOfUsePage() {
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <div style={{ marginBottom: 40 }}>
-      <h2 style={{ fontFamily: 'var(--font-serif)', fontSize: 22, fontWeight: 700, color: 'var(--ink)', marginBottom: 16, paddingBottom: 10, borderBottom: '2px solid var(--border)' }}>
+      <h2 style={{ fontFamily: 'var(--font-serif)', fontSize: 24, fontWeight: 700, color: 'var(--ink)', marginBottom: 16, paddingBottom: 10, borderBottom: '2px solid var(--border)' }}>
         {title}
       </h2>
       {children}
@@ -192,18 +199,18 @@ function Section({ title, children }: { title: string; children: React.ReactNode
 }
 
 function SubHeading({ children }: { children: React.ReactNode }) {
-  return <h3 style={{ fontSize: 15, fontWeight: 700, color: 'var(--ink)', marginBottom: 10, marginTop: 20 }}>{children}</h3>
+  return <h3 style={{ fontSize: 17, fontWeight: 700, color: 'var(--ink)', marginBottom: 10, marginTop: 20 }}>{children}</h3>
 }
 
 function P({ children }: { children: React.ReactNode }) {
-  return <p style={{ fontSize: 15, color: 'var(--muted)', lineHeight: 1.8, marginBottom: 12 }}>{children}</p>
+  return <p style={{ fontSize: 16, color: 'var(--muted)', lineHeight: 1.8, marginBottom: 12 }}>{children}</p>
 }
 
 function UL({ items }: { items: string[] }) {
   return (
     <ul style={{ paddingLeft: 20, marginBottom: 12 }}>
       {items.map((item, i) => (
-        <li key={i} style={{ fontSize: 15, color: 'var(--muted)', lineHeight: 1.8, marginBottom: 6 }}>{item}</li>
+        <li key={i} style={{ fontSize: 16, color: 'var(--muted)', lineHeight: 1.8, marginBottom: 6 }}>{item}</li>
       ))}
     </ul>
   )
