@@ -1,12 +1,14 @@
+// app/layout.tsx  (ThynkPulse)
+// Updated: added ChatbotWidget (AI chatbot) + WhatsApp floating button
 import type { Metadata, Viewport } from 'next'
 import './globals.css'
 import { Providers } from './providers'
 import { config } from '@/lib/config'
 import { ContentStyleInjector } from '@/components/ContentStyleInjector'
 import SessionTrackerWrapper from './SessionTrackerWrapper'
+import ChatbotWidget from '@/components/chatbot/ChatbotWidget'
 
-
-export const dynamic = 'force-dynamic'
+export const dynamic  = 'force-dynamic'
 export const revalidate = 0
 
 export const metadata: Metadata = {
@@ -21,6 +23,19 @@ export const viewport: Viewport = {
   themeColor: '#FDF6EC',
   width: 'device-width',
   initialScale: 1,
+}
+
+// ── WhatsApp config — loaded from site_settings ───────────────────────────────
+async function getWhatsAppNumber(): Promise<string | null> {
+  try {
+    const { default: db } = await import('@/lib/db')
+    const res = await db.query("SELECT value FROM site_settings WHERE key = 'chatbot.whatsapp_number'")
+    if (!res.rows.length) return null
+    const val = JSON.parse(res.rows[0].value)
+    return typeof val === 'string' && val.trim() ? val.trim() : null
+  } catch {
+    return null
+  }
 }
 
 /* Load active theme from DB — runs on every server render */
@@ -267,15 +282,24 @@ async function getThemeCSSVars(): Promise<string> {
 }
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
-  const themeVars = await getThemeCSSVars()
+  const [themeVars, waNumber] = await Promise.all([
+    getThemeCSSVars(),
+    getWhatsAppNumber(),
+  ])
 
-  // Also load content styles (font sizes, colours, button styles set in Content Manager)
   let contentCSS = ''
   try {
     const { default: db } = await import('@/lib/db')
     const res = await db.query("SELECT value FROM site_settings WHERE key = 'content.css'")
     if (res.rows.length) contentCSS = JSON.parse(res.rows[0].value)
   } catch {}
+
+  // Build WhatsApp URL — support plain numbers or full URLs
+  const waHref = waNumber
+    ? waNumber.startsWith('http')
+      ? waNumber
+      : `https://wa.me/${waNumber.replace(/[^0-9]/g, '')}?text=${encodeURIComponent('Hi! I found you on ThynkPulse.')}`
+    : null
 
   return (
     <html lang="en">
@@ -284,19 +308,50 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,600;0,900;1,600&family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet" />
-        {/* Live theme from Theme Controller */}
-        {themeVars && (
-          <style id="tp-live-theme" dangerouslySetInnerHTML={{ __html: themeVars }} />
-        )}
-        {/* Live styles from Content Manager — overrides theme where set */}
-        {contentCSS && (
-          <style id="tp-content-styles" dangerouslySetInnerHTML={{ __html: contentCSS }} />
-        )}
+        {themeVars && <style id="tp-live-theme" dangerouslySetInnerHTML={{ __html: themeVars }} />}
+        {contentCSS && <style id="tp-content-styles" dangerouslySetInnerHTML={{ __html: contentCSS }} />}
+
+        {/* WhatsApp + Chatbot button spacing */}
+        <style dangerouslySetInnerHTML={{ __html: `
+          /* When both WA and Chatbot are visible, offset them vertically */
+          .tp-wa-btn  { position: fixed; bottom: 90px; right: 24px; z-index: 9998; }
+          .tp-wa-btn  { transition: transform .2s; }
+          .tp-wa-btn:hover { transform: scale(1.08); }
+          @media (max-width: 480px) {
+            .tp-wa-btn { bottom: 86px; right: 16px; }
+          }
+        `}} />
       </head>
       <body>
         <ContentStyleInjector />
-         <SessionTrackerWrapper /> 
+        <SessionTrackerWrapper />
         <Providers>{children}</Providers>
+
+        {/* ── AI Chatbot widget (appears on every public page) ── */}
+        <ChatbotWidget />
+
+        {/* ── WhatsApp floating button — only when number configured in Admin → Integrations ── */}
+        {waHref && (
+          <a
+            href={waHref}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Chat with us on WhatsApp"
+            className="tp-wa-btn"
+            style={{
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              width: 52, height: 52, borderRadius: '50%',
+              background: 'linear-gradient(135deg, #25D366, #128C7E)',
+              boxShadow: '0 4px 20px rgba(37,211,102,0.40)',
+              textDecoration: 'none',
+            }}>
+            {/* WhatsApp SVG logo */}
+            <svg viewBox="0 0 32 32" width="26" height="26" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M16 3C9.373 3 4 8.373 4 15c0 2.385.67 4.61 1.833 6.504L4 29l7.699-1.816A11.93 11.93 0 0016 27c6.627 0 12-5.373 12-12S22.627 3 16 3z" fill="#fff"/>
+              <path d="M16 4.8c-5.629 0-10.2 4.571-10.2 10.2 0 2.19.696 4.22 1.883 5.884L6.6 25.4l4.631-1.073A10.16 10.16 0 0016 25.2c5.629 0 10.2-4.571 10.2-10.2S21.629 4.8 16 4.8zm5.21 14.542c-.217.607-1.263 1.158-1.733 1.197-.47.04-.912.211-3.079-.643-2.61-1.04-4.28-3.71-4.41-3.882-.13-.173-1.057-1.41-1.057-2.69s.672-1.91.91-2.173c.237-.261.518-.326.69-.326h.497c.16 0 .375-.06.586.447.215.52.727 1.783.79 1.913.063.13.105.282.02.453-.086.173-.13.28-.26.43-.13.15-.274.337-.39.453-.13.13-.265.27-.114.53.15.26.668 1.105 1.435 1.79.985.878 1.817 1.15 2.077 1.28.26.13.41.108.56-.065.15-.173.643-.75.813-1.007.173-.26.345-.217.58-.13.237.087 1.503.709 1.762.838.26.13.433.195.497.303.065.108.065.62-.152 1.226z" fill="#25D366"/>
+            </svg>
+          </a>
+        )}
       </body>
     </html>
   )
