@@ -5,7 +5,7 @@ import db from '@/lib/db'
 import { requireAdmin, isAdminError } from '@/lib/adminAuth'
 import { ensureNotificationsTable } from '@/lib/notify'
 
-// GET  — list recent broadcast notifications (admin only)
+// GET  -- list recent broadcast notifications (admin only)
 export async function GET(req: NextRequest) {
   const auth = await requireAdmin(req)
   if (isAdminError(auth)) return auth
@@ -23,7 +23,7 @@ export async function GET(req: NextRequest) {
   return Response.json({ notifications: rows })
 }
 
-// POST — send a broadcast notification (admin only)
+// POST -- send a broadcast notification (admin only)
 // Body: { audience: 'all' | 'writers' | 'educators', title, body, link? }
 export async function POST(req: NextRequest) {
   const auth = await requireAdmin(req)
@@ -46,7 +46,7 @@ export async function POST(req: NextRequest) {
   return Response.json({ ok: true })
 }
 
-// DELETE — remove a broadcast notification
+// DELETE -- remove a broadcast notification
 export async function DELETE(req: NextRequest) {
   const auth = await requireAdmin(req)
   if (isAdminError(auth)) return auth

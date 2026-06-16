@@ -15,7 +15,7 @@ function getUser(req: NextRequest): { userId: string; role: string } | null {
   } catch { return null }
 }
 
-// ── GET /api/notifications  — fetch notifications for current user ─────────────
+// ── GET /api/notifications  -- fetch notifications for current user ─────────────
 export async function GET(req: NextRequest) {
   try {
     await ensureNotificationsTable()

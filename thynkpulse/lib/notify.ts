@@ -1,6 +1,6 @@
 /**
  * lib/notify.ts  (ThynkPulse)
- * In-app notification helper — call after key events to push notifications
+ * In-app notification helper -- call after key events to push notifications
  * to users. Non-throwing: a notification failure never breaks the main flow.
  *
  * Events covered:
@@ -30,7 +30,7 @@ async function create(
       [userId, audience, title, body, type, link || null],
     )
   } catch (e) {
-    // Notifications are non-critical — never throw
+    // Notifications are non-critical -- never throw
     console.error('[tp-notify] failed:', e)
   }
 }
@@ -115,7 +115,7 @@ export async function notifyNewLike(userId: string, likerName: string, postTitle
   )
 }
 
-/** Admin broadcast — audience: 'all' | 'writers' | 'educators' */
+/** Admin broadcast -- audience: 'all' | 'writers' | 'educators' */
 export async function notifyBroadcast(
   audience: 'all' | 'writers' | 'educators',
   title: string,

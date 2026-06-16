@@ -129,7 +129,7 @@ export default function ChatbotWidget() {
     await botReply(trimmed, sessionId)
   }
 
-  const greeting = config.greeting_message || "Hi! 👋 Welcome to ThynkPulse — the knowledge platform for educators and EdTech professionals. What's your name?"
+  const greeting = config.greeting_message || "Hi! 👋 Welcome to ThynkPulse -- the knowledge platform for educators and EdTech professionals. What's your name?"
 
   return (
     <>

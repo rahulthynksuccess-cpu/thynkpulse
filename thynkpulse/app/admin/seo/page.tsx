@@ -265,7 +265,7 @@ export default function AdminSEOPage() {
           {bulkMode && (
             <div style={{ background: cream, border: `1px solid ${border}`, borderRadius: 12, padding: 16 }}>
               <p style={{ fontFamily: 'var(--font-sans)', fontSize: 12, color: muted, marginBottom: 8 }}>
-                Paste parameters as <code style={{ color: teal }}>key=value</code> — one per line.
+                Paste parameters as <code style={{ color: teal }}>key=value</code> -- one per line.
               </p>
               <textarea value={bulkText} onChange={e => setBulkText(e.target.value)} rows={6}
                 placeholder={'og:title=ThynkPulse\nog:description=Knowledge for Educators\nkeywords=edtech,educators,india'}

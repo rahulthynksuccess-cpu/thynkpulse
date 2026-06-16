@@ -114,7 +114,7 @@ function TranscriptModal({ session, onClose }: { session: any; onClose: () => vo
         <div style={{ padding: '16px 20px', borderBottom: `1px solid ${border}`, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           <div>
             <div style={{ fontSize: 14, fontWeight: 700, color: ink, fontFamily: 'var(--font-serif)' }}>{session.user_name || 'Anonymous'}</div>
-            <div style={{ fontSize: 11, color: muted }}>{session.user_email || '—'}</div>
+            <div style={{ fontSize: 11, color: muted }}>{session.user_email || '--'}</div>
           </div>
           <button onClick={onClose} style={{ background: 'none', border: 'none', cursor: 'pointer', color: muted }}><X style={{ width: 16, height: 16 }} /></button>
         </div>
@@ -219,10 +219,10 @@ export default function AdminChatbotPage() {
   const totalSessions = sessionsData?.total || 0
 
   const statCards = [
-    { label: 'Total Chats',    value: stats?.totalSessions   ?? '—', color: teal },
-    { label: 'Leads Captured', value: stats?.identifiedLeads ?? '—', color: '#C9922A' },
-    { label: 'Today',          value: stats?.todaySessions   ?? '—', color: '#3D1F5E' },
-    { label: 'Active FAQs',    value: stats?.activeFaqs      ?? '—', color: '#E8512A' },
+    { label: 'Total Chats',    value: stats?.totalSessions   ?? '--', color: teal },
+    { label: 'Leads Captured', value: stats?.identifiedLeads ?? '--', color: '#C9922A' },
+    { label: 'Today',          value: stats?.todaySessions   ?? '--', color: '#3D1F5E' },
+    { label: 'Active FAQs',    value: stats?.activeFaqs      ?? '--', color: '#E8512A' },
   ]
 
   return (
@@ -427,7 +427,7 @@ export default function AdminChatbotPage() {
                             onMouseLeave={e => (e.currentTarget as HTMLTableRowElement).style.background = 'transparent'}>
                             <td style={{ padding: '11px 14px', fontSize: 12, color: muted, borderBottom: `1px solid rgba(26,18,8,0.04)` }}>{(page - 1) * 20 + i + 1}</td>
                             <td style={{ padding: '11px 14px', fontSize: 12, color: ink, fontWeight: 600, borderBottom: `1px solid rgba(26,18,8,0.04)` }}>{s.user_name || <em style={{ color: muted, fontStyle: 'italic' }}>Anonymous</em>}</td>
-                            <td style={{ padding: '11px 14px', fontSize: 11, color: muted, borderBottom: `1px solid rgba(26,18,8,0.04)` }}>{s.user_email || '—'}</td>
+                            <td style={{ padding: '11px 14px', fontSize: 11, color: muted, borderBottom: `1px solid rgba(26,18,8,0.04)` }}>{s.user_email || '--'}</td>
                             <td style={{ padding: '11px 14px', fontSize: 12, borderBottom: `1px solid rgba(26,18,8,0.04)` }}>
                               <span style={{ fontSize: 10, fontWeight: 600, padding: '3px 8px', borderRadius: 100, background: 'rgba(10,95,85,0.08)', color: teal }}>{s.msg_count} msgs</span>
                             </td>
@@ -454,7 +454,7 @@ export default function AdminChatbotPage() {
             </div>
             {totalSessions > 20 && (
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '12px 14px', borderTop: `1px solid ${border}` }}>
-                <span style={{ fontSize: 11, color: muted }}>{(page - 1) * 20 + 1}–{Math.min(page * 20, totalSessions)} of {totalSessions}</span>
+                <span style={{ fontSize: 11, color: muted }}>{(page - 1) * 20 + 1}-{Math.min(page * 20, totalSessions)} of {totalSessions}</span>
                 <div style={{ display: 'flex', gap: 6 }}>
                   <button onClick={() => setPage(p => Math.max(1, p - 1))} disabled={page === 1}
                     style={{ padding: '6px 13px', borderRadius: 7, background: '#fff', border: `1px solid ${border}`, color: muted, cursor: 'pointer', fontSize: 11, opacity: page === 1 ? .4 : 1 }}>← Prev</button>

@@ -12,7 +12,7 @@ export const dynamic  = 'force-dynamic'
 export const revalidate = 0
 
 export const metadata: Metadata = {
-  title: { default: `${config.app.name} — ${config.app.tagline}`, template: `%s | ${config.app.name}` },
+  title: { default: `${config.app.name} -- ${config.app.tagline}`, template: `%s | ${config.app.name}` },
   description: 'The free community platform for educators, EdTech professionals, innovators and school leaders to share experiences and shape the future of education.',
   keywords: ['education community', 'EdTech', 'educators India', 'teaching', 'school leadership'],
   metadataBase: new URL(config.app.url),
@@ -25,7 +25,7 @@ export const viewport: Viewport = {
   initialScale: 1,
 }
 
-// ── WhatsApp config — loaded from site_settings ───────────────────────────────
+// ── WhatsApp config -- loaded from site_settings ───────────────────────────────
 async function getWhatsAppNumber(): Promise<string | null> {
   try {
     const { default: db } = await import('@/lib/db')
@@ -38,7 +38,7 @@ async function getWhatsAppNumber(): Promise<string | null> {
   }
 }
 
-/* Load active theme from DB — runs on every server render */
+/* Load active theme from DB -- runs on every server render */
 async function getThemeCSSVars(): Promise<string> {
   try {
     const { default: db } = await import('@/lib/db')
@@ -294,7 +294,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     if (res.rows.length) contentCSS = JSON.parse(res.rows[0].value)
   } catch {}
 
-  // Build WhatsApp URL — support plain numbers or full URLs
+  // Build WhatsApp URL -- support plain numbers or full URLs
   const waHref = waNumber
     ? waNumber.startsWith('http')
       ? waNumber
@@ -330,7 +330,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         {/* ── AI Chatbot widget (appears on every public page) ── */}
         <ChatbotWidget />
 
-        {/* ── WhatsApp floating button — only when number configured in Admin → Integrations ── */}
+        {/* ── WhatsApp floating button -- only when number configured in Admin → Integrations ── */}
         {waHref && (
           <a
             href={waHref}

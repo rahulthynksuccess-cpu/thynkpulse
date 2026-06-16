@@ -40,7 +40,7 @@ export async function GET(req: NextRequest) {
   return Response.json({ data })
 }
 
-// POST /api/admin/seo  — upsert all params for a page
+// POST /api/admin/seo  -- upsert all params for a page
 // Body: { pageKey: string, params: Record<string, string> }
 export async function POST(req: NextRequest) {
   const auth = await requireAdmin(req)
@@ -64,7 +64,7 @@ export async function POST(req: NextRequest) {
   return Response.json({ message: 'SEO settings saved' })
 }
 
-// DELETE /api/admin/seo?page=<page_key>&param=<param_key>  — remove one param
+// DELETE /api/admin/seo?page=<page_key>&param=<param_key>  -- remove one param
 export async function DELETE(req: NextRequest) {
   const auth = await requireAdmin(req)
   if (isAdminError(auth)) return auth

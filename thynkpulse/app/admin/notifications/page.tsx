@@ -12,9 +12,9 @@ function hdrs() {
 }
 
 const TEMPLATES = [
-  { label: 'New Feature Announcement', body: 'We've just launched something new on ThynkPulse! Log in to explore the latest features.' },
+  { label: 'New Feature Announcement', body: "We've just launched something new on ThynkPulse! Log in to explore the latest features." },
   { label: 'Submission Reminder',      body: 'Have a story to share? Submit your post today and connect with 10,000+ educators reading ThynkPulse.' },
-  { label: 'Scheduled Maintenance',    body: 'ThynkPulse will be briefly unavailable on Saturday 11 PM – 1 AM IST for scheduled maintenance.' },
+  { label: 'Scheduled Maintenance',    body: 'ThynkPulse will be briefly unavailable on Saturday 11 PM - 1 AM IST for scheduled maintenance.' },
   { label: 'Community Milestone',      body: 'ThynkPulse just hit a major milestone! Thank you for being part of this incredible community of educators.' },
 ]
 

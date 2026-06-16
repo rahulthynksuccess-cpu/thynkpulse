@@ -27,7 +27,7 @@ async function ensureTables() {
       INSERT INTO tp_chatbot_config (key, value) VALUES
         ('bot_name',         'Pulse Assistant'),
         ('brand_color',      '#0A5F55'),
-        ('greeting_message', 'Hi! 👋 Welcome to ThynkPulse — the knowledge platform for educators. What''s your name?'),
+        ('greeting_message', 'Hi! 👋 Welcome to ThynkPulse -- the knowledge platform for educators. What''s your name?'),
         ('fallback_message', 'Thanks for reaching out! Our team will get back to you shortly. You can also explore our Community section for peer answers.'),
         ('contact_email',    'hello@thynkpulse.in'),
         ('bot_enabled',      'true')
@@ -54,7 +54,7 @@ async function ensureTables() {
       await db.query(`
         INSERT INTO tp_chatbot_faqs (question, answer, keywords, sort_order) VALUES
           ('How do I publish a post on ThynkPulse?',
-           'To publish: log in → click "Write" in the navbar → write your post with our rich editor → hit "Submit for Review". Our editorial team usually reviews within 24–48 hours. Once approved, it goes live instantly!',
+           'To publish: log in → click "Write" in the navbar → write your post with our rich editor → hit "Submit for Review". Our editorial team usually reviews within 24-48 hours. Once approved, it goes live instantly!',
            ARRAY['publish','post','write','submit','how to post','article','create post'], 1),
 
           ('Who can write on ThynkPulse?',
@@ -62,7 +62,7 @@ async function ensureTables() {
            ARRAY['who can write','eligibility','who can post','educator','edtech','school leader','can i write'], 2),
 
           ('How long does post approval take?',
-           'Our editorial team reviews all submissions within 24–48 hours. You''ll receive an in-app notification as soon as your post is approved or if we need any changes.',
+           'Our editorial team reviews all submissions within 24-48 hours. You''ll receive an in-app notification as soon as your post is approved or if we need any changes.',
            ARRAY['approval','review','how long','pending','waiting','status','review time'], 3),
 
           ('What are the community guidelines?',
@@ -70,11 +70,11 @@ async function ensureTables() {
            ARRAY['guidelines','rules','policy','community rules','content policy','what is allowed'], 4),
 
           ('How do I grow my followers on ThynkPulse?',
-           'Publish consistently, engage with comments, follow peers in your domain, and share your posts on LinkedIn & WhatsApp. Posts featured on the homepage or trending section see 5–10× more followers.',
+           'Publish consistently, engage with comments, follow peers in your domain, and share your posts on LinkedIn & WhatsApp. Posts featured on the homepage or trending section see 5-10× more followers.',
            ARRAY['followers','grow','audience','reach','engagement','how to grow','tips'], 5),
 
           ('Is ThynkPulse free to use?',
-           'Yes! ThynkPulse is completely free for all educators and education professionals — reading, writing, and community participation. We may introduce premium features in future.',
+           'Yes! ThynkPulse is completely free for all educators and education professionals -- reading, writing, and community participation. We may introduce premium features in future.',
            ARRAY['free','cost','paid','subscription','price','free to use','charge'], 6),
 
           ('How do I reset my password?',
